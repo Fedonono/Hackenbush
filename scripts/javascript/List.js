@@ -1,7 +1,7 @@
 // inspiration : http://www.danielacton.com/2010/02/javascript-linked-list/
 
 function LinkedElement() {
-	this.id = null;
+	this.data = null;
 	this.next = null;
 }
 
@@ -18,7 +18,6 @@ LinkedList.prototype = {
 
 		if (this.head === null) {
 			this.head = newElement;
-			this.head.next = this.head;
 			this.tail = this.head;
 		}
 		else {
@@ -28,17 +27,29 @@ LinkedList.prototype = {
 
 		this.size++;
 	},
-	remove: function(id) {
+	remove: function(index) {
 		
 	},
 	getSize: function() {
 		return this.size;
-	},
+	}/*,
 	getIndexOf: function(id) {
-	}
-};
-var l = new LinkedList();
-l.add(1);
-l.add(2);
-l.add(3);
+		if (this.getSize() === 0)
+			return;
 
+		var currentElement = this.head;
+		var findElement;
+
+		while (currentElement.id != id AND 
+			if (currentElement.id === id) {
+				boolFind = 1;
+				
+	}*/
+};
+
+// test
+var l = new LinkedList();
+l.add()
+l.add();
+l.add();
+l;
