@@ -1,11 +1,10 @@
-
 /**
  * Creates a new graph, directed or not
  *
  * @param directed tells if the graph is directed or not
  * @return a reference on an empty graph
  */
-var AbstractGraph = function(directed){
+var AbstractSimpleGraph = function(directed){
 
 	/** 
 	 * Adds an edge between nodes identified by sourceId and destId, with an undefined weight 
@@ -14,6 +13,7 @@ var AbstractGraph = function(directed){
 	 * @param destId the identifier of the destination node (strictly positive integer)
 	 * @throws InvalidIdException if one of the specified ids is not valid (wrong type, <= 0, ...)		 
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
+	 * @throws AlreadyExistingEdgeException if the specified edge already exists
 	 */
 	this.addEdge = function(sourceId, destId) {}
 
@@ -25,8 +25,15 @@ var AbstractGraph = function(directed){
 	 * @param weight the weight of the edge
 	 * @throws InvalidIdException if one of the specified ids is not valid (wrong type, <= 0, ...)		 
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
+	 * @throws AlreadyExistingEdgeException if the specified edge already exists
 	 */	
-	this.addWeightedEdge = function(sourceId, destId, weight) {}
+	this.addWeightedEdge = function(sourceId, destId, weight) {
+		//try {
+			if (edgeExists(sourceId, destId))
+				throw new AlreadyExistingEdgeException(sourceId, destId)
+		//}
+		//catch ()
+	}
 
 	/** 
 	 * Adds a node with the specified identifier, with an undefined weight  
@@ -35,8 +42,7 @@ var AbstractGraph = function(directed){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)		 
 	 * @throws AlreadyExistingNodeException if a node with the speficied id already exists
 	 */		
-	this.addNode = function(id) {
-	}
+	this.addNode = function(id) {}
 
 	/** 
 	 * Adds a node with the specified identifier and weight
@@ -47,6 +53,11 @@ var AbstractGraph = function(directed){
 	 * @throws AlreadyExistingNodeException if a node with the speficied id already exists
 	 */		
 	this.addWeightedNode = function(id, weight) {
+		if (isNaN(id) || id <= 0)
+			throw new InvalidIdException(id);
+
+		if (nodeExists(id))
+			throw new AlreadyExistingNodeException(id);
 	}
 	
 	/** 
@@ -58,7 +69,17 @@ var AbstractGraph = function(directed){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist		 
 	 */		
-	this.edgeExists = function(sourceId, destId) {}
+	this.edgeExists = function(sourceId, destId) {
+		if (isNaN(sourceId) || sourceId <= 0)
+			throw new InvalidIdException(sourceId);
+		if (isNaN(destId) || destId <= 0)
+			throw new InvalidIdException(destId);
+
+		if (!nodeExists(sourceId))
+			throw new UnexistingNodeException(sourceId);
+		if (!nodeExists(destId))
+			throw new UnexistingNodeException(destId);
+	}
 
 	
 	/** 
@@ -116,6 +137,7 @@ var AbstractGraph = function(directed){
 	 * Tells if a node exists with the specified identifier
 	 *
 	 * @param id the identifier of the node (strictly positive integer)
+	 * @return a boolean modeling the existence of the specified node
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 */		
 	this.nodeExists = function(id) {}

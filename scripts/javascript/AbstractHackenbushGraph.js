@@ -7,7 +7,7 @@
  
 var AbstractHackenbushGraph = function(){
 
-	AbstractGraph.call(this, false); // false: the graph modeling an Hackenbush game is not directed 
+	AbstractSimpleGraph.call(this, false); // false: the graph modeling an Hackenbush game is not directed 
 	
 	/** 
 	 * Returns, as an integer, the color of the edge between nodes identified by sourceId and destId
