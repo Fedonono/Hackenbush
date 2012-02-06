@@ -186,13 +186,15 @@ var MultiGraph = function(directed){
         this.getEdgeById(sourceId, destId, k).weight = value;
     }
 
+
+
     /** 
 	 * Updates the value of all edges 
 	 *
 	 * @param value the new value for all edges 
 	 */		
     this.setEdgesValues = function(value) {
-        var sourceId, destId, NSize, i, edgesLength;
+        var sourceId, destId, i, edgesLength;
         for (sourceId in this.nodes) {
             for (destId in this.nodes[sourceId].neighbors) { // don't call getNeighBor function, because it will be too slow.
                 edgesLength = this.nodes[sourceId].neighbors[destId].length;
@@ -201,6 +203,20 @@ var MultiGraph = function(directed){
                 }
             }
         }
+    }
+
+    
+    /** 
+	 * Returns the degree of the node identified by id, in the context of a multigraph (i.e. the number of edges linked to this node)
+	 * getDegree and getNeighborhoodSize return the same result in a simple graph.
+	 *
+	 * @param id the identifier of a node (strictly positive integer)
+	 * @return the degree of the specified node
+	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the id is valid the corresponding node does not exist	  
+	 */			
+    this.getDegree = function(id) {
+        return this.getNodeById(id).degree;
     }
 
     this.incrDegree = function(id) {

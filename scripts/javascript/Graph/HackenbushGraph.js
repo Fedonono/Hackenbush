@@ -6,21 +6,10 @@
  */
  
 var HackenbushGraph = function(){
-
+    AbstractHackenBushGraph(this, false);
     MultiGraph.call(this, false); // false: the graph modeling an Hackenbush game is not directed 
 	
-    /** 
-	 * Returns the degree of the node identified by id, in the context of a multigraph (i.e. the number of edges linked to this node)
-	 * getDegree and getNeighborhoodSize return the same result in a simple graph.
-	 *
-	 * @param id the identifier of a node (strictly positive integer)
-	 * @return the degree of the specified node
-	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
-	 * @throws UnexistingNodeException if the id is valid the corresponding node does not exist	  
-	 */			
-    this.getDegree = function(id) {
-        return this.getNodeById(id).degree;
-    }
+    
 	
     /** 
 	 * Returns, as an integer, the color of the k th edge linked to the node identified by id.
