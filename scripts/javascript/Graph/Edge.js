@@ -1,4 +1,3 @@
-var Edge = function(weight, color) {
+var Edge = function(weight) {
     this.weight = weight;
-    this.color = color;
 }

@@ -7,9 +7,9 @@
  
 var HackenbushGraph = function(){
 
-	MultiGraph.call(this, false); // false: the graph modeling an Hackenbush game is not directed 
+    MultiGraph.call(this, false); // false: the graph modeling an Hackenbush game is not directed 
 	
-	/** 
+    /** 
 	 * Returns the degree of the node identified by id, in the context of a multigraph (i.e. the number of edges linked to this node)
 	 * getDegree and getNeighborhoodSize return the same result in a simple graph.
 	 *
@@ -18,20 +18,11 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 * @throws UnexistingNodeException if the id is valid the corresponding node does not exist	  
 	 */			
-	this.getDegree = function(id) {
-		if (!this.nodeExists(id))
-			throw new Exception.UnexistingNodeException(id);
-
-		var destId, degree;
-		degree = 0;
-		for (destId in this.nodes[id].neighbors) {
-			degree+=this.nodes[id].neighbors[destId].length;
-		}
-
-		return degree;
-	}
+    this.getDegree = function(id) {
+        return this.getNodeById(id).degree;
+    }
 	
-	/** 
+    /** 
 	 * Returns, as an integer, the color of the k th edge linked to the node identified by id.
 	 *
 	 * @param id the identifier of a node (strictly positive integer)
@@ -41,33 +32,33 @@ var HackenbushGraph = function(){
 	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
 	 * @throws InvalidIndexException if the node exists but k is outside the allowed range
 	 */			
-	this.getColorAsInteger = function(id, k) {
-		if (!this.nodeExists(id))
-			throw new Exception.UnexistingNodeException(id);
+    this.getColorAsInteger = function(id, k) {
+        if (!this.nodeExists(id))
+            throw new Exception.UnexistingNodeException(id);
+                    
+        var degree;
 
-		var degree;
+        degree = this.getDegree(id);
+        if (k > degree)
+            throw new Exception.InvalidIndexException(k);
 
-		degree = this.getDegree(id);
-		if (k > degree)
-			throw new Exception.InvalidIndexException(id);
+        var actualDegree, previousDegree, destId, index;
+        actualDegree = 0;
 
-		var actualDegree, previousDegree, destId, index;
-		actualDegree = 0;
-
-		for (destId in this.nodes[id].neighbors) {
-			previousDegree = actualDegree;
-			actualDegree+=this.nodes[id].neighbors[destId].length;
-			if ((k <= actualDegree) && (previousDegree < k)) {
-				index = k-previousDegree;
-				for (index=1; index<=k; i++) {
-					return this.getEdgeValue(id, destId, index-1);
-				}
-			}
-		}
-	}	
+        for (destId in this.nodes[id].neighbors) {
+            previousDegree = actualDegree;
+            actualDegree+=this.nodes[id].neighbors[destId].length;
+            if ((k <= actualDegree) && (previousDegree < k)) {
+                index = k-previousDegree;
+                for (index=1; index<=k; i++) {
+                    return this.getEdgeValue(id, destId, index-1);
+                }
+            }
+        }
+    }	
 	
 
-	/** 
+    /** 
 	 * Removes the k th edge linked to the node identified by id.
 	 *
 	 * @param id the identifier of a node (strictly positive integer)
@@ -76,45 +67,45 @@ var HackenbushGraph = function(){
 	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
 	 * @throws InvalidIndexException if the node exists but k is outside the allowed range	 
 	 */			
-	this.remove = function(id, k) {
-		if (!this.nodeExists(id))
-			throw new Exception.UnexistingNodeException(id);
+    this.remove = function(id, k) {
+        if (!this.nodeExists(id))
+            throw new Exception.UnexistingNodeException(id);
 
-		var degree;
+        var degree;
 
-		degree = this.getDegree(id);
-		if (k > degree)
-			throw new Exception.InvalidIndexException(id);
+        degree = this.getDegree(id);
+        if (k > degree)
+            throw new Exception.InvalidIndexException(k);
 
-		var actualDegree, previousDegree, destId, index;
-		actualDegree = 0;
+        var actualDegree, previousDegree, destId, index;
+        actualDegree = 0;
 
-		for (destId in this.nodes[id].neighbors) {
-			previousDegree = actualDegree;
-			actualDegree+=this.nodes[id].neighbors[destId].length;
-			if ((k <= actualDegree) && (previousDegree < k)) {
-				index = k-previousDegree;
-				for (index=1; index<=k; i++) {
-					this.removeEdge(id, destId, index-1);
-				}
-			}
-		}
-	}	
+        for (destId in this.nodes[id].neighbors) {
+            previousDegree = actualDegree;
+            actualDegree+=this.nodes[id].neighbors[destId].length;
+            if ((k <= actualDegree) && (previousDegree < k)) {
+                index = k-previousDegree;
+                for (index=1; index<=k; i++) {
+                    this.removeEdge(id, destId, index-1);
+                }
+            }
+        }
+    }	
 
-	/** 
+    /** 
 	 * Returns the identifier of the k th grounded node.
 	 *
 	 * @param k the number of the grounded node to identify (between 1 and getGroundedNodesCount())
 	 * @return the identifier of the k th grounded node
 	 * @throws InvalidIndexException if k is outside the allowed range
 	 */		
-	this.getGroundedNode = function(k) {}	
+    this.getGroundedNode = function(k) {}	
 	
-	/** 
+    /** 
 	 * Returns the number of grounded nodes (i.e. linked to the ground).
 	 *
 	 * @return the number of grounded nodes
 	 */			
-	this.getGroundedNodesCount = function() {}	
+    this.getGroundedNodesCount = function() {}	
 
 }
