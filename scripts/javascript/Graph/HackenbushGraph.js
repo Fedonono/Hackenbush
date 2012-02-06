@@ -34,13 +34,13 @@ var HackenbushGraph = function(){
 	 */			
     this.getColorAsInteger = function(id, k) {
         if (!this.nodeExists(id))
-            throw new Exception.UnexistingNodeException(id);
+            throw new UnexistingNodeException(id);
                     
         var degree;
 
         degree = this.getDegree(id);
         if (k > degree)
-            throw new Exception.InvalidIndexException(k);
+            throw new InvalidIndexException(k);
 
         var actualDegree, previousDegree, destId, index;
         actualDegree = 0;
@@ -69,13 +69,13 @@ var HackenbushGraph = function(){
 	 */			
     this.remove = function(id, k) {
         if (!this.nodeExists(id))
-            throw new Exception.UnexistingNodeException(id);
+            throw new UnexistingNodeException(id);
 
         var degree;
 
         degree = this.getDegree(id);
         if (k > degree)
-            throw new Exception.InvalidIndexException(k);
+            throw new InvalidIndexException(k);
 
         var actualDegree, previousDegree, destId, index;
         actualDegree = 0;

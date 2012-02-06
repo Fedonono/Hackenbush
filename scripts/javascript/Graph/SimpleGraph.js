@@ -42,7 +42,7 @@ var SimpleGraph = function(directed){
 	 */	
     this.addWeightedEdge = function(sourceId, destId, weight) {
         if (this.edgeExists(sourceId, destId))
-            throw new Exception.AlreadyExistingEdgeException(sourceId, destId);
+            throw new AlreadyExistingEdgeException(sourceId, destId);
 
         var edge = new Edge(weight);
 
@@ -76,7 +76,7 @@ var SimpleGraph = function(directed){
 	 */		
     this.addWeightedNode = function(id, weight) {
         if (this.nodeExists(id))
-            throw new Exception.AlreadyExistingNodeException(id);
+            throw new AlreadyExistingNodeException(id);
 
         this.nodes['#'+id] = new Node(id, weight);
         this.nodes['#'+id].neighbors = new Array();
@@ -95,14 +95,14 @@ var SimpleGraph = function(directed){
     this.edgeExists = function(sourceId, destId) {
         
         if (isNaN(sourceId) || sourceId <= 0)
-            throw new Exception.InvalidIdException(sourceId);
+            throw new InvalidIdException(sourceId);
         if (isNaN(destId) || destId <= 0)
-            throw new Exception.InvalidIdException(destId);
+            throw new InvalidIdException(destId);
 
         if (!this.nodeExists(sourceId))
-            throw new Exception.UnexistingNodeException(sourceId);
+            throw new UnexistingNodeException(sourceId);
         if (!this.nodeExists(destId))
-            throw new Exception.UnexistingNodeException(destId);
+            throw new UnexistingNodeException(destId);
 
         if (this.nodes['#'+sourceId].neighbors['#'+destId])
             return true;
@@ -138,7 +138,7 @@ var SimpleGraph = function(directed){
 	 */
     this.getEdgeById = function(sourceId, destId) {
         if (!this.edgeExists(sourceId, destId))
-            throw new Exception.UnexistingEdgeException(sourceId, destId);
+            throw new UnexistingEdgeException(sourceId, destId);
 
         return this.nodes['#'+sourceId].neighbors['#'+destId];
     }
@@ -156,14 +156,14 @@ var SimpleGraph = function(directed){
     this.getNeighbor = function(id, k) {
         
         if(!this.nodeExists(id)) 
-            throw new Exception.UnexistingNodeException(id);
+            throw new UnexistingNodeException(id);
         
         var destId;
         var i = 1;
         var neighborSize = this.getNeighborhoodSize(id);
 
         if (k > neighborSize || k< 0)
-            throw new Exception.InvalidIndexException(k);
+            throw new InvalidIndexException(k);
 
         for (destId in this.nodes['#'+id].neighbors) {
             if (i === k)
@@ -182,7 +182,7 @@ var SimpleGraph = function(directed){
 	 */			
     this.getNeighborhoodSize = function(id) {
         if (!this.nodeExists(id))
-            throw new Exception.UnexistingNodeException(id);
+            throw new UnexistingNodeException(id);
 
         return this.nodes['#'+id].neighbors.length;
     }
@@ -196,7 +196,7 @@ var SimpleGraph = function(directed){
 	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
 	 */			
     this.getNodeValue = function(id) {
-	return this.getNodeById.weight;
+        return this.getNodeById.weight;
     }
 
 
@@ -210,7 +210,7 @@ var SimpleGraph = function(directed){
 	 */
     this.getNodeById = function(id) {
         if (!this.nodeExists(id))
-            throw new Exception.UnexistingNodeException(id);
+            throw new UnexistingNodeException(id);
 
         return this.nodes['#'+id];
     }
@@ -232,8 +232,10 @@ var SimpleGraph = function(directed){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 */	
     this.nodeExists = function(id) {
-        if (isNaN(id) || id <= 0)
-            throw new Exception.InvalidIdException(id);
+        var pattern = new RegExp("\d+$");
+        
+        if (isNaN(id) || !pattern.test(id) || id <= 0)
+            throw new InvalidIdException(id);
 
         if (this.nodes['#'+id])
             return true;
@@ -254,7 +256,7 @@ var SimpleGraph = function(directed){
 	 */	
     this.removeEdge = function(sourceId, destId) {
         if (!this.edgeExists(sourceId, destId))
-            throw new Exception.UnexistingEdgeException(sourceId, destId);
+            throw new UnexistingEdgeException(sourceId, destId);
 
         delete this.nodes['#'+sourceId].neighbors['#'+destId];
         this.decrNeighborsSize(sourceId);
@@ -273,7 +275,7 @@ var SimpleGraph = function(directed){
 	 */		
     this.removeNode = function(id) {
         if (!this.nodeExists(id))
-            throw new Exception.UnexistingNodeException(id);
+            throw new UnexistingNodeException(id);
 
         // Delete the expected node and edges in relation with it
         var sourceId, destId, sourceIdInt;
@@ -383,3 +385,14 @@ var SimpleGraph = function(directed){
         this.nodes['#'+id].neighbors.length--;
     }
 }
+
+
+var toto = new SimpleGraph();
+
+try{
+    toto.addNode(1.2);
+}catch(e){
+    e.log();
+}
+
+console.log(toto);
