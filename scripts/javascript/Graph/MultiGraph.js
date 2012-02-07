@@ -194,12 +194,12 @@ var MultiGraph = function(directed){
 	 * @param value the new value for all edges 
 	 */		
     this.setEdgesValues = function(value) {
-        var sourceId, destId, index, edgesLength;
+        var sourceId, destId, i, edgesLength;
         for (sourceId in this.nodes) {
             for (destId in this.nodes[sourceId].neighbors) { // don't call getNeighBor function, because it will be too slow.
                 edgesLength = this.nodes[sourceId].neighbors[destId].length;
-                for (index=0; index < edgesLength; index++) {
-                    this.nodes[sourceId].neighbors[destId][index].weight = value;  // don't call setEdgeValue to avoid all check and problem with "#id != id", we can split but I prefer this solution.
+                for (i=0; i < edgesLength; i++) {
+                    this.nodes[sourceId].neighbors[destId][i].weight = value;  // don't call setEdgeValue to avoid all check and problem with "#id != id", we can split but I prefer this solution.
                 }
             }
         }

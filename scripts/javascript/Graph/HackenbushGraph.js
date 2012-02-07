@@ -8,6 +8,7 @@
 var HackenbushGraph = function(){
     AbstractHackenBushGraph(this, false);
     MultiGraph.call(this, false); // false: the graph modeling an Hackenbush game is not directed 
+    this.groundedNodes = new Array();
 	
     
 	
@@ -39,7 +40,7 @@ var HackenbushGraph = function(){
             actualDegree+=this.nodes[id].neighbors[destId].length;
             if ((k <= actualDegree) && (previousDegree < k)) {
                 index = k-previousDegree;
-                for (index=1; index<=k; index++) {
+                for (index=1; index<=k; i++) {
                     return this.getEdgeValue(id, destId, index-1);
                 }
             }
@@ -74,7 +75,7 @@ var HackenbushGraph = function(){
             actualDegree+=this.nodes[id].neighbors[destId].length;
             if ((k <= actualDegree) && (previousDegree < k)) {
                 index = k-previousDegree;
-                for (index=1; index<=k; index++) {
+                for (index=1; index<=k; i++) {
                     this.removeEdge(id, destId, index-1);
                 }
             }
@@ -85,16 +86,29 @@ var HackenbushGraph = function(){
 	 * Returns the identifier of the k th grounded node.
 	 *
 	 * @param k the number of the grounded node to identify (between 1 and getGroundedNodesCount())
-	 * @return the identifier of the k th grounded node
+	 * @return the identifier of the k th grounded node 
 	 * @throws InvalidIndexException if k is outside the allowed range
 	 */		
-    this.getGroundedNode = function(k) {}	
+    this.getGroundedNode = function(k) {
+        if(k < 0 || k > this.groundedNodes.length) 
+            throw new InvalidIdException(k);
+        
+        return this.groundedNodes(k-1);
+    }	
 	
     /** 
 	 * Returns the number of grounded nodes (i.e. linked to the ground).
 	 *
 	 * @return the number of grounded nodes
 	 */			
-    this.getGroundedNodesCount = function() {}	
+    this.getGroundedNodesCount = function() {
+        return this.groundedNodes.length;
+    }	
 
+    this.addGroundedNode = function(id){
+        if(!this.nodeExists(id))
+            throw new UnexistingNodeException(id);
+        
+        this.groundedNodes.push(id);
+    }
 }

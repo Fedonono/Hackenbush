@@ -53,7 +53,7 @@ console.log(er);
 console.log("caca");
 */
 
-var toto = new SimpleGraph();
+var toto = new SimpleGraph(false);
 
 try{
     toto.addNode(1);
