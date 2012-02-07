@@ -1,4 +1,4 @@
-var toto = new MultiGraph(false);
+/*var toto = new MultiGraph(false);
 console.log(toto);
 toto.addWeightedNode(6,1);
 toto.addWeightedNode(60,42);
@@ -14,7 +14,7 @@ toto.setEdgesValues(50);
 toto.setNodesValues(51);
 console.log(toto.getOrder());
 console.log(toto);
-/*
+
 
 var tata = new List();
 tata.push(new Element(null));
@@ -52,3 +52,13 @@ er = new Error("lolgetg eff yet");
 console.log(er);
 console.log("caca");
 */
+
+var toto = new SimpleGraph();
+
+try{
+    toto.addNode(1);
+}catch(e){
+    e.log();
+}
+
+console.log(toto);
