@@ -60,7 +60,7 @@ var MultiGraph = function(directed){
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist		 
 	 */		
     this.edgeExists = function(sourceId, destId, k) {
-        if (isNaN(k) || k < 0)
+        if ( isNaN(k) || Math.floor(k) !== k || k >= this.nodes['#'+sourceId].neighbors['#'+destId].length || k< 0)
             throw new InvalidIndexException(k);
         if (!this.nodeExists(sourceId))
             throw new UnexistingNodeException(sourceId);

@@ -23,14 +23,14 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the node exists but k is outside the allowed range
 	 */			
     this.getColorAsInteger = function(id, k) {
+        
+        var degree = this.getDegree(id);
+        
+        if(isNaN(k) || Math.floor(k) !== k || k < 0 || k > degree)
+            throw new InvalidIndexException(k);
+        
         if (!this.nodeExists(id))
             throw new UnexistingNodeException(id);
-                    
-        var degree;
-
-        degree = this.getDegree(id);
-        if (k > degree)
-            throw new InvalidIndexException(k);
 
         var actualDegree, previousDegree, destId, index;
         actualDegree = 0;
@@ -58,14 +58,14 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the node exists but k is outside the allowed range	 
 	 */			
     this.remove = function(id, k) {
+        
+        var degree = this.getDegree(id);
+        
+        if(isNaN(k) || Math.floor(k) !== k || k < 0 || k > degree)
+            throw new InvalidIndexException(k);
+        
         if (!this.nodeExists(id))
             throw new UnexistingNodeException(id);
-
-        var degree;
-
-        degree = this.getDegree(id);
-        if (k > degree)
-            throw new InvalidIndexException(k);
 
         var actualDegree, previousDegree, destId, index;
         actualDegree = 0;
@@ -90,7 +90,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if k is outside the allowed range
 	 */		
     this.getGroundedNode = function(k) {
-        if(k < 0 || k > this.groundedNodes.length) 
+        if(isNaN(k) || Math.floor(k) !== k || k < 0 || k >= this.groundedNodes.length) 
             throw new InvalidIdException(k);
         
         return this.groundedNodes(k-1);
@@ -105,10 +105,55 @@ var HackenbushGraph = function(){
         return this.groundedNodes.length;
     }	
 
-    this.addGroundedNode = function(id){
+
+    /** 
+	 * push the id of a grounded node in this.groundedNodes .
+	 *
+         *@param id the id of the node
+	 *@throws InvalidIdExctpion if the id is <= 0 or not an integer.
+         *@throws UnexistingNodeException  if the id does not exists in the graph.
+         *@throws AlreadyGroundedNodeException if the node is already grounded
+	 */    
+    this.groundNode = function(id){
         if(!this.nodeExists(id))
             throw new UnexistingNodeException(id);
         
+        for(var i = 0; i < this.groundedNodes.length; i++){
+            if(this.groundedNodes[i] === id) 
+                throw new AlreadyGroundedNode(id);
+        }
+        
         this.groundedNodes.push(id);
     }
+    
+    
+    /** 
+	 * push the id of a grounded node in this.groundedNodes .
+	 *InvalidId
+         *@param id the id of the node
+	 *@throws InvalidIdExctpion if the id is <= 0 or not an integer.
+         *@throws UnexistingNodeException  if the id does not exists in the graph.
+         *@throws NotConnectedToGroundException if the node is not grounded.
+	 */
+    this.unGroundNode = function(id){
+        if(!this.nodeExists(id))
+            throw new UnexistingNodeException(id);
+            
+        var i = 0;
+        while( i < this.groundedNodes.length || this.groundedNodes[i] !== id)
+            i++;
+        if(i >= this.groundedNodes.length)
+            throw new NotConnectedToGroundException(id);
+        
+        this.groundedNodes.splice(i);                   
+    }
+   
+   
+   this.spliceGroundedNodes = function(k){
+       
+       if(isNaN(k) || Math.floor(k) !== k || k < 0 || k >= this.groundedNodes.length)
+           throw InvalidIndexException(k);
+       
+       this.groundedNodes.splice(k);
+   }
 }
