@@ -231,10 +231,8 @@ var SimpleGraph = function(directed){
 	 * @return a boolean modeling the existence of the specified node
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 */	
-    this.nodeExists = function(id) {
-        var pattern = new RegExp("\d+$");
-        
-        if (isNaN(id) || !pattern.test(id) || id <= 0)
+    this.nodeExists = function(id) {        
+        if (isNaN(id) || Math.floor(id) !== id || id <= 0)
             throw new InvalidIdException(id);
 
         if (this.nodes['#'+id])
@@ -385,3 +383,14 @@ var SimpleGraph = function(directed){
         this.nodes['#'+id].neighbors.length--;
     }
 }
+
+
+var toto = new SimpleGraph();
+
+try{
+    toto.addNode(1);
+}catch(e){
+    e.log();
+}
+
+console.log(toto);
