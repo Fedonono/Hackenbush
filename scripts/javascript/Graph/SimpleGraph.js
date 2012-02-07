@@ -385,14 +385,3 @@ var SimpleGraph = function(directed){
         this.nodes['#'+id].neighbors.length--;
     }
 }
-
-
-var toto = new SimpleGraph();
-
-try{
-    toto.addNode(1.2);
-}catch(e){
-    e.log();
-}
-
-console.log(toto);

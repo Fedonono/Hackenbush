@@ -39,7 +39,7 @@ var HackenbushGraph = function(){
             actualDegree+=this.nodes[id].neighbors[destId].length;
             if ((k <= actualDegree) && (previousDegree < k)) {
                 index = k-previousDegree;
-                for (index=1; index<=k; i++) {
+                for (index=1; index<=k; index++) {
                     return this.getEdgeValue(id, destId, index-1);
                 }
             }
@@ -74,7 +74,7 @@ var HackenbushGraph = function(){
             actualDegree+=this.nodes[id].neighbors[destId].length;
             if ((k <= actualDegree) && (previousDegree < k)) {
                 index = k-previousDegree;
-                for (index=1; index<=k; i++) {
+                for (index=1; index<=k; index++) {
                     this.removeEdge(id, destId, index-1);
                 }
             }
