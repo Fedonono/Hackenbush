@@ -155,15 +155,16 @@ var SimpleGraph = function(directed){
 	 */		
     this.getNeighbor = function(id, k) {
         
-        if ( isNaN(k) || Math.floor(k) !== k || k > neighborSize || k< 0)
-            throw new InvalidIndexException(k);
-        
         if(!this.nodeExists(id)) 
             throw new UnexistingNodeException(id);
         
+        var neighborSize = this.getNeighborhoodSize(id);
+        
+        if ( isNaN(k) || Math.floor(k) !== k || k > neighborSize || k< 0)
+            throw new InvalidIndexException(k);
+        
         var destId;
         var i = 1;
-        var neighborSize = this.getNeighborhoodSize(id);
 
 
         for (destId in this.nodes['#'+id].neighbors) {
