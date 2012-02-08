@@ -37,13 +37,12 @@ var MultiGraph = function(directed){
         }
 
         var edge = new Edge(weight, '#000000');
-        var lengthEdges = this.nodes['#'+sourceId].neighbors['#'+destId].length;
 
-        this.nodes['#'+sourceId].neighbors['#'+destId].splice(lengthEdges, 1, edge);
+        this.nodes['#'+sourceId].neighbors['#'+destId].push(lengthEdges);
         this.incrDegree(sourceId);
 
         if (!this.directed && sourceId !== destId) {
-            this.nodes['#'+destId].neighbors['#'+sourceId].splice(lengthEdges, 1, edge);
+            this.nodes['#'+destId].neighbors['#'+sourceId].push(lengthEdges);
             this.incrDegree(destId);
         }
     }

@@ -87,7 +87,7 @@ var HackenbushGraph = function(){
         if(isNaN(k) || Math.floor(k) !== k || k <= 0 || k >= this.groundedNodes.length) 
             throw new InvalidIdException(k);
         
-        return this.groundedNodes(k-1);
+        return this.groundedNodes[k-1];
     }	
 	
     /** 
@@ -111,12 +111,9 @@ var HackenbushGraph = function(){
     this.groundNode = function(id){
         if(!this.nodeExists(id))
             throw new UnexistingNodeException(id);
-        
-        // dichotomic research is maladjusted here because we don't want to sort this.groundedNodes
-        for(var i = 0; i < this.groundedNodes.length; i++){ 
-            if(this.groundedNodes[i] === id) 
-                throw new AlreadyGroundedNode(id);
-        }
+
+		if (this.groundedNodes.indexOf(id) === -1)
+			throw new AlreadyGroundedNode(id);
         
         this.groundedNodes.push(id);
     }
@@ -133,23 +130,19 @@ var HackenbushGraph = function(){
     this.unGroundNode = function(id){
         if(!this.nodeExists(id))
             throw new UnexistingNodeException(id);
-            
-        var i = 0;
-        while( i < this.groundedNodes.length || this.groundedNodes[i] !== id)
-            i++;
-        if(i >= this.groundedNodes.length)
-            throw new NotConnectedToGroundException(id);
-        
-        this.groundedNodes.splice(i);                   
+
+		var indexFind = this.groundedNodes.indexOf(id);
+		if (indexFind === -1)
+			throw new NotConnectedToGroundException(id);
+
+		this.groundedNodes.splice(indexFind);
     }
    
    
-   this.spliceGroundedNodes = function(k){
-       
+   this.spliceGroundedNodes = function(k){       
        if(isNaN(k) || Math.floor(k) !== k || k < 0 || k >= this.groundedNodes.length)
            throw InvalidIndexException(k);
        
        this.groundedNodes.splice(k);
-   }
-   
+   }   
 }
