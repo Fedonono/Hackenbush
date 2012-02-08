@@ -166,7 +166,6 @@ var SimpleGraph = function(directed){
 	 * @throws InvalidIndexException if k is outside the allowed range	 
 	 */		
     this.getNeighbor = function(id, k) {
-        
         if(!this.nodeExists(id)) 
             throw new UnexistingNodeException(id);
         
@@ -195,10 +194,7 @@ var SimpleGraph = function(directed){
 	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
 	 */			
     this.getNeighborhoodSize = function(id) {
-        if (!this.nodeExists(id))
-            throw new UnexistingNodeException(id);
-
-        return this.nodes['#'+id].neighbors.length;
+        return this.getNodeById(id).neighbors.length;
     }
 
     /** 
@@ -360,7 +356,10 @@ var SimpleGraph = function(directed){
 
     this.splitId = function(idString) {
         var id = idString.split('#');
-        return id[1];
+		if ((id.length === 2) && (!isNaN(id[1]) && Math.floor(id[1]) === id[1]))
+			return id[1];
+		else
+			throw new InvalidIdSplitException(id);
     }
 
 
