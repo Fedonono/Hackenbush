@@ -26,7 +26,7 @@ var HackenbushGraph = function(){
         
         var degree = this.getDegree(id);
         
-        if(isNaN(k) || Math.floor(k) !== k || k < 0 || k > degree)
+        if(isNaN(k) || Math.floor(k) !== k || k <= 0 || k > degree)
             throw new InvalidIndexException(k);
 
         var actualDegree, previousDegree, destId, index;
@@ -58,7 +58,7 @@ var HackenbushGraph = function(){
         
         var degree = this.getDegree(id);
         
-        if(isNaN(k) || Math.floor(k) !== k || k < 0 || k > degree)
+        if(isNaN(k) || Math.floor(k) !== k || k <= 0 || k > degree)
             throw new InvalidIndexException(k);
 
         var actualDegree, previousDegree, destId, index;
@@ -84,7 +84,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if k is outside the allowed range
 	 */		
     this.getGroundedNode = function(k) {
-        if(isNaN(k) || Math.floor(k) !== k || k < 0 || k >= this.groundedNodes.length) 
+        if(isNaN(k) || Math.floor(k) !== k || k <= 0 || k >= this.groundedNodes.length) 
             throw new InvalidIdException(k);
         
         return this.groundedNodes(k-1);
@@ -112,7 +112,8 @@ var HackenbushGraph = function(){
         if(!this.nodeExists(id))
             throw new UnexistingNodeException(id);
         
-        for(var i = 0; i < this.groundedNodes.length; i++){
+        // dichotomic research is maladjusted here because we don't want to sort this.groundedNodes
+        for(var i = 0; i < this.groundedNodes.length; i++){ 
             if(this.groundedNodes[i] === id) 
                 throw new AlreadyGroundedNode(id);
         }
