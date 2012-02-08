@@ -5,7 +5,6 @@
  * @return a reference on an empty graph
  */
 
-
 var MultiGraph = function(directed){
     /* **************
      * inheritance: *
@@ -14,7 +13,7 @@ var MultiGraph = function(directed){
     this.directed = directed;
     this.nodes = new Array();
     
-    /* **************************
+/* **************************
  * overloading functions:   *
  * **************************/
 
@@ -59,7 +58,7 @@ var MultiGraph = function(directed){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist		 
 	 */		
-    this.edgeExists = function(sourceId, destId, k) {
+    this.edgeExists = function(sourceId, destId, k){
         
         if (!this.nodeExists(sourceId))
             throw new UnexistingNodeException(sourceId);

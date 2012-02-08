@@ -4,8 +4,6 @@
  * @param directed tells if the graph is directed or not
  * @return a reference on an empty graph
  */
-
-
 var SimpleGraph = function(directed){
     /* **************
      * inheritance: *
@@ -14,6 +12,20 @@ var SimpleGraph = function(directed){
     this.directed = directed;
     this.nodes = new Array();
     
+    /** 
+	 * Returns the node identified by id
+	 *
+	 * @param id the identifier of the node (strictly positive integer)
+	 * @return the specified node
+	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
+	 */
+    this.getNodeById = function(id) {
+        if (!this.nodeExists(id))
+            throw new UnexistingNodeException(id);
+
+        return this.nodes['#'+id];
+    }
     /* **************************
  * overloading functions:   *
  * **************************/
@@ -198,23 +210,7 @@ var SimpleGraph = function(directed){
 	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
 	 */			
     this.getNodeValue = function(id) {
-        return this.getNodeById.weight;
-    }
-
-
-    /** 
-	 * Returns the node identified by id
-	 *
-	 * @param id the identifier of the node (strictly positive integer)
-	 * @return the specified node
-	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
-	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
-	 */
-    this.getNodeById = function(id) {
-        if (!this.nodeExists(id))
-            throw new UnexistingNodeException(id);
-
-        return this.nodes['#'+id];
+        return this.getNodeById(id).weight;
     }
 
     /** 
