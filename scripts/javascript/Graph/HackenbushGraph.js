@@ -28,9 +28,6 @@ var HackenbushGraph = function(){
         
         if(isNaN(k) || Math.floor(k) !== k || k < 0 || k > degree)
             throw new InvalidIndexException(k);
-        
-        if (!this.nodeExists(id))
-            throw new UnexistingNodeException(id);
 
         var actualDegree, previousDegree, destId, index;
         actualDegree = 0;
@@ -63,9 +60,6 @@ var HackenbushGraph = function(){
         
         if(isNaN(k) || Math.floor(k) !== k || k < 0 || k > degree)
             throw new InvalidIndexException(k);
-        
-        if (!this.nodeExists(id))
-            throw new UnexistingNodeException(id);
 
         var actualDegree, previousDegree, destId, index;
         actualDegree = 0;
@@ -156,4 +150,5 @@ var HackenbushGraph = function(){
        
        this.groundedNodes.splice(k);
    }
+   
 }
