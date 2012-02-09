@@ -40,7 +40,7 @@ var SimpleGraph = function(directed){
 	 * @throws AlreadyExistingEdgeException if the specified edge already exists
 	 */
     this.addEdge = function(sourceId, destId) {
-        this.addWeightedEdge(sourceId, destId, 1);
+        this.addWeightedEdge(sourceId, destId, undefined);
     }
     /** 
 	 * Adds an edge between nodes identified by sourceId and destId, with the specified weight 
@@ -75,7 +75,7 @@ var SimpleGraph = function(directed){
 	 * @throws AlreadyExistingNodeException if a node with the speficied id already exists
 	 */		
     this.addNode = function(id) {
-        this.addWeightedNode(id, 1);
+        this.addWeightedNode(id, undefined);
     }
 
     /** 
@@ -356,10 +356,7 @@ var SimpleGraph = function(directed){
 
     this.splitId = function(idString) {
         var id = idString.split('#');
-		if ((id.length === 2) && (!isNaN(id[1]) && Math.floor(id[1]) === id[1]))
-			return id[1];
-		else
-			throw new InvalidIdSplitException(id);
+        return id[1];
     }
 
 
