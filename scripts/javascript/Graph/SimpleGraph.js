@@ -378,7 +378,7 @@ var SimpleGraph = function(directed){
     }
 
 	this.isInt = function(value){
-		if((parseFloat(value) === parseInt(value)) && !isNaN(value))
+		if(value === parseInt(value) && !isNaN(value))
 			return true;
 		else
 			return false;
