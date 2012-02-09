@@ -123,7 +123,7 @@ var MultiGraph = function(directed){
         }
 
         delete this.nodes[idString];
-        this.decrNodesSize(destId);
+        this.decrNodesSize();
 		
         if (this.directed) { // no else to save 1 repetition of a line in the code
             for (sourceId in this.nodes) {

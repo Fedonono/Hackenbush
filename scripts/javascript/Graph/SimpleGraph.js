@@ -92,7 +92,7 @@ var SimpleGraph = function(directed){
 
         this.nodes['#'+id] = new Node(id, weight);
         this.nodes['#'+id].neighbors = new Array();
-        this.incrNodesSize(id);
+        this.incrNodesSize();
     }
 
     /** 
@@ -281,9 +281,6 @@ var SimpleGraph = function(directed){
                 this.decrNeighborsSize(this.splitId(sourceId));
             }
         }
-
-        delete this.nodes[idString];
-        this.decrNodesSize(destId);
 		
         if (this.directed) {
             for (sourceId in this.nodes) {
@@ -294,6 +291,9 @@ var SimpleGraph = function(directed){
                 }
             }
         }
+
+        delete this.nodes[idString];
+        this.decrNodesSize();
     }
 	
     /** 
