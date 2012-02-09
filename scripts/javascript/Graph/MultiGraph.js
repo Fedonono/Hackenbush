@@ -66,7 +66,7 @@ var MultiGraph = function(directed){
 
         if(this.nodes['#'+sourceId].neighbors['#'+destId]){ 
             
-            if (!isInt(IndexEdge) || indexEdge >= this.nodes['#'+sourceId].neighbors['#'+destId].length || indexEdge < 0)
+            if (!this.isInt(IndexEdge) || indexEdge >= this.nodes['#'+sourceId].neighbors['#'+destId].length || indexEdge < 0)
             	throw new InvalidIndexException(indexEdge);
         
             if (this.nodes['#'+sourceId].neighbors['#'+destId][indexEdge])
