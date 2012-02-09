@@ -38,11 +38,11 @@ var MultiGraph = function(directed){
 
         var edge = new Edge(weight, '#000000');
 
-        this.nodes['#'+sourceId].neighbors['#'+destId].push(lengthEdges);
+        this.nodes['#'+sourceId].neighbors['#'+destId].push(edge);
         this.incrDegree(sourceId);
 
         if (!this.directed && sourceId !== destId) {
-            this.nodes['#'+destId].neighbors['#'+sourceId].push(lengthEdges);
+            this.nodes['#'+destId].neighbors['#'+sourceId].push(edge);
             this.incrDegree(destId);
         }
     }
@@ -66,8 +66,8 @@ var MultiGraph = function(directed){
 
         if(this.nodes['#'+sourceId].neighbors['#'+destId]){ 
             
-            if ( isNaN(indexEdge) || Math.floor(indexEdge) !== indexEdge || indexEdge >= this.nodes['#'+sourceId].neighbors['#'+destId].length || indexEdge< 0)
-            throw new InvalidIndexException(indexEdge);
+            if ( isNaN(indexEdge) || Math.floor(indexEdge) !== indexEdge || indexEdge >= this.nodes['#'+sourceId].neighbors['#'+destId].length || indexEdge < 0)
+            	throw new InvalidIndexException(indexEdge);
         
             if (this.nodes['#'+sourceId].neighbors['#'+destId][indexEdge])
                 return true;

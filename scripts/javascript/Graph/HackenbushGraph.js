@@ -6,7 +6,7 @@
  */
  
 var HackenbushGraph = function(){
-    AbstractHackenBushGraph(this, false);
+    AbstractHackenbushGraph.call(this, false);
     MultiGraph.call(this, false); // false: the graph modeling an Hackenbush game is not directed 
     this.groundedNodes = new Array();
 	
@@ -85,7 +85,7 @@ var HackenbushGraph = function(){
 	 */		
     this.getGroundedNode = function(k) {
         if(isNaN(k) || Math.floor(k) !== k || k <= 0 || k >= this.groundedNodes.length) 
-            throw new InvalidIdException(k);
+            throw new InvalidIndexException(k);
         
         return this.groundedNodes[k-1];
     }	
