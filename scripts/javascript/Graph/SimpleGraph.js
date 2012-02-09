@@ -171,7 +171,7 @@ var SimpleGraph = function(directed){
         
         var neighborSize = this.getNeighborhoodSize(id);
         
-        if ( isNaN(k) || Math.floor(k) !== k || k > neighborSize || k< 0)
+        if ( isNaN(k) || Math.floor(k) !== k || k > neighborSize || k <= 0)
             throw new InvalidIndexException(k);
         
         var destId;
@@ -288,7 +288,7 @@ var SimpleGraph = function(directed){
         if (this.directed) {
             for (sourceId in this.nodes) {
                 sourceIdInt = this.splitId(sourceId);
-                if (edgeExist(sourceIdInt, id)) {
+                if (this.edgeExists(sourceIdInt, id)) {
                     delete this.nodes[sourceId].neighbors[idString];
                     this.decrNeighborsSize(sourceIdInt);
                 }
@@ -356,7 +356,7 @@ var SimpleGraph = function(directed){
 
     this.splitId = function(idString) {
         var id = idString.split('#');
-        return id[1];
+        return parseInt(id[1]);
     }
 
 

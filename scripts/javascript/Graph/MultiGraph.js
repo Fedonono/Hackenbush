@@ -52,12 +52,12 @@ var MultiGraph = function(directed){
 	 *
 	 * @param sourceId the identifier of the source node (strictly positive integer)
 	 * @param destId the identifier of the destination node (strictly positive integer)
-         * @param k the index of the edge
+         * @param indexEdge the index of the edge
 	 * @return a boolean modeling the existence of the specified edge
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist		 
 	 */		
-    this.edgeExists = function(sourceId, destId, k){
+    this.edgeExists = function(sourceId, destId, indexEdge){
         
         if (!this.nodeExists(sourceId))
             throw new UnexistingNodeException(sourceId);
@@ -66,10 +66,10 @@ var MultiGraph = function(directed){
 
         if(this.nodes['#'+sourceId].neighbors['#'+destId]){ 
             
-            if ( isNaN(k) || Math.floor(k) !== k || k >= this.nodes['#'+sourceId].neighbors['#'+destId].length || k< 0)
-            throw new InvalidIndexException(k);
+            if ( isNaN(indexEdge) || Math.floor(indexEdge) !== indexEdge || indexEdge >= this.nodes['#'+sourceId].neighbors['#'+destId].length || indexEdge< 0)
+            throw new InvalidIndexException(indexEdge);
         
-            if (this.nodes['#'+sourceId].neighbors['#'+destId][k])
+            if (this.nodes['#'+sourceId].neighbors['#'+destId][indexEdge])
                 return true;
         }
         return false;
@@ -81,21 +81,21 @@ var MultiGraph = function(directed){
 	 *
 	 * @param sourceId the identifier of the source node (strictly positive integer)
 	 * @param destId the identifier of the destination node (strictly positive integer)
-         * @param k the index of the edge.
+         * @param indexEdge the index of the edge.
 	 * @return the value of the specified edge
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
 	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist	 
 	 */			
-    this.getEdgeValue = function(sourceId, destId, k) {
-        return this.getEdgeById(sourceId, destId, k).weight;
+    this.getEdgeValue = function(sourceId, destId, indexEdge) {
+        return this.getEdgeById(sourceId, destId, indexEdge).weight;
     }
 
-    this.getEdgeById = function(sourceId, destId, k) {
-        if (!this.edgeExists(sourceId, destId, k))
+    this.getEdgeById = function(sourceId, destId, indexEdge) {
+        if (!this.edgeExists(sourceId, destId, indexEdge))
             throw new UnexistingEdgeException(sourceId, destId);
 
-        return this.nodes['#'+sourceId].neighbors['#'+destId][k];
+        return this.nodes['#'+sourceId].neighbors['#'+destId][indexEdge];
     }
 
     /** 
@@ -128,7 +128,7 @@ var MultiGraph = function(directed){
         if (this.directed) { // no else to save 1 repetition of a line in the code
             for (sourceId in this.nodes) {
                 sourceIdInt = this.splitId(sourceId); // unfortunally, we have to split
-                if (edgeExists(sourceIdInt, id, 0)) {
+                if (this.edgeExists(sourceIdInt, id, 0)) {
                     delete this.nodes[sourceId].neighbors[idString];
                     this.decrNeighborsSize(sourceIdInt);
                     this.decrDegree(sourceIdInt);
@@ -142,17 +142,17 @@ var MultiGraph = function(directed){
 	 *
 	 * @param sourceId the identifier of the source node (strictly positive integer)
 	 * @param destId the identifier of the destination node (strictly positive integer)
-         * @param k the index of the edge
+         * @param indexEdge the index of the edge
 	 * @throws InvalidIdException if one of the specified ids is not valid (wrong type, <= 0, ...)		 
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
 	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist	 
 
 	 */	
-    this.removeEdge = function(sourceId, destId, k) {
-        if (!this.edgeExists(sourceId, destId, k))
+    this.removeEdge = function(sourceId, destId, indexEdge) {
+        if (!this.edgeExists(sourceId, destId, indexEdge))
             throw new UnexistingEdgeException(sourceId, destId);
 
-        this.nodes['#'+sourceId].neighbors['#'+destId].splice(k, 1);
+        this.nodes['#'+sourceId].neighbors['#'+destId].splice(indexEdge, 1);
         this.decrDegree(sourceId);
 
         var edgeSize = this.nodes['#'+sourceId].neighbors['#'+destId].length;
@@ -162,7 +162,7 @@ var MultiGraph = function(directed){
         }
 
         if (!directed && sourceId !== destId) {
-            this.nodes['#'+destId].neighbors['#'+sourceId].splice(k, 1);
+            this.nodes['#'+destId].neighbors['#'+sourceId].splice(indexEdge, 1);
             this.decrDegree(destId);
             if (edgeSize === 0) {
                 delete this.nodes['#'+destId].neighbors['#'+sourceId];
@@ -176,15 +176,15 @@ var MultiGraph = function(directed){
 	 *
 	 * @param sourceId the identifier of the source node (strictly positive integer)
 	 * @param destId the identifier of the destination node (strictly positive integer)
-         * @param k the index of the excpected edge
+         * @param indexEdge the index of the excpected edge
 	 * @param value the new value for the specified edge 
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)		 
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
 	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist	 
 
 	 */	
-    this.setEdgeValue = function(sourceId, destId, k, value) {
-        this.getEdgeById(sourceId, destId, k).weight = value;
+    this.setEdgeValue = function(sourceId, destId, indexEdge, value) {
+        this.getEdgeById(sourceId, destId, indexEdge).weight = value;
     }
 
 
