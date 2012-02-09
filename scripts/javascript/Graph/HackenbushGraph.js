@@ -23,6 +23,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the node exists but k is outside the allowed range
 	 */			
     this.getColorAsInteger = function(id, k) {
+		var node = this.getNodeById(id);
         
         var degree = this.getDegree(id);
         
@@ -32,13 +33,13 @@ var HackenbushGraph = function(){
         var actualDegree, previousDegree, destId, index;
         actualDegree = 0;
 
-        for (destId in this.nodes[id].neighbors) {
+        for (destId in node.neighbors) {
             previousDegree = actualDegree;
-            actualDegree+=this.nodes[id].neighbors[destId].length;
+            actualDegree+=node.neighbors[destId].length;
             if ((k <= actualDegree) && (previousDegree < k)) {
                 index = k-previousDegree;
                 for (index=1; index<=k; i++) {
-                    return this.getEdgeValue(id, this.split(destId), index-1);
+                    return this.getEdgeValue(id, this.splitId(destId), index-1);
                 }
             }
         }
@@ -55,6 +56,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the node exists but k is outside the allowed range	 
 	 */			
     this.remove = function(id, k) {
+		var node = this.getNodeById(id);
         
         var degree = this.getDegree(id);
         
@@ -64,13 +66,13 @@ var HackenbushGraph = function(){
         var actualDegree, previousDegree, destId, index;
         actualDegree = 0;
 
-        for (destId in this.nodes[id].neighbors) {
+        for (destId in node.neighbors) {
             previousDegree = actualDegree;
-            actualDegree+=this.nodes[id].neighbors[destId].length;
+            actualDegree+=node.neighbors[destId].length;
             if ((k <= actualDegree) && (previousDegree < k)) {
                 index = k-previousDegree;
                 for (index=1; index<=k; i++) {
-                    this.removeEdge(id, this.split(destId), index-1);
+                    this.removeEdge(id, this.splitId(destId), index-1);
                 }
             }
         }
