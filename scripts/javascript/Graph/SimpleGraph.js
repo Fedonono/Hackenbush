@@ -171,7 +171,7 @@ var SimpleGraph = function(directed){
         
         var neighborSize = this.getNeighborhoodSize(id);
         
-        if ( isNaN(k) || Math.floor(k) !== k || k > neighborSize || k <= 0)
+        if (!isInt(k) || k > neighborSize || k <= 0)
             throw new InvalidIndexException(k);
         
         var destId;
@@ -226,7 +226,7 @@ var SimpleGraph = function(directed){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 */	
     this.nodeExists = function(id) {        
-        if (isNaN(id) || Math.floor(id) !== id || id <= 0)
+        if (!isInt(id) || id <= 0)
             throw new InvalidIdException(id);
 
         if (this.nodes['#'+id])
@@ -376,4 +376,11 @@ var SimpleGraph = function(directed){
     this.decrNeighborsSize = function(id) {
         this.nodes['#'+id].neighbors.length--;
     }
+
+	this.isInt = function(value){
+		if((parseFloat(value) === parseInt(value)) && !isNaN(value))
+			return true;
+		else
+			return false;
+	}
 }

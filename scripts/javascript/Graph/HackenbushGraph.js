@@ -26,7 +26,7 @@ var HackenbushGraph = function(){
         
         var degree = this.getDegree(id);
         
-        if(isNaN(k) || Math.floor(k) !== k || k <= 0 || k > degree)
+        if(!isInt(k) || k <= 0 || k > degree)
             throw new InvalidIndexException(k);
 
         var actualDegree, previousDegree, destId, index;
@@ -58,7 +58,7 @@ var HackenbushGraph = function(){
         
         var degree = this.getDegree(id);
         
-        if(isNaN(k) || Math.floor(k) !== k || k <= 0 || k > degree)
+        if(!isInt(k) || k <= 0 || k > degree)
             throw new InvalidIndexException(k);
 
         var actualDegree, previousDegree, destId, index;
@@ -84,7 +84,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if k is outside the allowed range
 	 */		
     this.getGroundedNode = function(k) {
-        if(isNaN(k) || Math.floor(k) !== k || k <= 0 || k >= this.groundedNodes.length) 
+        if(!isInt(k) || k <= 0 || k >= this.groundedNodes.length) 
             throw new InvalidIndexException(k);
         
         return this.groundedNodes[k-1];
@@ -140,7 +140,7 @@ var HackenbushGraph = function(){
    
    
    this.spliceGroundedNodes = function(k){       
-       if(isNaN(k) || Math.floor(k) !== k || k < 0 || k >= this.groundedNodes.length)
+       if(!isInt(k) || k < 0 || k >= this.groundedNodes.length)
            throw InvalidIndexException(k);
        
        this.groundedNodes.splice(k);

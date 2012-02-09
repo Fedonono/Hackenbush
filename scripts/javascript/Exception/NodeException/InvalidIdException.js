@@ -3,9 +3,5 @@ var InvalidIdException = function(id){
     this.label += "->InvalidIdException";
     if(isNaN(id)) this.message = this.label +": the id("+id+") is not a number";
     else if (id <= 0) this.message = this.label +": the id("+id+") <= 0";
-    else if(Math.floor(id) !== id) this.message = this.label +": the id("+id+") is not an integer";
+    else if(parseFloat(id) !== parseInt(id)) this.message = this.label +": the id("+id+") is not an integer";
 }
-
-        
-
-
