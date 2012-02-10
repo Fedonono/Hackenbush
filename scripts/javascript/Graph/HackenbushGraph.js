@@ -38,13 +38,14 @@ var HackenbushGraph = function(){
             actualDegree+=node.neighbors[destId].length;
             if ((k <= actualDegree) && (previousDegree < k)) {
                 index = k-previousDegree;
-                for (index=1; index<=k; i++) {
-                    return this.getEdgeValue(id, this.splitId(destId), index-1);
-                }
+				var colorHex = this.getEdgeValue(id, this.splitId(destId), index-1);
+				if (colorHex !== undefined)
+					return parseInt("0x" + colorHex);
+				else
+					return colorHex;
             }
         }
     }	
-	
 
     /** 
 	 * Removes the k th edge linked to the node identified by id.
@@ -71,9 +72,7 @@ var HackenbushGraph = function(){
             actualDegree+=node.neighbors[destId].length;
             if ((k <= actualDegree) && (previousDegree < k)) {
                 index = k-previousDegree;
-                for (index=1; index<=k; i++) {
-                    this.removeEdge(id, this.splitId(destId), index-1);
-                }
+                this.removeEdge(id, this.splitId(destId), index-1);
             }
         }
     }	
@@ -146,5 +145,5 @@ var HackenbushGraph = function(){
            throw InvalidIndexException(k);
        
        this.groundedNodes.splice(k);
-   }   
+   }
 }

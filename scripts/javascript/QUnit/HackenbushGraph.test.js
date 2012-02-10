@@ -44,24 +44,40 @@ test('Empty HackenbushGraph (exception test)',function(){
 });
 
 test('Graph with 10 nodes',function(){
-		var hG = new HackenbushGraph();
-		for (var i=0; i<10; i++)
-		{
-			hG.addNode(i);
-			ok(hG.nodeExists(i),'Existence of node '+i);
-			strictEqual(hG.getOrder(),i,'Order graph = '+i);
-		}
-		ok(hG.nodeExists(2),'test the existence of the node');
-		strictEqual(hG.getOrder(),1,'test the effect on the order');
-		equal(hG.getNodeValue(2),undefined,'get the value of a node');
-		hG.setNodeValue(2,1);
-		strictEqual(hG.getNodeValue(2),1,'get the new value');
-		strictEqual(hG.getDegree(2),0,'getDegree of node 2');
-		raises(function(){hG.getColorAsInteger(2,1);},InvalidIndexException,'Invalid Index Exception (get degree = 0)');
-		hG.addEdge(2,2);
-		strictEqual(hG.getDegree(2),1,'getDegree of node 2');
-		raises(function(){hG.getColorAsInteger(1,1);},UnexistingNodeException,'UnexistingNodeException (node 1 does not exist)');
-		strictEqual(hG.getColorAsInteger(2,1),undefined,'getColorAsInteger Node 2, k=1');
-		hG.setEdgeValue(2,2,0,4);
-		strictEqual(hG.getColorAsInteger(2,1),4,'getColorAsInteger Node 2, k=1');
+	// Simple Graph
+	var hG = new HackenbushGraph();
+	for (var i=1; i<11; i++)
+	{
+		var id = 2*i;
+		hG.addNode(id);
+		ok(hG.nodeExists(id),'Existence of node '+id);
+		strictEqual(hG.getOrder(),i,'Order graph = '+id);
+		equal(hG.getNodeValue(id),undefined,'get the value of node with id='+id);
+	}
+	hG.setNodeValue(2,1);
+	strictEqual(hG.getNodeValue(2),1,'Node 2 have value 2');
+	strictEqual(hG.getDegree(2),0,'getDegree of node 2');
+	raises(function(){hG.getColorAsInteger(2,1);},InvalidIndexException,'Invalid Index Exception (get degree = 0)');
+	hG.addEdge(2,2);
+	strictEqual(hG.getDegree(2),1,'getDegree of node 2');
+	raises(function(){hG.getColorAsInteger(1,1);},UnexistingNodeException,'UnexistingNodeException (node 1 does not exist)');
+	strictEqual(hG.getColorAsInteger(2,1),undefined,'getColorAsInteger Node 2, k=1');
+	hG.setEdgeValue(2,2,0,'003f9d');
+	strictEqual(hG.getColorAsInteger(2,1),16285,'getColorAsInteger Node 2, k=1');
+
+	// Multigraph
+	for (var i=1; i<11; i++)
+	{
+		var id = 2;
+		hG.addEdge(id, 4);
+	}
+	hG.addEdge(id, 2);
+	strictEqual(hG.getDegree(2),12,'getDegree of node 2');
+	strictEqual(hG.getColorAsInteger(2,12),undefined,'getColorAsInteger Node 2, k=12');
+	hG.remove(id,1);
+	raises(function(){hG.remove(id,0);},InvalidIndexException,'Invalid Index Exception k=0');
+	hG.remove(id,1);
+	hG.remove(id,1);
+	strictEqual(hG.getDegree(2),9,'getDegree of node 2');
+	raises(function(){hG.getColorAsInteger(2,10);},InvalidIndexException,'node 2 getColorAsInteger with k = 10 > degree (we made 3 remove before)');
 });
