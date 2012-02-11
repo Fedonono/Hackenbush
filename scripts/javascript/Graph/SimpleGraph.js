@@ -105,14 +105,10 @@ var SimpleGraph = function(directed){
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist		 
 	 */		
     this.edgeExists = function(sourceId, destId) {
-        
-        if (isNaN(sourceId) || sourceId <= 0)
-            throw new InvalidIdException(sourceId);
-        if (isNaN(destId) || destId <= 0)
-            throw new InvalidIdException(destId);
 
         if (!this.nodeExists(sourceId))
             throw new UnexistingNodeException(sourceId);
+            
         if (!this.nodeExists(destId))
             throw new UnexistingNodeException(destId);
 
@@ -383,4 +379,4 @@ var SimpleGraph = function(directed){
 		else
 			return false;
 	}
-}
+}	
