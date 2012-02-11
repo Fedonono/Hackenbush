@@ -185,6 +185,8 @@ var MultiGraph = function(directed){
 	 */	
     this.setEdgeValue = function(sourceId, destId, indexEdge, value) {
         this.getEdgeById(sourceId, destId, indexEdge).weight = value;
+		if (!this.directed && sourceId !== destId)
+			this.getEdgeById(destId, sourceId, indexEdge).weight = value;
     }
 
 
