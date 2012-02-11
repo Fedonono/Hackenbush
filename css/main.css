@@ -1,0 +1,16 @@
+body {
+	background: #eee;
+}
+
+#head {
+	margin: auto;
+	text-align: center;
+	background: url(../ressources/main-bg.jpg) no-repeat;
+	background-position: center;
+	height: 450px;
+}
+
+#main {
+	margin: auto;
+	text-align: center;
+}
