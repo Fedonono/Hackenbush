@@ -1,11 +1,12 @@
 (function(){
 	
-	var gUndirected = new SimpleGraph(false);
-	var gDirected = new SimpleGraph(true);
+	var gUndirected, gDirected;
 	
 	module("Simple Graph Test");
 	
 	test("Empty Graph", function(){
+		
+		gDirected = new SimpleGraph(true);
 		
 		equal(gDirected.getOrder(), 0, "the graph order must be equal to 0");
 		
@@ -254,7 +255,7 @@
 			if(!gDirected.edgeExists(start, goal)){
 				gDirected.addEdge(start, goal);
 				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
-				raises(function(){gDirected.addEge(start,goal);}, AlreadyExistingEdgeException, "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" already exists");
+				raises(function(){gDirected.addEdge(start, goal);}, AlreadyExistingEdgeException, "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" already exists");
 			}
 			else i--
 		}
@@ -265,7 +266,7 @@
 			if(!gUndirected.edgeExists(start, goal)){
 				gUndirected.addEdge(start, goal);
 				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");
-				raises(function(){gUndirected.addEge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identifyed by "+start+" and "+goal+" already exists");	
+				raises(function(){gUndirected.addEdge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identifyed by "+start+" and "+goal+" already exists");	
 			}
 			else i--
 		}
@@ -346,6 +347,7 @@
 			if(!gDirected.edgeExists(start, goal)){
 				gDirected.addWeightedEdge(start, goal);
 				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
+				raises(function(){gDirected.addWeightedEdge(start, goal);}, AlreadyExistingEdgeException, "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" already exists");
 			}
 			else i--
 		}
@@ -355,6 +357,7 @@
 			if(!gUndirected.edgeExists(start, goal)){
 				gUndirected.addWeightedEdge(start, goal);
 				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");		
+				raises(function(){gUndirected.addWeightedEdge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identifyed by "+start+" and "+goal+" already exists");
 			}
 			else i--
 		}
