@@ -85,7 +85,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if k is outside the allowed range
 	 */		
     this.getGroundedNode = function(k) {
-        if(!this.isInt(k) || k <= 0 || k >= this.groundedNodes.length) 
+        if(!this.isInt(k) || k <= 0 || k > this.groundedNodes.length) 
             throw new InvalidIndexException(k);
         
         return this.groundedNodes[k-1];
@@ -105,7 +105,7 @@ var HackenbushGraph = function(){
 	 * push the id of a grounded node in this.groundedNodes .
 	 *
          *@param id the id of the node
-	 *@throws InvalidIdExctpion if the id is <= 0 or not an integer.
+	 *@throws InvalidIdException if the id is <= 0 or not an integer.
          *@throws UnexistingNodeException  if the id does not exists in the graph.
          *@throws AlreadyGroundedNodeException if the node is already grounded
 	 */    
@@ -113,8 +113,8 @@ var HackenbushGraph = function(){
         if(!this.nodeExists(id))
             throw new UnexistingNodeException(id);
 
-		if (this.groundedNodes.indexOf(id) === -1)
-			throw new AlreadyGroundedNode(id);
+		if (this.groundedNodes.indexOf(id) !== -1)
+			throw new AlreadyGroundedNodeException(id);
         
         this.groundedNodes.push(id);
     }
@@ -124,7 +124,7 @@ var HackenbushGraph = function(){
 	 * push the id of a grounded node in this.groundedNodes .
 	 *InvalidId
          *@param id the id of the node
-	 *@throws InvalidIdExctpion if the id is <= 0 or not an integer.
+	 *@throws InvalidIdException if the id is <= 0 or not an integer.
          *@throws UnexistingNodeException  if the id does not exists in the graph.
          *@throws NotConnectedToGroundException if the node is not grounded.
 	 */
@@ -136,14 +136,14 @@ var HackenbushGraph = function(){
 		if (indexFind === -1)
 			throw new NotConnectedToGroundException(id);
 
-		this.groundedNodes.splice(indexFind);
+		this.spliceGroundedNodes(indexFind);
     }
    
    
-   this.spliceGroundedNodes = function(k){       
-       if(!this.isInt(k) || k < 0 || k >= this.groundedNodes.length)
-           throw InvalidIndexException(k);
+   this.spliceGroundedNodes = function(index){       
+       if(!this.isInt(index) || index < 0 || index >= this.groundedNodes.length)
+           throw new InvalidIndexException(index);
        
-       this.groundedNodes.splice(k);
+       this.groundedNodes.splice(index, 1);
    }
 }

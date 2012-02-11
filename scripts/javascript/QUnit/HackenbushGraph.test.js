@@ -69,15 +69,61 @@ test('Graph with 10 nodes',function(){
 	for (var i=1; i<11; i++)
 	{
 		var id = 2;
-		hG.addEdge(id, 4);
+		ok(!hG.addEdge(id, 4), 'addEdge between 2 and 4');
 	}
-	hG.addEdge(id, 2);
-	strictEqual(hG.getDegree(2),12,'getDegree of node 2');
-	strictEqual(hG.getColorAsInteger(2,12),undefined,'getColorAsInteger Node 2, k=12');
-	hG.remove(id,1);
+	ok(!hG.addEdge(id, 2), 'addEdge between 2 and 2');
+	strictEqual(hG.getDegree(id),12,'getDegree of node 2');
+	strictEqual(hG.getColorAsInteger(id,12),undefined,'getColorAsInteger Node 2, k=12');
+	ok(!hG.remove(id,1),'remove node '+id+' with k=1.');
 	raises(function(){hG.remove(id,0);},InvalidIndexException,'Invalid Index Exception k=0');
-	hG.remove(id,1);
-	hG.remove(id,1);
-	strictEqual(hG.getDegree(2),9,'getDegree of node 2');
-	raises(function(){hG.getColorAsInteger(2,10);},InvalidIndexException,'node 2 getColorAsInteger with k = 10 > degree (we made 3 remove before)');
+	ok(!hG.remove(id,1),'remove node '+id+' with k=1.');
+	ok(!hG.remove(id,1),'remove node '+id+' with k=1.');
+	strictEqual(hG.getDegree(id),9,'getDegree of node 2');
+	raises(function(){hG.getColorAsInteger(id,10);},InvalidIndexException,'node 2 getColorAsInteger with k = 10 > degree (we made 3 remove before)');
+
+	// this.getGroundedNode = function(k) {} && this.getGroundedNodesCount = function() {}	&& there is some custom function
+	// custom : this.groundNode = function(id) && this.unGroundNode = function(id) && this.spliceGroundedNodes = function(index)
+	// spliceGroundedNodes
+	raises(function(){hG.spliceGroundedNodes(3);},InvalidIndexException,'spliceGroundedNodes in an empty graph');
+	raises(function(){hG.spliceGroundedNodes(0);},InvalidIndexException,'spliceGroundedNodes with index=0');
+	raises(function(){hG.spliceGroundedNodes(-1);},InvalidIndexException,'spliceGroundedNodes with index<0');
+
+	// groundNode
+	raises(function(){hG.groundNode(42);},UnexistingNodeException,'groundNode of unexisting node ');
+	raises(function(){hG.groundNode(-42);},InvalidIdException,'groundNode of a wrong Id (<0)');
+	raises(function(){hG.groundNode(0);},InvalidIdException,'groundNode of a wrong Id (=0)');
+	raises(function(){hG.groundNode('quarante deux');},InvalidIdException,'groundNode of a wrong Id (string)');
+	raises(function(){hG.groundNode('#42');},InvalidIdException,'groundNode of a wrong Id (string)');
+	raises(function(){hG.groundNode('1');},InvalidIdException,'groundNode of a wrong Id (string)');
+	raises(function(){hG.groundNode({id:1});},InvalidIdException,'groundNode of a wrong Id (object)');
+	raises(function(){hG.groundNode(true);},InvalidIdException,'groundNode of a wrong Id (boolean)');
+
+	strictEqual(hG.getGroundedNodesCount(),0,'getGroundedNodesCount');
+	ok(!hG.groundNode(id),'ground node '+id);
+	raises(function(){hG.groundNode(id);},AlreadyGroundedNodeException,'groundNode 2 already grounded !');
+	strictEqual(hG.getGroundedNodesCount(),1,'getGroundedNodesCount');
+	strictEqual(hG.getGroundedNode(1),id,'getGroundedNode');
+	ok(!hG.groundNode(4),'ground node 4');
+	strictEqual(hG.getGroundedNodesCount(),2,'getGroundedNodesCount');
+	strictEqual(hG.getGroundedNode(1),id,'getGroundedNode');
+	strictEqual(hG.getGroundedNode(2),4,'getGroundedNode');
+
+	// unGroundNode
+
+	raises(function(){hG.unGroundNode(42);},UnexistingNodeException,'unGroundNode of unexisting node ');
+	raises(function(){hG.unGroundNode(-42);},InvalidIdException,'unGroundNode of a wrong Id (<0)');
+	raises(function(){hG.unGroundNode(0);},InvalidIdException,'unGroundNode of a wrong Id (=0)');
+	raises(function(){hG.unGroundNode('quarante deux');},InvalidIdException,'unGroundNode of a wrong Id (string)');
+	raises(function(){hG.unGroundNode('#42');},InvalidIdException,'unGroundNode of a wrong Id (string)');
+	raises(function(){hG.unGroundNode('1');},InvalidIdException,'unGroundNode of a wrong Id (string)');
+	raises(function(){hG.unGroundNode({id:1});},InvalidIdException,'unGroundNode of a wrong Id (object)');
+	raises(function(){hG.unGroundNode(true);},InvalidIdException,'unGroundNode of a wrong Id (boolean)');
+
+	ok(!hG.unGroundNode(id))
+	strictEqual(hG.getGroundedNodesCount(),1,'getGroundedNodesCount');
+	strictEqual(hG.getGroundedNode(1),4,'getGroundedNode');
+	ok(!hG.unGroundNode(4))
+	strictEqual(hG.getGroundedNodesCount(),0,'getGroundedNodesCount');
+	raises(function(){hG.getGroundedNode(1);},InvalidIndexException,'get Grounded node in an empty graph');
+	
 });
