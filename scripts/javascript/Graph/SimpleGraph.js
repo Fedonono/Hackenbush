@@ -305,6 +305,7 @@ var SimpleGraph = function(directed){
 	 */	
     this.setEdgeValue = function(sourceId, destId, value) {
         this.getEdgeById(sourceId, destId).weight = value;
+		// doesn't have to do twice if !directed because this is the same edge between sourceId, destId and destId, sourceId
     }
 
     /** 
