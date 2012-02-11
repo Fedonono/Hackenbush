@@ -109,11 +109,12 @@
 		
 		gDirected = new SimpleGraph(true);
 		
-		for(var i = 0; i <= 14; i++){
+		for(var i = 0; i <= 20; i++){
 			var id = Math.round(100*Math.random() +1 );
 			if(!gDirected.nodeExists(id)){
 				gDirected.addNode(id);
 				ok(gDirected.nodeExists(id), "addNode("+id+") have worked");
+				raises(function(){gDirected.addNode(id);}, AlreadyExistingNodeException, "the node identifyed by "+id+" already exists");
 			}
 			else i--
 		}
@@ -158,13 +159,17 @@
 		raises(function(){gDirected.addWeightedNode("666","NHL2987 SURVIVAURE");}, InvalidIdException , "the id('42') is not an integer");
 		raises(function(){gDirected.addWeightedNode("42","MER IL EST FOU BINI!");}, InvalidIdException , "the id('42') is not an integer");
 		
-		for(var i = 0; i <= 20; i++){
+		gDirected = new SimpleGraph(true);
+		
+		for(var i = 0; i <= 12; i++){
 			var id = Math.round(100*Math.random() +1 );
 			var value = Math.round(100*Math.random());
 			if(!gDirected.nodeExists(id)){
 				gDirected.addWeightedNode(id, value);
 				ok(gDirected.nodeExists(id), "addNode("+id+") have worked");
 				equal(gDirected.getNodeValue(id), value, "check the weight of the node identifyed by "+id);
+				raises(function(){gDirected.addWeightedNode(id,"tutu");}, AlreadyExistingNodeException, "the node identifyed by "+id+" already exists");
+				
 			}
 			else i--
 		}
@@ -234,6 +239,8 @@
 		raises(function(){gDirected.addEdge(1000, "21");}, InvalidIdException , "the id('21') is not an integer");
 		raises(function(){gDirected.addEdge(1000, "45");}, InvalidIdException , "the id('45') is not an integer");
 		
+		
+		
 		gDirected = new SimpleGraph(true);		
 		gUndirected = new SimpleGraph(false);
 		for( var i = 1; i <= 10; i++){
@@ -247,15 +254,18 @@
 			if(!gDirected.edgeExists(start, goal)){
 				gDirected.addEdge(start, goal);
 				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
+				raises(function(){gDirected.addEge(start,goal);}, AlreadyExistingEdgeException, "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" already exists");
 			}
 			else i--
 		}
+		
 		for( var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
 			if(!gUndirected.edgeExists(start, goal)){
 				gUndirected.addEdge(start, goal);
-				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");		
+				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");
+				raises(function(){gUndirected.addEge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identifyed by "+start+" and "+goal+" already exists");	
 			}
 			else i--
 		}
@@ -264,64 +274,64 @@
 	test("testing function addWeightedEdge", function(){
 		gDirected = new SimpleGraph(true);
 		
-		raises(function(){gDirected.addEdge(-1,1004);},InvalidIdException, "the id(-1) <=0");
-		raises(function(){gDirected.addEdge(-145,112400);},InvalidIdException, "the id(-145) <=0");
-		raises(function(){gDirected.addEdge(-1000,560);},InvalidIdException, "the id(-1000) <=0");
-		raises(function(){gDirected.addEdge(-42,1);},InvalidIdException, "the id(-42) <=0");
-		raises(function(){gDirected.addEdge(-666,100);},InvalidIdException, "the id(-666) <=0");
-		raises(function(){gDirected.addEdge(0,100);},InvalidIdException, "the id(0) <=0");
+		raises(function(){gDirected.addWeightedEdge(-1,1004);},InvalidIdException, "the id(-1) <=0");
+		raises(function(){gDirected.addWeightedEdge(-145,112400);},InvalidIdException, "the id(-145) <=0");
+		raises(function(){gDirected.addWeightedEdge(-1000,560);},InvalidIdException, "the id(-1000) <=0");
+		raises(function(){gDirected.addWeightedEdge(-42,1);},InvalidIdException, "the id(-42) <=0");
+		raises(function(){gDirected.addWeightedEdge(-666,100);},InvalidIdException, "the id(-666) <=0");
+		raises(function(){gDirected.addWeightedEdge(0,100);},InvalidIdException, "the id(0) <=0");
 		gDirected.addNode(1000);
-		raises(function(){gDirected.addEdge(1000, -2);},InvalidIdException, "the id(-2) <=0");
-		raises(function(){gDirected.addEdge(1000, -256);},InvalidIdException, "the id(-256) <=0");
-		raises(function(){gDirected.addEdge(1000, -2111);},InvalidIdException, "the id(-2111) <=0");
-		raises(function(){gDirected.addEdge(1000, -53);},InvalidIdException, "the id(-53) <=0");
-		raises(function(){gDirected.addEdge(1000, -777);},InvalidIdException, "the id(-777) <=0");
+		raises(function(){gDirected.addWeightedEdge(1000, -2);},InvalidIdException, "the id(-2) <=0");
+		raises(function(){gDirected.addWeightedEdge(1000, -256);},InvalidIdException, "the id(-256) <=0");
+		raises(function(){gDirected.addWeightedEdge(1000, -2111);},InvalidIdException, "the id(-2111) <=0");
+		raises(function(){gDirected.addWeightedEdge(1000, -53);},InvalidIdException, "the id(-53) <=0");
+		raises(function(){gDirected.addWeightedEdge(1000, -777);},InvalidIdException, "the id(-777) <=0");
 		
-		raises(function(){gDirected.addEdge("toto", 12);},InvalidIdException, "the id('toto') is not an integer");
-		raises(function(){gDirected.addEdge("titi", 3456);},InvalidIdException, "the id('titi') is not an integer");
-		raises(function(){gDirected.addEdge("tata", 5683);},InvalidIdException, "the id('tata') is not an integer");
-		raises(function(){gDirected.addEdge("tutu", 1);},InvalidIdException, "the id('tutu') is not an integer");
-		raises(function(){gDirected.addEdge("millenium falcon", 9);},InvalidIdException, "the id('millenium falcon') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "NHL2987 SURVIVAURE");},InvalidIdException, "the id('NHL2987 SURVIVAURE') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "coucou");},InvalidIdException, "the id('coucou') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "dovakhin");},InvalidIdException, "the id('dovakhin') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "foo");},InvalidIdException, "the id('foo') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "Palette");},InvalidIdException, "the id('Palette') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("toto", 12);},InvalidIdException, "the id('toto') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("titi", 3456);},InvalidIdException, "the id('titi') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("tata", 5683);},InvalidIdException, "the id('tata') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("tutu", 1);},InvalidIdException, "the id('tutu') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("millenium falcon", 9);},InvalidIdException, "the id('millenium falcon') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "NHL2987 SURVIVAURE");},InvalidIdException, "the id('NHL2987 SURVIVAURE') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "coucou");},InvalidIdException, "the id('coucou') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "dovakhin");},InvalidIdException, "the id('dovakhin') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "foo");},InvalidIdException, "the id('foo') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "Palette");},InvalidIdException, "the id('Palette') is not an integer");
 		
-		raises(function(){gDirected.addEdge(1000, 1.2);},InvalidIdException, "the id(1.2) is not an integer");
-		raises(function(){gDirected.addEdge(1000, 14.7);},InvalidIdException, "the id(14.7) is not an integer");
-		raises(function(){gDirected.addEdge(1000, 16797.1);},InvalidIdException, "the id(16797.1) is not an integer");
-		raises(function(){gDirected.addEdge(1000, 34.58);},InvalidIdException, "the id(34.58) is not an integer");
-		raises(function(){gDirected.addEdge(1000, 21.1);},InvalidIdException, "the id(21.0001) is not an integer");
-		raises(function(){gDirected.addEdge(3.2, 1);},InvalidIdException, "the id(3.2) is not an integer");
-		raises(function(){gDirected.addEdge(5.6, 35);},InvalidIdException, "the id(5.6) is not an integer");
-		raises(function(){gDirected.addEdge(8.54, 11);},InvalidIdException, "the id(8.54) is not an integer");
-		raises(function(){gDirected.addEdge(12345.4, 42);},InvalidIdException, "the id(12345.4) is not an integer");
-		raises(function(){gDirected.addEdge(45.666, 1000);},InvalidIdException, "the id(45.666) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, 1.2);},InvalidIdException, "the id(1.2) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, 14.7);},InvalidIdException, "the id(14.7) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, 16797.1);},InvalidIdException, "the id(16797.1) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, 34.58);},InvalidIdException, "the id(34.58) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, 21.1);},InvalidIdException, "the id(21.0001) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(3.2, 1);},InvalidIdException, "the id(3.2) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(5.6, 35);},InvalidIdException, "the id(5.6) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(8.54, 11);},InvalidIdException, "the id(8.54) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(12345.4, 42);},InvalidIdException, "the id(12345.4) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(45.666, 1000);},InvalidIdException, "the id(45.666) is not an integer");
 		
 		var o = new Object();
-		raises(function(){gDirected.addEdge(o, 666);}, InvalidIdException , "the id(Object) is not an integer");
-		raises(function(){gDirected.addEdge(1000, o);}, InvalidIdException , "the id(Object) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(o, 666);}, InvalidIdException , "the id(Object) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, o);}, InvalidIdException , "the id(Object) is not an integer");
 		o = new Array();
-		raises(function(){gDirected.addEdge(o,1000);}, InvalidIdException , "the id(Array) is not an integer");
-		raises(function(){gDirected.addEdge(1000,o);}, InvalidIdException , "the id(Array) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(o,1000);}, InvalidIdException , "the id(Array) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000,o);}, InvalidIdException , "the id(Array) is not an integer");
 		o = new Date();
-		raises(function(){gDirected.addEdge(o, 42);}, InvalidIdException , "the id(Date) is not an integer");
-		raises(function(){gDirected.addEdge(1000, o);}, InvalidIdException , "the id(Date) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(o, 42);}, InvalidIdException , "the id(Date) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, o);}, InvalidIdException , "the id(Date) is not an integer");
 		o = new RegExp("1");
-		raises(function(){gDirected.addEdge(o, 13);}, InvalidIdException , "the id(RegExp) is not an integer");
-		raises(function(){gDirected.addEdge(1000, o);}, InvalidIdException , "the id(RegExp) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(o, 13);}, InvalidIdException , "the id(RegExp) is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, o);}, InvalidIdException , "the id(RegExp) is not an integer");
 		
-		raises(function(){gDirected.addEdge("1", 1000);}, InvalidIdException , "the id('1') is not an integer");
-		raises(function(){gDirected.addEdge("145", 42);}, InvalidIdException , "the id('145') is not an integer");
-		raises(function(){gDirected.addEdge("1000", 1);}, InvalidIdException , "the id('1000') is not an integer");
-		raises(function(){gDirected.addEdge("666", 21);}, InvalidIdException , "the id('666') is not an integer");
-		raises(function(){gDirected.addEdge("42", 45);}, InvalidIdException , "the id('42') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "69");}, InvalidIdException , "the id('69') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "41");}, InvalidIdException , "the id('41') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "1");}, InvalidIdException , "the id('1') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "21");}, InvalidIdException , "the id('21') is not an integer");
-		raises(function(){gDirected.addEdge(1000, "45");}, InvalidIdException , "the id('45') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("1", 1000);}, InvalidIdException , "the id('1') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("145", 42);}, InvalidIdException , "the id('145') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("1000", 1);}, InvalidIdException , "the id('1000') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("666", 21);}, InvalidIdException , "the id('666') is not an integer");
+		raises(function(){gDirected.addWeightedEdge("42", 45);}, InvalidIdException , "the id('42') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "69");}, InvalidIdException , "the id('69') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "41");}, InvalidIdException , "the id('41') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "1");}, InvalidIdException , "the id('1') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "21");}, InvalidIdException , "the id('21') is not an integer");
+		raises(function(){gDirected.addWeightedEdge(1000, "45");}, InvalidIdException , "the id('45') is not an integer");
 		
 		gDirected = new SimpleGraph(true);		
 		gUndirected = new SimpleGraph(false);
@@ -334,7 +344,7 @@
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
 			if(!gDirected.edgeExists(start, goal)){
-				gDirected.addEdge(start, goal);
+				gDirected.addWeightedEdge(start, goal);
 				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
 			}
 			else i--
@@ -343,7 +353,7 @@
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
 			if(!gUndirected.edgeExists(start, goal)){
-				gUndirected.addEdge(start, goal);
+				gUndirected.addWeightedEdge(start, goal);
 				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");		
 			}
 			else i--
