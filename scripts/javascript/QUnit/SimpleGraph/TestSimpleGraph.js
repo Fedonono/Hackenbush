@@ -979,7 +979,7 @@
 			else i--
 		}
 		
-		value = "NHL2987 SURVIVAURE"
+		var value = "NHL2987 SURVIVAURE vs millenium falcon"
 		gDirected.setEdgesValues(value);
 		
 		for(var i = 1; i <= 20; i++){
