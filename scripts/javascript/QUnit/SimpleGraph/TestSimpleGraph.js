@@ -9,6 +9,15 @@
 		
 		equal(gDirected.getOrder(), 0, "the graph order must be equal to 0");
 		
+		for(var i = 1; i <= 12; i++){
+			var id = Math.round(100*Math.random() + 1);
+			ok(!gDirected.nodeExists(id), "the node("+id+") does not exists");
+		}
+		
+	});
+	
+	test("testing function nodeExists", function(){
+		
 		raises(function(){ gDirected.nodeExists(-1);}, InvalidIdException, "the id(-1) <= 0");
 		raises(function(){ gDirected.nodeExists(-1);}, InvalidIdException, "the id(-145) <= 0");
 		raises(function(){ gDirected.nodeExists(-1);}, InvalidIdException, "the id(-42) <= 0");
@@ -45,15 +54,17 @@
 		raises(function(){gDirected.nodeExists("666");}, InvalidIdException , "the id('42') is not an integer");
 		raises(function(){gDirected.nodeExists("42");}, InvalidIdException , "the id('42') is not an integer");
 		
-		for(var i = 1; i <= 14; i++){
+		gDirected = new SimpleGraph(true);
+		
+		for(var i = 1; i <= 8; i++){
 			var id = Math.round(100*Math.random() + 1);
 			ok(!gDirected.nodeExists(id), "the node("+id+") does not exists");
 		}
 		
-	});
-	
-	test("testing function nodeExists", function(){
-		
+		for(var i = 1; i <= 7; i++){
+			gDirected.addNode(i);
+			ok(gDirected.nodeExists(i), "the node identifyed by "+i+" exists");
+		}
 		
 		
 	});
@@ -95,6 +106,8 @@
 		raises(function(){gDirected.addNode("1000");}, InvalidIdException , "the id('42') is not an integer");
 		raises(function(){gDirected.addNode("666");}, InvalidIdException , "the id('42') is not an integer");
 		raises(function(){gDirected.addNode("42");}, InvalidIdException , "the id('42') is not an integer");
+		
+		gDirected = new SimpleGraph(true);
 		
 		for(var i = 0; i <= 14; i++){
 			var id = Math.round(100*Math.random() +1 );
