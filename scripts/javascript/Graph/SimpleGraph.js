@@ -376,7 +376,7 @@ var SimpleGraph = function(directed){
     /**
      *  It is necessary to increment/decrement manually the length member of a hash table.
      */
-    this.incrNodesSize = function(id) {
+    this.incrNodesSize = function() {
         this.nodes.length++;
     }
 
