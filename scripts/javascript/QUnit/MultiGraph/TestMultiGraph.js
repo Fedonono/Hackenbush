@@ -256,10 +256,13 @@
 		for( var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			if(!gDirected.edgeExists(start, goal)){
+			if(!gDirected.edgeExists(start, goal, 0)){
 				gDirected.addEdge(start, goal);
-				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
-				raises(function(){gDirected.addEdge(start, goal);}, AlreadyExistingEdgeException, "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" already exists");
+				gDirected.addEdge(start, goal);
+				gDirected.addEdge(start, goal);
+				ok(gDirected.edgeExists(start, goal, 0), "the first oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
+				ok(gDirected.edgeExists(start, goal, 1), "the second oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
+				ok(gDirected.edgeExists(start, goal, 2), "the third oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
 			}
 			else i--
 		}
@@ -267,10 +270,13 @@
 		for( var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			if(!gUndirected.edgeExists(start, goal)){
+			if(!gUndirected.edgeExists(start, goal, 0)){
 				gUndirected.addEdge(start, goal);
-				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");
-				raises(function(){gUndirected.addEdge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identifyed by "+start+" and "+goal+" already exists");	
+				gUndirected.addEdge(start, goal);
+				gUndirected.addEdge(start, goal);
+				ok(gUndirected.edgeExists(start, goal, 0) && gUndirected.edgeExists(goal, start, 0), "the first unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");
+				ok(gUndirected.edgeExists(start, goal, 1) && gUndirected.edgeExists(goal, start, 1), "the second unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");
+				ok(gUndirected.edgeExists(start, goal, 1) && gUndirected.edgeExists(goal, start, 2), "the third unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");
 			}
 			else i--
 		}
@@ -356,11 +362,17 @@
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
 			var value = Math.random();
-			if(!gDirected.edgeExists(start, goal)){
+			if(!gDirected.edgeExists(start, goal,0)){
 				gDirected.addWeightedEdge(start, goal, value);
-				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
-				equal(gDirected.getEdgeValue(start, goal), value, "the value of the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been modifyed to "+value );
-				raises(function(){gDirected.addWeightedEdge(start, goal);}, AlreadyExistingEdgeException, "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" already exists");
+				gDirected.addWeightedEdge(start, goal, value);
+				gDirected.addWeightedEdge(start, goal, value);
+				ok(gDirected.edgeExists(start, goal, 0), "the first oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
+				equal(gDirected.getEdgeValue(start, goal,0), value, "the value of the first oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been modifyed to "+value );
+				ok(gDirected.edgeExists(start, goal, 1), "the second oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
+				equal(gDirected.getEdgeValue(start, goal, 1), value, "the value of the second oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been modifyed to "+value );
+				ok(gDirected.edgeExists(start, goal, 2), "the third oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
+				equal(gDirected.getEdgeValue(start, goal, 2), value, "the value of the third oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been modifyed to "+value );
+			
 			}
 			else i--
 		}
@@ -368,11 +380,20 @@
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
 			var value = Math.random();
-			if(!gUndirected.edgeExists(start, goal)){
+			if(!gUndirected.edgeExists(start, goal, 0)){
 				gUndirected.addWeightedEdge(start, goal, value);
-				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");		
-				equal(gUndirected.getEdgeValue(start, goal), value, "the value of the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been modifyed to "+value );
-				raises(function(){gUndirected.addWeightedEdge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identifyed by "+start+" and "+goal+" already exists");
+				gUndirected.addWeightedEdge(start, goal, value);
+				gUndirected.addWeightedEdge(start, goal, value);
+				
+				ok(gUndirected.edgeExists(start, goal, 0) && gUndirected.edgeExists(goal, start, 0), "the first unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");		
+				equal(gUndirected.getEdgeValue(start, goal, 0), value, "the value of the first unoriented edge between nodes identifyed by "+start+" and "+goal+" have been modifyed to "+value );
+				
+				ok(gUndirected.edgeExists(start, goal, 1) && gUndirected.edgeExists(goal, start, 1), "the second unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");
+				equal(gUndirected.getEdgeValue(start, goal, 1), value, "the value of the second unoriented edge between nodes identifyed by "+start+" and "+goal+" have been modifyed to "+value );		
+				
+				ok(gUndirected.edgeExists(start, goal, 2) && gUndirected.edgeExists(goal, start, 2), "the third unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");
+				equal(gUndirected.getEdgeValue(start, goal, 2), value, "the value of the third unoriented edge between nodes identifyed by "+start+" and "+goal+" have been modifyed to "+value );		
+				
 			}
 			else i--
 		}
@@ -456,14 +477,16 @@
 		for(var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			ok(!gDirected.edgeExists(start, goal), "the edge between nodes identifyed by "+start+" and "+goal+" does not exists");
+			ok(!gDirected.edgeExists(start, goal, 0), "the edge between nodes identifyed by "+start+" and "+goal+" does not exists");
 		}
 		for(var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			if(!gDirected.edgeExists(start, goal)){
+			if(!gDirected.edgeExists(start, goal, 0)){
 				gDirected.addEdge(start, goal);
-				ok(gDirected.edgeExists(start, goal), "the edge between nodes identifyed by "+start+" and "+goal+" exists");
+				gDirected.addEdge(start, goal);
+				ok(gDirected.edgeExists(start, goal, 0), "the first edge between nodes identifyed by "+start+" and "+goal+" exists");
+				ok(gDirected.edgeExists(start, goal, 1), "the second edge between nodes identifyed by "+start+" and "+goal+" exists");
 			}
 			else i--
 		}
@@ -548,16 +571,25 @@
 		for(var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			raises(function(){gDirected.getEdgeValue(start, goal);}, UnexistingEdgeException , "there is not any edge between nodes identifyed by "+start+" and "+goal);
+			raises(function(){gDirected.getEdgeValue(start, goal, 0);}, UnexistingEdgeException , "there is not any edge between nodes identifyed by "+start+" and "+goal);
 		}
 		
 		for(var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			var value = Math.random();
-			if(!gDirected.edgeExists(start, goal)){
+			var value; 
+			if(!gDirected.edgeExists(start, goal, 0)){
+				value = Math.random(); 
 				gDirected.addWeightedEdge(start, goal, value);
-				equal(gDirected.getEdgeValue(start, goal), value, "the value of the edge from the node identifyed by "+start+" to the node identifyed by "+goal+" is "+value);
+				equal(gDirected.getEdgeValue(start, goal, 0), value, "the value of the first edge from the node identifyed by "+start+" to the node identifyed by "+goal+" is "+value);
+				
+				value = Math.random(); 
+				gDirected.addWeightedEdge(start, goal, value);
+				equal(gDirected.getEdgeValue(start, goal, 1), value, "the value of the second edge from the node identifyed by "+start+" to the node identifyed by "+goal+" is "+value);
+				
+				value = Math.random(); 
+				gDirected.addWeightedEdge(start, goal, value);
+				equal(gDirected.getEdgeValue(start, goal, 2), value, "the value of the third edge from the node identifyed by "+start+" to the node identifyed by "+goal+" is "+value);
 			}
 			else i--
 		}
@@ -660,7 +692,7 @@
 		for(var i = 1; i <= 20; i++){	
 			var index = Math.round(Math.random()*(gDirected.getNeighborhoodSize(i) - 1) + 1);
 			var neighbor = gDirected.getNeighbor(i, index);
-			ok(gDirected.edgeExists(i, neighbor), "getNeighbor("+i+", "+index+") works");
+			ok(gDirected.edgeExists(i, neighbor, 0), "getNeighbor("+i+", "+index+") works");
 		}
 		
 	});
