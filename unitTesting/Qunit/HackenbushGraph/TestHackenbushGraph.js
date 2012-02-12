@@ -44,7 +44,7 @@ test("testing function getColorAsInteger", function(){
 });
 
 // getGroundedNode && getGroundedNodesCount()
-test("testing function getGroundedNode && getGroundedNodesCount", function(){
+test("testing getGroundedNode && getGroundedNodesCount functions", function(){
 	strictEqual(hG.getGroundedNodesCount(),0,'Grounded Node Count = 0 in an empty Graph');
 	raises(function(){hG.getGroundedNode(1);},InvalidIndexException,'get Grounded node in an empty graph');
 	raises(function(){hG.getGroundedNode(0);},InvalidIndexException,'getGroundedNode with k=0');
@@ -52,9 +52,9 @@ test("testing function getGroundedNode && getGroundedNodesCount", function(){
 });
 
 module('Graph with X nodes and Y edges');
-// Simple Graph
-test("Simple Graph & MultiGraph with precedent tested function.", function(){
+test("Test precedent hackenbushGraph functions (getDegree, remove, getColorAsInteger) and some MultiGraph functions.", function(){
 	var hG = new HackenbushGraph();
+	// HackenbushGraph : But this is just a SimpleGraph
 	for (var i=1; i<11; i++)
 	{
 		var id = 2*i;
@@ -74,7 +74,7 @@ test("Simple Graph & MultiGraph with precedent tested function.", function(){
 	hG.setEdgeValue(2,2,0,'003f9d');
 	strictEqual(hG.getColorAsInteger(2,1),16285,'getColorAsInteger Node 2, k=1');
 
-	// Multigraph
+	// HackenbushGraph : Multigraph
 	for (var i=1; i<11; i++)
 	{
 		var id = 2;
@@ -89,11 +89,31 @@ test("Simple Graph & MultiGraph with precedent tested function.", function(){
 	ok(!hG.remove(id,1),'remove node '+id+' with k=1.');
 	strictEqual(hG.getDegree(id),9,'getDegree of node 2');
 	raises(function(){hG.getColorAsInteger(id,10);},InvalidIndexException,'node 2 getColorAsInteger with k = 10 > degree (we made 3 remove before)');
+
+	// Some MultiGraph function with getColorAsInteger
+	var colorHex = '59c5ed'; // r : 89, g : 197, b : 237, int : 5883373
+	var colorInt = parseInt('5883373');
+	ok(!hG.setEdgesValues(000000),'setEdgesValues with 000000');
+	strictEqual(hG.getEdgeValue(2,4,0),000000,'getEdgeValue with sourceId 2, destId 4, indexEdge 0 (hex)');
+	strictEqual(hG.getColorAsInteger(2,1),0,'getColorAsInteger with id = 2 and k = 1 (int)');
+	ok(!hG.setEdgeValue(2,4,3,colorHex), 'setEdgeValue with sourceId 2, destId 4, indexEdge 3');
+	strictEqual(hG.getEdgeValue(2,4,3),colorHex,'getEdgeValue with sourceId 2, destId 4, indexEdge 3 (hex)');
+	strictEqual(hG.getColorAsInteger(2,4),colorInt,'getColorAsInteger with id = 2 and k = 4 (int)');
+	ok(!hG.removeEdge(2,4,3), 'Remove Edge with sourceId 2, destId 4, indexEdge 3');
+	strictEqual(hG.getEdgeValue(2,4,3),000000,'getEdgeValue with sourceId 2, destId 4, indexEdge 0 (hex)');
+	strictEqual(hG.getColorAsInteger(2,1),0,'getColorAsInteger with id = 2 and k = 1 (int)');
+	strictEqual(hG.getDegree(2),8,'getDegree of Node 2');
+	strictEqual(hG.getDegree(4),8,'getDegree of Node 4');
+	ok(!hG.removeNode(2), 'removeNode 2');
+	strictEqual(hG.getDegree(4),0,'getDegree of Node 4');
+	raises(function(){hG.getDegree(2);},UnexistingNodeException,'getDegree of Node 2');
+	
 });
 
 // this.getGroundedNode = function(k) {} && this.getGroundedNodesCount = function() {}	&& there is some custom function
 // custom : this.groundNode = function(id) && this.unGroundNode = function(id) && this.spliceGroundedNodes = function(index)
 // spliceGroundedNodes
+module('Custom functions && Ground official Functions');
 test("testing function spliceGroundedNodes", function(){
 	raises(function(){hG.spliceGroundedNodes(3);},InvalidIndexException,'spliceGroundedNodes in an empty graph');
 	raises(function(){hG.spliceGroundedNodes(0);},InvalidIndexException,'spliceGroundedNodes with index=0');

@@ -351,13 +351,31 @@ var SimpleGraph = function(directed){
         }
     }
 
+	/**
+	 *  @param idString of a node : #id
+	 *  @return the integer part of idString : id
+	 */
     this.splitId = function(idString) {
         var id = idString.split('#');
         return parseInt(id[1]);
     }
 
+	/**
+	 * Check if the id is an integer or not
+	 * 
+	 * @param value, an id
+	 * @return true if the id is an integer and false if isn't
+	 */
+	this.isInt = function(value){
+		if(value === parseInt(value) && !isNaN(value))
+			return true;
+		else
+			return false;
+	}
 
-    // It is necessary to increment/decrement manually the length member of a hash table.
+    /**
+     *  It is necessary to increment/decrement manually the length member of a hash table.
+     */
     this.incrNodesSize = function(id) {
         this.nodes.length++;
     }
@@ -366,18 +384,18 @@ var SimpleGraph = function(directed){
         this.nodes.length--;
     }
 
+    /** 
+	 * Increment or Decrement the neighbors Size of the given node (because in hash table, this isn't automatic)
+	 *
+	 * @param id the identifier of a node (strictly positive integer)
+	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the id is valid the corresponding node does not exist	  
+	 */	
     this.incrNeighborsSize = function(id) {
-        this.nodes['#'+id].neighbors.length++;
+        this.getNodeById(id).neighbors.length++;
     }
 
     this.decrNeighborsSize = function(id) {
-        this.nodes['#'+id].neighbors.length--;
-    }
-
-	this.isInt = function(value){
-		if(value === parseInt(value) && !isNaN(value))
-			return true;
-		else
-			return false;
+        this.getNodeById(id).neighbors.length--;
 	}
 }	

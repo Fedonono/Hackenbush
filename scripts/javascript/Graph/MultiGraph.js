@@ -115,10 +115,11 @@ var MultiGraph = function(directed){
 
         if (!this.directed) { // if the graph isn't directed, we can recup all node directly connected with the id.
             for (sourceId in this.nodes[idString].neighbors) { // doesn't call removeNode to avoid all checks and problems with #id != id, we could split but I prefer this solution.
-                delete this.nodes[sourceId].neighbors[idString];
+				var edgeToDel = this.nodes[sourceId].neighbors[idString];
                 sourceIdInt = this.splitId(sourceId);
+                this.modDegree(sourceIdInt, '-'+edgeToDel.length);
+                delete edgeToDel;
                 this.decrNeighborsSize(sourceIdInt);
-                this.decrDegree(sourceIdInt);
             }
             delete this.nodes[idString];
 			this.decrNodesSize();
@@ -128,9 +129,10 @@ var MultiGraph = function(directed){
             for (sourceId in this.nodes) {
                 sourceIdInt = this.splitId(sourceId); 
                 if (this.edgeExists(sourceIdInt, id, 0)) {
-                    delete this.nodes[sourceId].neighbors[idString];
+				var edgeToDel = this.nodes[sourceId].neighbors[idString];
+                    this.modDegree(sourceIdInt, '-'+edgeToDel.length);
+                    delete edgeToDel;
                     this.decrNeighborsSize(sourceIdInt);
-                    this.decrDegree(sourceIdInt);
                 }
             }
             delete this.nodes[idString];
@@ -222,11 +224,32 @@ var MultiGraph = function(directed){
         return this.getNodeById(id).degree;
     }
 
+    /** 
+	 * Modify the degree of the node
+	 *
+	 * @param id the identifier of a node (strictly positive integer)
+	 * @param value : value to increment or decrement
+	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the id is valid the corresponding node does not exist	  
+	 */	
+    this.modDegree = function(id, value) {
+		id = parseInt(id);
+		value = parseInt(value);
+        this.getNodeById(id).degree+=value;
+    }
+
+    /** 
+	 * Increment or Decrement the degree of the node
+	 *
+	 * @param id the identifier of a node (strictly positive integer)
+	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the id is valid the corresponding node does not exist	  
+	 */	
     this.incrDegree = function(id) {
-        this.nodes['#'+id].degree++;
+        this.modDegree(id, 1);
     }
 
     this.decrDegree = function(id) {
-        this.nodes['#'+id].degree--;
+        this.modDegree(id, -1);
     }
 }

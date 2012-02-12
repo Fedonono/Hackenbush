@@ -40,12 +40,12 @@ var HackenbushGraph = function(){
                 index = k-previousDegree;
 				var colorHex = this.getEdgeValue(id, this.splitId(destId), index-1);
 				if (colorHex !== undefined)
-					return parseInt("0x" + colorHex);
+					return parseInt("0x" + colorHex); // hex to RGBint
 				else
 					return colorHex;
             }
         }
-    }	
+    }
 
     /** 
 	 * Removes the k th edge linked to the node identified by id.
@@ -122,11 +122,11 @@ var HackenbushGraph = function(){
     
     /** 
 	 * push the id of a grounded node in this.groundedNodes .
-	 *InvalidId
-         *@param id the id of the node
+	 *
+     *@param id the id of the node
 	 *@throws InvalidIdException if the id is <= 0 or not an integer.
-         *@throws UnexistingNodeException  if the id does not exists in the graph.
-         *@throws NotConnectedToGroundException if the node is not grounded.
+     *@throws UnexistingNodeException  if the id does not exists in the graph.
+     *@throws NotConnectedToGroundException if the node is not grounded.
 	 */
     this.unGroundNode = function(id){
         if(!this.nodeExists(id))
@@ -139,7 +139,11 @@ var HackenbushGraph = function(){
 		this.spliceGroundedNodes(indexFind);
     }
    
-   
+   /**
+    * Used to remove an id of the groundedNodes table
+    * 
+	*@throws InvalidIndexException if k is outside the allowed range or the k is < 0 or not an integer
+	*/
    this.spliceGroundedNodes = function(index){       
        if(!this.isInt(index) || index < 0 || index >= this.groundedNodes.length)
            throw new InvalidIndexException(index);

@@ -1,0 +1,7 @@
+Implement how to get r,g,b with an RGBint :
+var b =  RGBint & 255;
+var g = (RGBint >> 8) & 255;
+var r =   (RGBint >> 16) & 255;
+test with => hex : 59c5ed && int : 5883373 && r : 89, g : 197, b : 237
+
+Do the interface.

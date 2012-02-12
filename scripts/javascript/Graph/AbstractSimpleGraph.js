@@ -27,7 +27,7 @@ var AbstractSimpleGraph = function(directed){
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
 	 * @throws AlreadyExistingEdgeException if the specified edge already exists
 	 */	
-	this.addWeightedEdge = function(sourceId, destId, weight) {}//done
+	this.addWeightedEdge = function(sourceId, destId, weight) {}
 
 	/** 
 	 * Adds a node with the specified identifier, with an undefined weight  
@@ -36,7 +36,7 @@ var AbstractSimpleGraph = function(directed){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)		 
 	 * @throws AlreadyExistingNodeException if a node with the speficied id already exists
 	 */		
-	this.addNode = function(id) {}//done
+	this.addNode = function(id) {}
 
 	/** 
 	 * Adds a node with the specified identifier and weight
@@ -46,7 +46,7 @@ var AbstractSimpleGraph = function(directed){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)		 
 	 * @throws AlreadyExistingNodeException if a node with the speficied id already exists
 	 */		
-	this.addWeightedNode = function(id, weight) {}//done
+	this.addWeightedNode = function(id, weight) {}
 	
 	/** 
 	 * Tells if an edge exists between nodes identified by sourceId and destId 
@@ -57,7 +57,7 @@ var AbstractSimpleGraph = function(directed){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist		 
 	 */		
-	this.edgeExists = function(sourceId, destId) {}//done
+	this.edgeExists = function(sourceId, destId) {}
 
 	
 	/** 
@@ -92,7 +92,7 @@ var AbstractSimpleGraph = function(directed){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
 	 */			
-	this.getNeighborhoodSize = function(id) {}//done
+	this.getNeighborhoodSize = function(id) {}
 
 	/** 
 	 * Returns the value of the node identified by id
@@ -109,7 +109,7 @@ var AbstractSimpleGraph = function(directed){
 	 *
 	 * @return the order of this
 	 */		
-	this.getOrder = function() {}//done
+	this.getOrder = function() {}
 
 	/** 
 	 * Tells if a node exists with the specified identifier
