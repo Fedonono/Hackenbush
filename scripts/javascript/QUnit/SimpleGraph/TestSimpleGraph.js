@@ -64,7 +64,7 @@
 		
 		for(var i = 1; i <= 7; i++){
 			gDirected.addNode(i);
-			ok(gDirected.nodeExists(i), "the node identifyed by "+i+" exists");
+			ok(gDirected.nodeExists(i), "the node identified by "+i+" exists");
 		}
 		
 		
@@ -115,7 +115,7 @@
 			if(!gDirected.nodeExists(id)){
 				gDirected.addNode(id);
 				ok(gDirected.nodeExists(id), "addNode("+id+") have worked");
-				raises(function(){gDirected.addNode(id);}, AlreadyExistingNodeException, "the node identifyed by "+id+" already exists");
+				raises(function(){gDirected.addNode(id);}, AlreadyExistingNodeException, "the node identified by "+id+" already exists");
 			}
 			else i--
 		}
@@ -168,8 +168,8 @@
 			if(!gDirected.nodeExists(id)){
 				gDirected.addWeightedNode(id, value);
 				ok(gDirected.nodeExists(id), "addNode("+id+") have worked");
-				equal(gDirected.getNodeValue(id), value, "check the weight of the node identifyed by "+id);
-				raises(function(){gDirected.addWeightedNode(id,"tutu");}, AlreadyExistingNodeException, "the node identifyed by "+id+" already exists");
+				equal(gDirected.getNodeValue(id), value, "check the weight of the node identified by "+id);
+				raises(function(){gDirected.addWeightedNode(id,"tutu");}, AlreadyExistingNodeException, "the node identified by "+id+" already exists");
 				
 			}
 			else i--
@@ -242,8 +242,8 @@
 		
 		for(var i = 1; i <= 10; i++){
 			var id = Math.round(Math.random()*99 + 1);
-			raises(function(){gDirected.addEdge(id, 1000);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
-			raises(function(){gDirected.addEdge(1000, id);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
+			raises(function(){gDirected.addEdge(id, 1000);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
+			raises(function(){gDirected.addEdge(1000, id);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
 		}
 		
 		gDirected = new SimpleGraph(true);		
@@ -258,8 +258,8 @@
 			var goal = Math.round(Math.random()*9 + 1);
 			if(!gDirected.edgeExists(start, goal)){
 				gDirected.addEdge(start, goal);
-				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
-				raises(function(){gDirected.addEdge(start, goal);}, AlreadyExistingEdgeException, "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" already exists");
+				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identified by "+start+" to node identified by "+goal+" have been added");
+				raises(function(){gDirected.addEdge(start, goal);}, AlreadyExistingEdgeException, "the oriented edge from node identified by "+start+" to node identified by "+goal+" already exists");
 			}
 			else i--
 		}
@@ -269,8 +269,8 @@
 			var goal = Math.round(Math.random()*9 + 1);
 			if(!gUndirected.edgeExists(start, goal)){
 				gUndirected.addEdge(start, goal);
-				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");
-				raises(function(){gUndirected.addEdge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identifyed by "+start+" and "+goal+" already exists");	
+				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identified by "+start+" and "+goal+" have been added");
+				raises(function(){gUndirected.addEdge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identified by "+start+" and "+goal+" already exists");	
 			}
 			else i--
 		}
@@ -341,8 +341,8 @@
 		
 		for(var i = 1; i <= 10; i++){
 			var id = Math.round(Math.random()*99 + 1);
-			raises(function(){gDirected.addWeightedEdge(id, 1000);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
-			raises(function(){gDirected.addWeightedEdge(1000, id);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
+			raises(function(){gDirected.addWeightedEdge(id, 1000);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
+			raises(function(){gDirected.addWeightedEdge(1000, id);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
 		}
 		
 		gDirected = new SimpleGraph(true);		
@@ -358,9 +358,9 @@
 			var value = Math.random();
 			if(!gDirected.edgeExists(start, goal)){
 				gDirected.addWeightedEdge(start, goal, value);
-				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been added");
-				equal(gDirected.getEdgeValue(start, goal), value, "the value of the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been modifyed to "+value );
-				raises(function(){gDirected.addWeightedEdge(start, goal);}, AlreadyExistingEdgeException, "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" already exists");
+				ok(gDirected.edgeExists(start, goal), "the oriented edge from node identified by "+start+" to node identified by "+goal+" have been added");
+				equal(gDirected.getEdgeValue(start, goal), value, "the value of the oriented edge from node identified by "+start+" to node identified by "+goal+" have been modifyed to "+value );
+				raises(function(){gDirected.addWeightedEdge(start, goal);}, AlreadyExistingEdgeException, "the oriented edge from node identified by "+start+" to node identified by "+goal+" already exists");
 			}
 			else i--
 		}
@@ -370,9 +370,9 @@
 			var value = Math.random();
 			if(!gUndirected.edgeExists(start, goal)){
 				gUndirected.addWeightedEdge(start, goal, value);
-				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been added");		
-				equal(gUndirected.getEdgeValue(start, goal), value, "the value of the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been modifyed to "+value );
-				raises(function(){gUndirected.addWeightedEdge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identifyed by "+start+" and "+goal+" already exists");
+				ok(gUndirected.edgeExists(start, goal) && gUndirected.edgeExists(goal, start), "the unoriented edge between nodes identified by "+start+" and "+goal+" have been added");		
+				equal(gUndirected.getEdgeValue(start, goal), value, "the value of the unoriented edge between nodes identified by "+start+" and "+goal+" have been modifyed to "+value );
+				raises(function(){gUndirected.addWeightedEdge(start,goal);}, AlreadyExistingEdgeException, "the unoriented edge between nodes identified by "+start+" and "+goal+" already exists");
 			}
 			else i--
 		}
@@ -444,8 +444,8 @@
 		
 		for(var i = 1; i <= 10; i++){
 			var id = Math.round(Math.random()*99 + 1);
-			raises(function(){gDirected.edgeExists(id, 1000);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
-			raises(function(){gDirected.edgeExists(1000, id);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
+			raises(function(){gDirected.edgeExists(id, 1000);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
+			raises(function(){gDirected.edgeExists(1000, id);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
 		}
 		
 		
@@ -456,14 +456,14 @@
 		for(var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			ok(!gDirected.edgeExists(start, goal), "the edge between nodes identifyed by "+start+" and "+goal+" does not exists");
+			ok(!gDirected.edgeExists(start, goal), "the edge between nodes identified by "+start+" and "+goal+" does not exists");
 		}
 		for(var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
 			if(!gDirected.edgeExists(start, goal)){
 				gDirected.addEdge(start, goal);
-				ok(gDirected.edgeExists(start, goal), "the edge between nodes identifyed by "+start+" and "+goal+" exists");
+				ok(gDirected.edgeExists(start, goal), "the edge between nodes identified by "+start+" and "+goal+" exists");
 			}
 			else i--
 		}
@@ -537,8 +537,8 @@
 		
 		for(var i = 1; i <= 10; i++){
 			var id = Math.round(Math.random()*99 + 1);
-			raises(function(){gDirected.getEdgeValue(id, 1000);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
-			raises(function(){gDirected.getEdgeValue(1000, id);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
+			raises(function(){gDirected.getEdgeValue(id, 1000);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
+			raises(function(){gDirected.getEdgeValue(1000, id);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
 		}
 		
 		for(var i = 1; i <= 10; i++){
@@ -548,7 +548,7 @@
 		for(var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			raises(function(){gDirected.getEdgeValue(start, goal);}, UnexistingEdgeException , "there is not any edge between nodes identifyed by "+start+" and "+goal);
+			raises(function(){gDirected.getEdgeValue(start, goal);}, UnexistingEdgeException , "there is not any edge between nodes identified by "+start+" and "+goal);
 		}
 		
 		for(var i = 1; i <= 10; i++){
@@ -557,7 +557,7 @@
 			var value = Math.random();
 			if(!gDirected.edgeExists(start, goal)){
 				gDirected.addWeightedEdge(start, goal, value);
-				equal(gDirected.getEdgeValue(start, goal), value, "the value of the edge from the node identifyed by "+start+" to the node identifyed by "+goal+" is "+value);
+				equal(gDirected.getEdgeValue(start, goal), value, "the value of the edge from the node identified by "+start+" to the node identified by "+goal+" is "+value);
 			}
 			else i--
 		}
@@ -605,7 +605,7 @@
 		raises(function(){gDirected.getNeighbor("42",1);}, InvalidIdException , "the id('42') is not an integer");
 		
 		for(var i = 1; i <= 20; i++){
-			raises(function(){gDirected.getNeighbor(i,1);}, UnexistingNodeException , "the node identifyed by "+i+" does not exist");
+			raises(function(){gDirected.getNeighbor(i,1);}, UnexistingNodeException , "the node identified by "+i+" does not exist");
 			gDirected.addNode(i);
 		}
 		
@@ -706,19 +706,19 @@
 		raises(function(){gDirected.getNeighborhoodSize("42");}, InvalidIdException , "the id('42') is not an integer");
 		
 		for(var i = 1; i <= 20; i++){
-			raises(function(){gDirected.getNeighborhoodSize(i);}, UnexistingNodeException , "the node identifyed by "+i+" does not exist");
+			raises(function(){gDirected.getNeighborhoodSize(i);}, UnexistingNodeException , "the node identified by "+i+" does not exist");
 		}
 		
 		for(var i = 1; i <= 20; i++){
 			gDirected.addNode(i);
-			equal(gDirected.getNeighborhoodSize(i), 0, "the neighborhood size of the node identifyed by "+i+" is equal to 0");
+			equal(gDirected.getNeighborhoodSize(i), 0, "the neighborhood size of the node identified by "+i+" is equal to 0");
 		}
 		for(var i = 1; i <= 20; i++){
 			var stop = Math.round(Math.random()*19 +1);
 			for(var j = 1; j <= stop; j++){
 				gDirected.addEdge(i,j);
 			}
-			equal(gDirected.getNeighborhoodSize(i),stop, "the neighborhood size of the node identifyed by "+i+" is equal to "+stop);
+			equal(gDirected.getNeighborhoodSize(i),stop, "the neighborhood size of the node identified by "+i+" is equal to "+stop);
 		}
 		
 	});
@@ -853,7 +853,7 @@
 					if(gDirected.getNeighbor(j, k) === i) bool = false;
 				}
 			}
-			ok(!gDirected.nodeExists(i) && bool, "the node identifyed by "+i+" have been removed");
+			ok(!gDirected.nodeExists(i) && bool, "the node identified by "+i+" have been removed");
 		}
 		
 	});
@@ -923,8 +923,8 @@
 		
 		for(var i = 1; i <= 10; i++){
 			var id = Math.round(Math.random()*99 + 1);
-			raises(function(){gDirected.setEdgeValue(id, 1000);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
-			raises(function(){gDirected.setEdgeValue(1000, id);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
+			raises(function(){gDirected.setEdgeValue(id, 1000);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
+			raises(function(){gDirected.setEdgeValue(1000, id);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
 		}
 		
 		gDirected = new SimpleGraph(true);		
@@ -937,7 +937,7 @@
 		for(var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			raises(function(){gDirected.setEdgeValue(start, goal);}, UnexistingEdgeException , "there is not any edge between nodes identifyed by "+start+" and "+goal);
+			raises(function(){gDirected.setEdgeValue(start, goal);}, UnexistingEdgeException , "there is not any edge between nodes identified by "+start+" and "+goal);
 		}
 		
 		for( var i = 1; i <= 10; i++){
@@ -947,7 +947,7 @@
 			if(!gDirected.edgeExists(start, goal)){
 				gDirected.addEdge(start, goal);
 				gDirected.setEdgeValue(start, goal, value);
-				equal(gDirected.getEdgeValue(start, goal), value, "the value of the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been modifyed to "+value );
+				equal(gDirected.getEdgeValue(start, goal), value, "the value of the oriented edge from node identified by "+start+" to node identified by "+goal+" have been modifyed to "+value );
 			}
 			else i--
 		}
@@ -958,8 +958,8 @@
 			if(!gUndirected.edgeExists(start, goal)){
 				gUndirected.addEdge(start, goal);
 				gUndirected.setEdgeValue(start, goal, value);
-				equal(gUndirected.getEdgeValue(start, goal), value, "the value of the unoriented edge between nodes identifyed by "+start+" and "+goal+" have been modifyed to "+value );
-				equal(gUndirected.getEdgeValue(goal, start), value, "the value of the unoriented edge between nodes identifyed by "+goal+" and "+start+" have been modifyed to "+value );
+				equal(gUndirected.getEdgeValue(start, goal), value, "the value of the unoriented edge between nodes identified by "+start+" and "+goal+" have been modifyed to "+value );
+				equal(gUndirected.getEdgeValue(goal, start), value, "the value of the unoriented edge between nodes identified by "+goal+" and "+start+" have been modifyed to "+value );
 			}
 			else i--
 		}
@@ -984,7 +984,7 @@
 		
 		for(var i = 1; i <= 20; i++){
 			for(var j = 1; j <= 20; j++){
-				if(gDirected.edgeExists(i,j)) equal(gDirected.getEdgeValue(i,j), value, "the value of the edge from the node identifyed by "+i+" to the node identifyed by "+j+" have been modifyed to "+value);
+				if(gDirected.edgeExists(i,j)) equal(gDirected.getEdgeValue(i,j), value, "the value of the edge from the node identified by "+i+" to the node identified by "+j+" have been modifyed to "+value);
 			}
 		}
 		
@@ -1036,7 +1036,7 @@
 			if(!gDirected.nodeExists(id)){
 				gDirected.addNode(id);
 				gDirected.setNodeValue(id, value);
-				equal(gDirected.getNodeValue(id), value, "check the weight of the node identifyed by "+id);
+				equal(gDirected.getNodeValue(id), value, "check the weight of the node identified by "+id);
 			}
 			else i--
 		}
@@ -1054,7 +1054,7 @@
 		gDirected.setNodesValues("NHL2987 SURVIVAURE");
 		
 		for(var i = 1; i <= 42; i++){
-			equal(gDirected.getNodeValue(i), "NHL2987 SURVIVAURE", "the weight of the node identifyed by "+i+" have been modifyed with the excpected value");
+			equal(gDirected.getNodeValue(i), "NHL2987 SURVIVAURE", "the weight of the node identified by "+i+" have been modifyed with the excpected value");
 		}
 	});
 	
@@ -1123,8 +1123,8 @@
 		
 		for(var i = 1; i <= 10; i++){
 			var id = Math.round(Math.random()*99 + 1);
-			raises(function(){gDirected.removeEdge(id, 1000);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
-			raises(function(){gDirected.removeEdge(1000, id);}, UnexistingNodeException, "the node identifyed by "+id+" does not exist");
+			raises(function(){gDirected.removeEdge(id, 1000);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
+			raises(function(){gDirected.removeEdge(1000, id);}, UnexistingNodeException, "the node identified by "+id+" does not exist");
 		}
 		
 		gUndirected = new SimpleGraph(false);
@@ -1136,7 +1136,7 @@
 		for(var i = 1; i <= 10; i++){
 			var start = Math.round(Math.random()*9 + 1);
 			var goal = Math.round(Math.random()*9 + 1);
-			raises(function(){gDirected.removeEdge(start, goal);}, UnexistingEdgeException , "there is not any edge between nodes identifyed by "+start+" and "+goal);
+			raises(function(){gDirected.removeEdge(start, goal);}, UnexistingEdgeException , "there is not any edge between nodes identified by "+start+" and "+goal);
 		}
 		
 		for(var i = 1; i <= 10; i++){
@@ -1146,7 +1146,7 @@
 			if(!gDirected.edgeExists(start, goal)){
 				gDirected.addWeightedEdge(start, goal, value);
 				gDirected.removeEdge(start, goal);
-				ok(!gDirected.edgeExists(start, goal), "the oriented edge from node identifyed by "+start+" to node identifyed by "+goal+" have been removed");
+				ok(!gDirected.edgeExists(start, goal), "the oriented edge from node identified by "+start+" to node identified by "+goal+" have been removed");
 			}
 			else i--
 		}
