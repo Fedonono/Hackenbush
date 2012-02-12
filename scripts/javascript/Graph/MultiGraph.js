@@ -113,27 +113,28 @@ var MultiGraph = function(directed){
         var sourceId, destId, sourceIdInt;
         var idString = '#'+id;
 
-        if (!this.directed) { // if the graph isn't directed, we can recup all node connect with the id directly.
-            for (sourceId in this.nodes[idString].neighbors) { // don't call removeNode to avoid all check and problem with #id != id, we can split but I prefer this solution.
+        if (!this.directed) { // if the graph isn't directed, we can recup all node directly connected with the id.
+            for (sourceId in this.nodes[idString].neighbors) { // doesn't call removeNode to avoid all checks and problems with #id != id, we could split but I prefer this solution.
                 delete this.nodes[sourceId].neighbors[idString];
                 sourceIdInt = this.splitId(sourceId);
                 this.decrNeighborsSize(sourceIdInt);
                 this.decrDegree(sourceIdInt);
             }
+            delete this.nodes[idString];
+			this.decrNodesSize();
         }
-
-        delete this.nodes[idString];
-        this.decrNodesSize();
 		
-        if (this.directed) { // no else to save 1 repetition of a line in the code
+        if (this.directed) { 
             for (sourceId in this.nodes) {
-                sourceIdInt = this.splitId(sourceId); // unfortunally, we have to split
+                sourceIdInt = this.splitId(sourceId); 
                 if (this.edgeExists(sourceIdInt, id, 0)) {
                     delete this.nodes[sourceId].neighbors[idString];
                     this.decrNeighborsSize(sourceIdInt);
                     this.decrDegree(sourceIdInt);
                 }
             }
+            delete this.nodes[idString];
+			this.decrNodesSize();
         }
     }
 
