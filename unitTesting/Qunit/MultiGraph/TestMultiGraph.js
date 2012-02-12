@@ -2,7 +2,7 @@
 	
 	var gUndirected, gDirected;
 	
-	module("Simple Graph Test");
+	module("Multiple Graph Test");
 	
 	test("Empty Graph", function(){
 		
