@@ -104,7 +104,10 @@ test("Test precedent hackenbushGraph functions (getDegree, remove, getColorAsInt
 	strictEqual(hG.getColorAsInteger(2,1),0,'getColorAsInteger with id = 2 and k = 1 (int)');
 	strictEqual(hG.getDegree(2),8,'getDegree of Node 2');
 	strictEqual(hG.getDegree(4),8,'getDegree of Node 4');
+	strictEqual(hG.getNeighbor(4,1), 2, 'The first neighbor of 4 is the node 2.');
 	ok(!hG.removeNode(2), 'removeNode 2');
+	strictEqual(hG.nodeExists(2), false, 'The node 2 does not exist.');
+	raises(function(){hG.getNeighbor(4,1);},InvalidIndexException,'There is no edge between node 4 and node 2, no neighbor.');
 	strictEqual(hG.getDegree(4),0,'getDegree of Node 4');
 	raises(function(){hG.getDegree(2);},UnexistingNodeException,'getDegree of Node 2');
 	

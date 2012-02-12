@@ -104,10 +104,10 @@ var HackenbushGraph = function(){
     /** 
 	 * push the id of a grounded node in this.groundedNodes .
 	 *
-         *@param id the id of the node
+     *@param id the id of the node
 	 *@throws InvalidIdException if the id is <= 0 or not an integer.
-         *@throws UnexistingNodeException  if the id does not exists in the graph.
-         *@throws AlreadyGroundedNodeException if the node is already grounded
+     *@throws UnexistingNodeException  if the id does not exists in the graph.
+     *@throws AlreadyGroundedNodeException if the node is already grounded
 	 */    
     this.groundNode = function(id){
         if(!this.nodeExists(id))
