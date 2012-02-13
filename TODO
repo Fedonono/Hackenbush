@@ -5,3 +5,6 @@ var r =   (RGBint >> 16) & 255;
 test with => hex : 59c5ed && int : 5883373 && r : 89, g : 197, b : 237
 
 Do the interface.
+
+
+Tester W3C validator !

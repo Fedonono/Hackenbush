@@ -1,16 +1,71 @@
 body {
 	background: #eee;
+	background-repeat:repeat-x repeat-y;
+	background-image:url(../ressources/bglines.png);
 }
 
 #head {
-	margin: auto;
 	text-align: center;
-	background: url(../ressources/main-bg.jpg) no-repeat;
-	background-position: center;
-	height: 450px;
+	position: relative;
+	z-index: 1;
+	margin:auto;
+	width: 1200px;
+	height: auto;
+	position: relative;
+    background: none repeat scroll 0 0 padding-box white;
+    border: 8px solid transparent;
+    box-shadow: 0 0 8px rgba(255,255,255,1);
+    border-bottom: none;
 }
 
 #main {
-	margin: auto;
 	text-align: center;
+	position: relative;
+	margin:auto;
+	width: 1200px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    box-shadow: 0 0 8px rgba(255,255,255,1);
+}
+
+#main-container {
+	display:table-row-group; 
+}
+
+#main-center {
+	text-align: center;
+	width: 900px;
+    background: none repeat scroll 0 0 padding-box white;
+	display:table-cell;
+}
+
+#main-left {
+	text-align: center;
+	width: 150px;
+    background: none repeat scroll 0 0 padding-box white;
+	display:table-cell;
+}
+
+#main-right {
+	text-align: center;
+	width: 150px;
+    background: none repeat scroll 0 0 padding-box white;
+	display:table-cell;
+}
+
+#foot {
+	text-align: right;
+	position: relative;
+	margin:auto;
+	width: 1200px;
+	height: auto;
+	position: relative;
+    background: none repeat scroll 0 0 padding-box white;
+    border: 8px solid transparent;
+    box-shadow: 0 0 8px rgba(255,255,255,1);
+}
+
+#right-bottom {
+	text-align: right;
+	position: relative;
 }

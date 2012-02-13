@@ -1,0 +1,20 @@
+.toolChooser {
+    width: 40px;
+	height: 40px;
+    border: 3px solid #EEEEEE;	
+	margin: 0px 5px 25px 0px;
+	position: relative;
+	float: right;
+	clear: both;
+	text-align: center;
+}
+
+.colorChooser {
+    width: 40px;
+	height: 40px;
+    border: 3px solid #EEEEEE;
+    background-color: #FFFFFF;
+	margin: 0px 5px 25px 0px;
+	top: 0px;
+	position: relative;
+}
