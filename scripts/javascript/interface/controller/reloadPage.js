@@ -31,7 +31,7 @@ var hackenbush = {
 
 };
 
-// Listen for hashchange events and use moviemashackenbush.onhashchange handle method
+// Listen for hashchange events and use hackenbush.onhashchange handle method
 // Direct listener technique to be able to simulate the event on page load
 window.onhashchange = hackenbush.onhashchange.bind(hackenbush);
 $(window.onhashchange);
