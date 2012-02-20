@@ -1,7 +1,8 @@
 .vague_bg1
 {
-    background: url(../ressources/vague1.png) repeat-x 0;
-    width: 3500px;
+    background: url(../ressources/vague1.png);
+    background-repeat: repeat;
+    width: 150%;
     height: 200px;
     position: fixed;
     top: 30%;
@@ -10,8 +11,9 @@
 
 .vague_bg2
 {
-    background: url(../ressources/vague2.png) repeat-x 0;
-    width: 3500px;
+    background: url(../ressources/vague2.png);
+    background-repeat: repeat;
+    width: 150%;
     height: 200px;
     position: fixed;
     top: 30%;
