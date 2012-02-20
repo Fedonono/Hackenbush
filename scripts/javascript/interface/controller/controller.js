@@ -2,6 +2,8 @@ var controller = {
 	
     listen : function(){
         
+        
+        
         $(".colorChooser").click( function(event) {
             var element = event.currentTarget;
             this.color = element.id;
@@ -14,6 +16,8 @@ var controller = {
             this.tool = element.id;
         
         });
+        
+        
     },
 	
         
@@ -21,6 +25,6 @@ var controller = {
 	
     tool : null // default tool : none 
     
-}
+};
 
 controller.listen();
