@@ -6,19 +6,25 @@ var controller = {
         
         $(".colorChooser").click( function(event) {
             var element = event.currentTarget;
-            this.color = element.id;
+            controller.color = element.id;
 			
         });
 		
 		
         $(".toolChooser").click( function(event) {
             var element = event.currentTarget;
-            this.tool = element.id;
+            controller.tool = element.id;
         
         });
         
         $("#canvasArea").click( function(event) {
             
+            if(controller.tool === "addNode") modele.addNode(event);
+            if(controller.tool === "removeNode") modele.removeNode(event);
+            if(controller.tool === "addEdge") modele.addEdge(event, controller.color);
+            if(controller.tool === "removeEdge") modele.removeEdge(event);
+            if(controller.tool === "setEdgeColor") modele.removeEdge(event, controller.color);
+            if(controller.tool === "clear") modele.clear(event);
         });
    
         
