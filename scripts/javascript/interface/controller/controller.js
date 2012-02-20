@@ -17,6 +17,10 @@ var controller = {
         
         });
         
+        $("#canvasArea").click( function(event) {
+            
+        });
+   
         
     },
 	
