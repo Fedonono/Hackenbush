@@ -2,37 +2,43 @@ var modele = {
     
     idCounter : 0, 
     
+    items : {
+        nodesUI : new Array(),
+        edgesUI : new Array()
+    },
+    
     graph : new HackenbushGraph(),
+
     
     addNode : function(event) {
         
-        var originalEvent = event.originalEvent;
-        modele.graph.addNode(++modele.idCounter);
+        var x = event.currentTarget.offsetX;
+        var y = event.currentTarget.offsetY;
+        var nodeUi = new NodeUI(++modele.idCounter, x, y);
         
+        modele.graph.addNode(modele.idCounter);
+        modele.items.nodesUI["#"+modele.idCounter] = nodeUi;
+        modele.items.nodesUI.length++;
         
     },
     
     removeNode : function(event) {
    
-        var originalEvent = event.originalEvent;
         
     },
     
     addEdge : function(event, color) {
         
-        var originalEvent = event.originalEvent;
         
     },
     
     removeEdge : function(event) {
         
-        var originalEvent = event.originalEvent;
         
     },
     
     setEdgeColor : function(event, color) {
         
-        var originalEvent = event.originalEvent;
         
     },
     
@@ -41,3 +47,5 @@ var modele = {
     }
     
 };
+
+
