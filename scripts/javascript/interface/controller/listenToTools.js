@@ -8,8 +8,6 @@ var controller = {
     
     listenToTools : function(){
         
-        
-        
         $(".colorChooser").click( function(event) {
             
             var element = event.currentTarget;
@@ -29,5 +27,5 @@ var controller = {
         
     }    
 };
-
+controller.listenToTools();
 

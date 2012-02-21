@@ -18,8 +18,7 @@ var modele = {
         
         modele.graph.addNode(modele.idCounter);
         modele.items.nodesUI["#"+modele.idCounter] = nodeUi;
-        modele.items.nodesUI.length++;
-        
+        modele.items.nodesUI.length++;        
     },
     
     removeNode : function(event) {

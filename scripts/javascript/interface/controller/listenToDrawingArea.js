@@ -14,6 +14,4 @@
     }
         
 })();
-
-controller.listenToTools();
 controller.listenToDrawingArea();
