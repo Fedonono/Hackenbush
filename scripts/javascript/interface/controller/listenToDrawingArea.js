@@ -4,18 +4,21 @@
         
         var canvas = $("#canvasArea");
         
-        canvas.mousedown( function(event ){
-            
-            if(controller.tool === "edit") modele.edit(event);
-            
-        });
+        var Xtolerance = Math.ceil( (canvas[0].offsetWidth - canvas[0].width) /2 );
+        var Ytolerance = Math.ceil( (canvas[0].offsetHeight - canvas[0].Height) /2 );
         
         canvas.click( function(event) {
             
-            if(controller.tool === "erase") modele.erase(event);
-            if(controller.tool === "setEdgeColor") modele.setEdgeColor(event);
+            console.log(canvas);
             
-            console.log(modele.graph);
+            //taking care of the border width
+            if(event.offsetX > canvas[0].width + Xtolerance || event.offsetX < Xtolerance || event.offsetY > canvas[0].height + Ytolerance || event.offsetY < Ytolerance) return
+            
+            if(controller.tool === "addNode") modele.addNode(event);
+            if(controller.tool === "addEdge") modele.addEdge(event, controller.color);
+            if(controller.tool === "setEdgeColor") modele.setEdgeColor(event, controller.color);
+            if(controller.tool === "erase") modele.erase(event);
+            
         });
     }
         
