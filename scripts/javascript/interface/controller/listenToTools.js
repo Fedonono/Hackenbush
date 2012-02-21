@@ -21,7 +21,7 @@ var controller = {
             var element = event.currentTarget;
             controller.tool = element.id;
             
-            if(controller.tool === "clear") modele.clear(event);
+            if(controller.tool === "eraseAll") modele.eraseAll(event);
             
         });  
         

@@ -10,7 +10,7 @@ var modele = {
     graph : new HackenbushGraph(),
 
     
-    addNode : function(event) {
+    edit : function(event) {
         
         var x = event.currentTarget.offsetX;
         var y = event.currentTarget.offsetY;
@@ -18,21 +18,10 @@ var modele = {
         
         modele.graph.addNode(modele.idCounter);
         modele.items.nodesUI["#"+modele.idCounter] = nodeUi;
-        modele.items.nodesUI.length++;        
+        modele.items.nodesUI.length;
     },
     
-    removeNode : function(event) {
-   
-        
-    },
-    
-    addEdge : function(event, color) {
-        
-        
-    },
-    
-    removeEdge : function(event) {
-        
+    erase : function(event){
         
     },
     
@@ -41,7 +30,7 @@ var modele = {
         
     },
     
-    clear : function() {
+    eraseAll : function() {
         modele.graph = new HackenbushGraph();
     }
     

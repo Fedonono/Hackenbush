@@ -1,13 +1,19 @@
 (function(){
 
     controller.listenToDrawingArea = function() {
-        $("#canvasArea").click( function(event) {
+        
+        var canvas = $("#canvasArea");
+        
+        canvas.mousedown( function(event ){
             
-            if(controller.tool === "addNode") modele.addNode(event);
-            if(controller.tool === "removeNode") modele.removeNode(event);
-            if(controller.tool === "addEdge") modele.addEdge(event, controller.color);
-            if(controller.tool === "removeEdge") modele.removeEdge(event);
-            if(controller.tool === "setEdgeColor") modele.removeEdge(event, controller.color);
+            if(controller.tool === "edit") modele.edit(event);
+            
+        });
+        
+        canvas.click( function(event) {
+            
+            if(controller.tool === "erase") modele.erase(event);
+            if(controller.tool === "setEdgeColor") modele.setEdgeColor(event);
             
             console.log(modele.graph);
         });
