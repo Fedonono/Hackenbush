@@ -7,7 +7,7 @@
         var Xtolerance = Math.ceil( (canvas[0].offsetWidth - canvas[0].width) /2 );
         var Ytolerance = Math.ceil( (canvas[0].offsetHeight - canvas[0].Height) /2 );
         
-        canvas.click( function(event) {
+        canvas.mousedown( function(event) {
             
             console.log(canvas);
             

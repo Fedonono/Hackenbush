@@ -19,10 +19,11 @@
         drawNode : function(x, y){
 
             var context = drawingArea.context;
-            
+            console.log(context);
             context.beginPath();
-            context.lineWidth= "2";
-            context.fillStyle = "#FFD3F9";
+            context.lineWidth = 1;
+            context.strokeStyle = "#000000";
+            context.fillStyle = "#FFD3F9" ;
             context.arc(x, y, 6, 0, 2 * Math.PI);
             context.stroke();
             context.fill();
