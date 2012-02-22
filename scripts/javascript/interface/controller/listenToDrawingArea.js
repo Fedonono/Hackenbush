@@ -22,7 +22,6 @@
             if(event.offsetX > canvas[0].width + Xtolerance || event.offsetX < Xtolerance || event.offsetY > canvas[0].height + Ytolerance || event.offsetY < Ytolerance) return
             
             var canvasCoords = getMouseCoords(event);
-            
             if(controller.tool === "addNode") modele.addNode(canvasCoords.x, canvasCoords.y);
             if(controller.tool === "addEdge") modele.addEdge(event, controller.color);
             if(controller.tool === "setEdgeColor") modele.setEdgeColor(event, controller.color);

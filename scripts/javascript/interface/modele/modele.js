@@ -4,7 +4,9 @@ var modele = {
     
     graph : new HackenbushGraph(),
 
-	
+	drawGrass : function() {
+		drawingArea.drawGrass();
+	},
     
     addNode : function(x, y) {
         
@@ -34,6 +36,7 @@ var modele = {
     
     eraseAll : function() {
         modele.graph = new HackenbushGraph();
+        $('#drawGrass').removeClass('locked');
     }
     
 };

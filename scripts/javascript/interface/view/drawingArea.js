@@ -2,6 +2,8 @@
 
     var canvas = $("#canvasArea");
     var context = canvas[0].getContext('2d');
+    var width = canvas[0].width;
+    var height = canvas[0].height;
 
     window.drawingArea = {
     
@@ -9,7 +11,7 @@
     
         context : context,
     
-        imageData : context.getImageData(0, 0, canvas[0].width, canvas[0].height),
+        imageData : context.getImageData(0, 0, width, height),
     
         items : {
             nodes : new Array(),
@@ -31,11 +33,20 @@
         },
     
         addNode : function(nodeUi) {
-        
             drawingArea.items.nodes["#"+nodeUi.id] = nodeUi;
             drawingArea.items.nodes.length++;
             drawingArea.drawNode(nodeUi.x, nodeUi.y);
         
+        },
+ 
+		drawGrass : function() {
+			var context = drawingArea.context;
+			context.beginPath();
+			context.fillStyle = '#00ff00';
+			context.fillRect(0,height-30,width,30);
+			context.closePath();
+			var drawGrass = $('#drawGrass');
+			$('#drawGrass').addClass('locked');
         },
     
         refresh : function() {

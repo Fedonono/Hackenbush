@@ -17,12 +17,13 @@ var controller = {
 		
 		
         $(".toolChooser").click( function(event) {
-            
             var element = event.currentTarget;
-            controller.tool = element.id;
-            
-            if(controller.tool === "eraseAll") modele.eraseAll(event);
-            
+            var tool = element.id;
+            if (!$('#'+tool).hasClass('locked')) { // check if the tool is available or not
+				controller.tool = tool;
+				if(controller.tool === "eraseAll") modele.eraseAll();
+				if(controller.tool === "drawGrass") modele.drawGrass();
+			}
         });  
         
     }    
