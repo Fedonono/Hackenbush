@@ -4,16 +4,17 @@ var modele = {
     
     graph : new HackenbushGraph(),
 
+	
     
-    addNode : function(event) {
+    addNode : function(x, y) {
         
-        var id = ++modele.idCounter;
-        var x = event.offsetX;
-        var y = event.offsetY;        
+        var id = ++modele.idCounter;    
         
         modele.graph.addNode(id);
         
         var nodeUi = new NodeUI(id, x, y);
+        
+        console.log(nodeUi);
         drawingArea.addNode(nodeUi);
         
     },

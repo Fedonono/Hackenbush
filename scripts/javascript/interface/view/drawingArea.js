@@ -19,7 +19,6 @@
         drawNode : function(x, y){
 
             var context = drawingArea.context;
-            console.log(context);
             context.beginPath();
             context.lineWidth = 1;
             context.strokeStyle = "#000000";
@@ -35,7 +34,6 @@
         
             drawingArea.items.nodes["#"+nodeUi.id] = nodeUi;
             drawingArea.items.nodes.length++;
-            
             drawingArea.drawNode(nodeUi.x, nodeUi.y);
         
         },
