@@ -22,7 +22,7 @@
 {
 	-moz-animation-name: wave;
 	-webkit-animation-name: wave;
-	-ms-animation-name: wave;
+	-ms-animation-name: wave; /* IE 10+ */
 	-moz-animation-iteration-count: infinite;
 	-webkit-animation-iteration-count: infinite;
 	-ms-animation-iteration-count: infinite;
@@ -46,31 +46,16 @@
 }
 
  @-moz-keyframes wave {
-	from {
-		margin-left:0%;
-	}
-
-	to {
-		margin-left:-100%;
-	}
+	from { margin-left:0%; }
+	to {	margin-left:-100%; }
 }
     
 @-webkit-keyframes wave {
-	from {
-		margin-left:0%;
-	}
-
-	to {
-		margin-left:-100%;
-	}
+	from { margin-left:0%; }
+	to {	margin-left:-100%; }
 }
 
 @-ms-keyframes wave {
-	from {
-		margin-left:0%;
-	}
-
-	to {
-		margin-left:-100%;
-	}
+	from { margin-left:0%; }
+	to {	margin-left:-100%; }
 }
