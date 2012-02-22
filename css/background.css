@@ -1,8 +1,7 @@
 .vague_bg1
 {
     background: url(../ressources/vague1.png);
-    background-repeat: repeat;
-    width: 150%;
+    width: 200%;
     height: 200px;
     position: fixed;
     top: 30%;
@@ -12,10 +11,66 @@
 .vague_bg2
 {
     background: url(../ressources/vague2.png);
-    background-repeat: repeat;
-    width: 150%;
+    width: 200%;
     height: 200px;
     position: fixed;
     top: 30%;
 	z-index: 0;
+}
+
+.vague_bg1, .vague_bg2
+{
+	-moz-animation-name: wave;
+	-webkit-animation-name: wave;
+	-ms-animation-name: wave;
+	-moz-animation-iteration-count: infinite;
+	-webkit-animation-iteration-count: infinite;
+	-ms-animation-iteration-count: infinite;
+	-moz-animation-timing-function: linear;
+	-webkit-animation-timing-function: linear;
+	-ms-animation-timing-function: linear;
+}
+
+.vague_bg1
+{
+	-moz-animation-duration: 14s;
+	-webkit-animation-duration: 14s;
+	-ms-animation-duration: 14s;
+}
+
+.vague_bg2
+{
+	-moz-animation-duration: 10s;
+	-webkit-animation-duration: 10s;
+	-ms-animation-duration: 10s;
+}
+
+ @-moz-keyframes wave {
+	from {
+		margin-left:0%;
+	}
+
+	to {
+		margin-left:-100%;
+	}
+}
+    
+@-webkit-keyframes wave {
+	from {
+		margin-left:0%;
+	}
+
+	to {
+		margin-left:-100%;
+	}
+}
+
+@-ms-keyframes wave {
+	from {
+		margin-left:0%;
+	}
+
+	to {
+		margin-left:-100%;
+	}
 }
