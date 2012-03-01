@@ -13,7 +13,7 @@
 
 .button, .locked {
 	border-radius: 0.5em;
-	line-height: 100px;
+	line-height: 107px;
 }
 
 .button.toolChooser, .locked {
@@ -22,15 +22,15 @@
 }
 
 #setEdgeColor {
-	background-position:-70px -10px;
+	background-position:-70px -7px;
 }
 
 #setEdgeColor:hover {
-	background-position:-70px 60px;
+	background-position:-70px 63px;
 }
 
 #edit {
-	background-position:-140px -10px;
+	background-position:-140px -8px;
 }
 
 #edit:hover {
@@ -42,15 +42,15 @@
 }
 
 #eraseAll:hover {
-	background-position:-210px 60px;
+	background-position:-210px 56px;
 }
 
 #drawGrass {
-	background-position:-280px -10px;
+	background-position:-280px -7px;
 }
 
 #drawGrass:hover {
-	background-position:-280px 60px;
+	background-position:-280px 57px;
 }
 
 #erase {
@@ -58,7 +58,7 @@
 }
 
 #erase:hover {
-	background-position:-350px 60px;
+	background-position:-350px 56px;
 }
 
 .button-bottom, .selected {
