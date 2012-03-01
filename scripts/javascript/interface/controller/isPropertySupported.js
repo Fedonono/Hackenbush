@@ -8,6 +8,6 @@ function isAnimationSupported()
 
 function isPropertySupported(property)
 {
-	console.log(property in document.body.style);
+	//console.log(property in document.body.style);
 	return property in document.body.style;
 }
