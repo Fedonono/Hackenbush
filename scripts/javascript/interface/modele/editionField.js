@@ -23,13 +23,40 @@
         
         currentItem : null,
         
+        getNodeByCoord : function(x, y) {
+          
+            for(var itemKey in editionField.items.nodes){
+                
+                var item = editionField.items.nodes[itemKey];
+                
+                if(x >= item.x - 12 && x <= item.x + 12 && y >= item.y - 12 && y <= item.y + 12) return itemKey.replace('#', '')*1;
+                
+            }
+            
+            return null;          
+        },
+        
         
         addNode : function(x, y) {
             
-            var id = ++editionField.nodeIdCounter;
-            var nodeUi = new NodeUI(id, x, y);
+            var nodeUi;
             
-            editionField.graph.addNode(id);
+            var id = editionField.getNodeByCoord(x, y);
+            
+            if(id){
+                nodeUi = editionField.items.nodes["#"+id];
+                delete editionField.items.nodes["#"+id];
+            }
+            else{
+                id = ++editionField.nodeIdCounter;
+                editionField.graph.addNode(id);
+            
+                if(y+6 > height - 30){
+                    editionField.graph.groundNode(id);
+                    y = height-30;
+                }
+                nodeUi = new NodeUI(id, x, y);            
+            }
             editionField.dashItems.nodes["#"+id] = nodeUi;
             editionField.dashItems.nodes.length++;
             editionField.currentItem = nodeUi;
@@ -42,6 +69,15 @@
             
             var start = editionField.currentItem;
             var goal = new NodeUI("goal", x, y);
+            
+            var id = editionField.getNodeByCoord(x, y);
+            
+            if(id){
+                var item = editionField.items.nodes["#"+id];
+                goal.x = item.x;
+                goal.y = item.y;
+            }
+            else if(goal.y+6 > height - 30) goal.y = height-30;
             
             var edgeUi = new EdgeUI(color, start.id, goal.id);
             
@@ -59,10 +95,29 @@
                 var x = editionField.dashItems.nodes["goal"].x;
                 var y = editionField.dashItems.nodes["goal"].y;
                 delete editionField.dashItems.nodes["goal"];
-                editionField.addNode(x, y);
                 
+                var id = editionField.getNodeByCoord(x, y);
+                
+                if(!id) {
+                    editionField.addNode(x, y);
+                    id = editionField.nodeIdCounter;
+                }
+                else{
+                    editionField.dashItems.nodes["#"+id] = editionField.items.nodes["#"+id];
+                    editionField.dashItems.nodes.length++;
+                    
+                    delete editionField.items.nodes["#"+id];
+                    editionField.items.nodes.length--;
+                }
+                
+                if(editionField.dashItems.edges[0]){
+                    
+                    var edgeUi = editionField.dashItems.edges[0]
+                    edgeUi.goal = id;
+                    editionField.graph.addWeightedEdge(edgeUi.start, edgeUi.goal, edgeUi.color);
+                    
+                }
             }
-            if(editionField.dashItems.edges[0]) editionField.dashItems.edges[0].goal = editionField.nodeIdCounter;
             drawingArea.refresh();
             
         },
@@ -91,9 +146,9 @@
             drawingArea.refresh();
         },
 
-		drawGrass : function() {
-			drawingArea.drawGrass();
-		},
+        drawGrass : function() {
+            drawingArea.drawGrass();
+        },
     
         eraseAll : function() {
             

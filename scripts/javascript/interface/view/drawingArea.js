@@ -39,19 +39,18 @@
             context.lineTo(goal.x, goal.y);
             context.stroke();
             context.closePath();
+            
         },
     
  
-		drawGrass : function() {
-			var context = drawingArea.context;
-			context.beginPath();
-			context.fillStyle = '#00ff00';
-			context.fillRect(0,height-30,width,30);
-			context.closePath();
-			var drawGrass = $('#drawGrass');
-			drawGrass.addClass('locked');
-			drawGrass.removeClass('button');
-			drawGrass.removeClass('toolChooser');
+        drawGrass : function() {
+            
+            var context = drawingArea.context;
+            context.beginPath();
+            context.fillStyle = '#00ff00';
+            context.fillRect(0,height-30,width,30);
+            context.closePath();
+            
         },
     
         refresh : function() {
@@ -87,7 +86,7 @@
         },
         
         update : function(){
-            
+            console.log(editionField.graph);
             drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);
             
         },
@@ -98,5 +97,6 @@
             drawingArea.drawGrass();
         }
     
-    };    
+    };  
+    drawingArea.drawGrass();
 })();
