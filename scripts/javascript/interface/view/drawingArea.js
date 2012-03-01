@@ -42,16 +42,16 @@
         },
     
  
-        drawGrass : function() {
-            
-            var context = drawingArea.context;
-            context.fillStyle = '#00ff00';
-            
-            context.beginPath();
-            context.fillRect(0, height-30, width,30);
-            context.closePath();
-            drawingArea.update();
-            
+		drawGrass : function() {
+			var context = drawingArea.context;
+			context.beginPath();
+			context.fillStyle = '#00ff00';
+			context.fillRect(0,height-30,width,30);
+			context.closePath();
+			var drawGrass = $('#drawGrass');
+			drawGrass.addClass('locked');
+			drawGrass.removeClass('button');
+			drawGrass.removeClass('toolChooser');
         },
     
         refresh : function() {
@@ -92,8 +92,5 @@
             
         }
     
-    };
-    
-    drawingArea.drawGrass(); 
-    
+    };    
 })();

@@ -38,7 +38,7 @@ body {
 }
 
 #main-container-canvas {
-	display:table-row-group; 
+	display: inline; 
 }
 
 #main-center {
@@ -67,12 +67,17 @@ body {
 	position: relative;
 	margin:auto;
 	width: 1200px;
-	height: 80px;;
 	position: relative;
     background: none repeat scroll 0 0 padding-box white;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     box-shadow: 0 0 8px rgba(255,255,255,1);
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#main-bottom-container {
+	display: inline-block;
 }
 
 #foot {
@@ -91,4 +96,3 @@ body {
 	text-align: right;
 	position: relative;
 }
-

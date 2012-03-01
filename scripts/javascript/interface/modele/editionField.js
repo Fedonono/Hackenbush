@@ -90,6 +90,10 @@
             drawingArea.update();
             drawingArea.refresh();
         },
+
+		drawGrass : function() {
+			drawingArea.drawGrass();
+		},
     
         eraseAll : function() {
             editionField.graph = new HackenbushGraph();

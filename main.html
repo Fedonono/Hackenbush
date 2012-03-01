@@ -6,6 +6,7 @@
     <link type="text/css" href="./css/anaglyph_text.css" rel="stylesheet">
     <link type="text/css" href="./css/canvas.css" rel="stylesheet">
     <link type="text/css" href="./css/background.css" rel="stylesheet">
+    <link type="text/css" href="./css/button.css" rel="stylesheet">
 </head>
 <body> 
 	<div id="head">
@@ -17,8 +18,10 @@
 		<div id="main-container"></div>
 	</div>
 	<div id="main-bottom">
-		<a class="selected" id="canvas" href="#canvas">Canvas</a> | 
-		<a class="selected" id="tests" href="#tests">Tests</a>
+		<div id="main-bottom-container">
+			<a href="#canvas"><div class="button-center">Canvas</div></a>
+			<a href="#tests"><div class="button-center">Tests</div></a>
+		</div>
 	</div>
 	<div id="foot">
 		<p>
@@ -52,8 +55,10 @@
     <script type ="text/javascript" src ="./scripts/javascript/Graph/HackenbushGraph.js"></script>
     
     <script type="text/javascript" src="./scripts/javascript/interface/controller/reloadPage.js"></script>
+    <script type="text/javascript" src="./scripts/javascript/interface/controller/isPropertySupported.js"></script>
     
     <script type="text/javascript" src="./scripts/javascript/interface/view/page.js"></script>
     
+    <script type="text/javascript" src="./scripts/javascript/interface/view/background.js"></script>
 </body>
 </html>

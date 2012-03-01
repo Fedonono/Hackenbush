@@ -1,0 +1,87 @@
+.button-center {
+    -moz-transition: all 0.8s ease-in-out 0s;
+    -ms-transition: all 0.8s ease-in-out 0s;
+    -o-transition: all 0.8s ease-in-out 0s;
+    -webkit-transition: all 0.8s ease-in-out 0s;
+	transition: all 0.8s ease-in-out 0s;
+    border: 4px solid rgba(201,201,201,0.5);
+    box-shadow: 0 0 8px rgba(221,201,201,1);
+    width: 70px;
+	height: 70px;
+	text-align: center;
+	border-radius: 2em;
+	font-family: Helvetica, Arial;
+	font-weight: 900;
+	font-variant:small-caps;
+	color : rgba(221,201,201,0.8);
+	display:table-cell;
+	vertical-align: middle;
+}
+
+.button-center:hover {
+	-moz-transform: translateY(-10px);
+	-ms-transform: translateY(-10px);
+	-o-transform: translateY(-10px);
+	-webkit-transform: translateY(-10px);
+	transform: translateY(-10px);
+	border: 4px inset rgba(77,255,77,0.4);
+	color: #4dff4d;
+}
+
+.button {
+    -moz-transition: all 0.8s ease-in-out 0s;
+    -ms-transition: all 0.8s ease-in-out 0s;
+    -o-transition: all 0.8s ease-in-out 0s;
+    -webkit-transition: all 0.8s ease-in-out 0s;
+	transition: all 0.8s ease-in-out 0s;
+    border: 4px solid rgba(201,201,201,0.5);
+    box-shadow: 0 0 8px rgba(221,201,201,1);
+    width: 70px;
+	height: 70px;
+	position: relative;
+	text-align: center;
+	border-radius: 0.5em;
+	font-family: Helvetica, Arial;
+	font-weight: 900;
+	font-variant:small-caps;
+	color : rgba(221,201,201,0.8);
+}
+
+.toolChooser {
+	margin: 0px 5px 25px 0px;
+	float: right;
+	clear: both;
+	top: 20px;
+}
+
+.button:hover {
+	-moz-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	-webkit-transform: scale(1.2);
+	-o-transform: scale(1.2);
+	transform: scale(1.2);
+	border: 4px inset rgba(77,255,77,0.4);
+	color: #4dff4d;
+}
+
+.locked {
+    box-shadow: 0 0 8px rgba(221,201,201,1);
+    width: 70px;
+	height: 70px;
+	position: relative;
+	text-align: center;
+	border-radius: 0.5em;
+	font-family: Helvetica, Arial;
+	font-weight: 900;
+	font-variant:small-caps;
+	color: red;
+	border: 4px inset rgba(255,0,0,0.4);
+	margin: 0px 5px 25px 0px;
+	float: right;
+	clear: both;
+	top: 20px;
+}
+
+.colorChooser {
+	margin: 0px 5px 110px 0px;
+}

@@ -1,7 +1,7 @@
 var controller = {
     
     
-    color : "green", // default color : primary blue
+    color : "green", // default color : primary green
 	
     tool : null, // default tool : none
     
@@ -9,21 +9,15 @@ var controller = {
     listenToTools : function(){
         
         $(".colorChooser").click( function(event) {
-            
-            var element = event.currentTarget;
-            controller.color = element.id;
-			
+            controller.color = event.currentTarget.id;			
         });
 		
 		
         $(".toolChooser").click( function(event) {
-            var element = event.currentTarget;
-            var tool = element.id;
-            if (!$('#'+tool).hasClass('locked')) { // check if the tool is available or not
-                controller.tool = tool;
-                if(controller.tool === "eraseAll") editionField.eraseAll();
-            }
-        });  
+            controller.tool = event.currentTarget.id;
+			if(controller.tool === "eraseAll") editionField.eraseAll();
+			if(controller.tool === "drawGrass") editionField.drawGrass();
+        });
         
     }    
 };
