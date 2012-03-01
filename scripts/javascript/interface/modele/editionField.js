@@ -52,7 +52,7 @@
             
         },
         
-        addEdge : function(x, y) {
+        addEdge : function() {
             
             if(editionField.dashItems.nodes["goal"]){
                 
@@ -96,9 +96,12 @@
 		},
     
         eraseAll : function() {
-            editionField.graph = new HackenbushGraph();
             
+            editionField.graph = new HackenbushGraph();
+            editionField.items.nodes = new Array();
+            editionField.items.edges = new Array();
             drawingArea.reset();
+            
         }
     
     };

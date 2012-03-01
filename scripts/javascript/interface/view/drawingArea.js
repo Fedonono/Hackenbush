@@ -90,6 +90,12 @@
             
             drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);
             
+        },
+        
+        reset : function(){
+            var context = drawingArea.context;
+            context.clearRect(0, 0, width, height);
+            drawingArea.drawGrass();
         }
     
     };    

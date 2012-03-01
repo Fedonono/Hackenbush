@@ -46,14 +46,10 @@
             }
         });
         
-        canvas.mouseup(function(event){
+        $('body').mouseup(function(event){
             mousedown = false;
             
-            
-            var canvasCoords =  getMouseCoords(event);
-            if(canvasCoords.x > canvas[0].width - Xtolerance || canvasCoords.x < Xtolerance || canvasCoords.y > canvas[0].height - Ytolerance || canvasCoords.y < Ytolerance) return
-            
-            if(controller.tool === "edit")editionField.addEdge(canvasCoords.x, canvasCoords.y);
+            if(controller.tool === "edit")editionField.addEdge();
             editionField.apply();
             
         });
