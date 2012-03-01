@@ -1,4 +1,4 @@
-.button, .button-bottom, .locked {
+.button, .button-bottom, .locked, .selected {
     border: 4px solid rgba(201,201,201,0.5);
     box-shadow: 0 0 8px rgba(221,201,201,1);
     width: 70px;
@@ -13,12 +13,63 @@
 
 .button, .locked {
 	border-radius: 0.5em;
+	line-height: 100px;
 }
 
-.button-bottom {
-	display:table-cell;
-	vertical-align: middle;
+.button.toolChooser, .locked {
+	background-color: rgba(158,166,182,0.15);
+	background-image: url(../ressources/toolChooser.png);
+}
+
+#setEdgeColor {
+	background-position:-70px -10px;
+}
+
+#setEdgeColor:hover {
+	background-position:-70px 60px;
+}
+
+#edit {
+	background-position:-140px -10px;
+}
+
+#edit:hover {
+	background-position:-140px 60px;
+}
+
+#eraseAll {
+	background-position:-210px -10px;
+}
+
+#eraseAll:hover {
+	background-position:-210px 60px;
+}
+
+#drawGrass {
+	background-position:-280px -10px;
+}
+
+#drawGrass:hover {
+	background-position:-280px 60px;
+}
+
+#erase {
+	background-position:-350px -10px;
+}
+
+#erase:hover {
+	background-position:-350px 60px;
+}
+
+.button-bottom, .selected {
+	background-image: url(../ressources/button-bottom.png);
+	background-position: -4px -4px;
+	background-repeat: no-repeat;
 	border-radius: 2em;
+	float: left;
+	clear: none;
+	line-height: 70px;
+	vertical-align: middle;
 }
 
 .button, .button-bottom  {
@@ -35,9 +86,9 @@
 	clear: both;
 }
 
-.button:hover, .button-bottom:hover  {
+.button:hover, .button-bottom:hover, .selected  {
 	border: 4px inset rgba(77,255,77,0.4);
-	color: #4dff4d;
+	color: rgba(77,255,77,0.6);
 }
 
 .button:hover {

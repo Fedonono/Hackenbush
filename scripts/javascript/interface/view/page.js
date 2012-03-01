@@ -1,7 +1,11 @@
 (function() {
 	hackenbush.selectedPage = function(page) {
-		$('.selected').removeClass('selected');
-		$('.'+page).addClass('selected');
+		var prevSelectedId = $('.selected');
+		prevSelectedId.addClass('button-bottom');
+		prevSelectedId.removeClass('selected');
+		var selectedId = $('#'+page);
+		selectedId.removeClass('button-bottom');
+		selectedId.addClass('selected');
 	}
 
 	hackenbush.loadPage = function(page) {

@@ -4,6 +4,10 @@ body {
 	background-image:url(../ressources/bglines.png);
 }
 
+a {
+	text-decoration: none;
+}
+
 #head, #main, #main-container, #main-bottom, #foot {
 	width: 1200px;
     background: none repeat scroll 0 0 padding-box white;
