@@ -50,6 +50,7 @@
             context.fillStyle = '#00ff00';
             context.fillRect(0,height-30,width,30);
             context.closePath();
+            drawingArea.imageData = context.getImageData(0, 0, width, height);
             
         },
     

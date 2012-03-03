@@ -3,7 +3,7 @@ var controller = {
     
     color : "green", // default color : primary green
 	
-    tool : null, // default tool : none
+    tool : "edit", // default tool : edit
     
     
     listenToTools : function(){
