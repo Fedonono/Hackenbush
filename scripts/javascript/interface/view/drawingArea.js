@@ -88,6 +88,7 @@
         
         update : function(){
             console.log(editionField.graph);
+            //todo : tout redessiner ;)
             drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);
             
         },
