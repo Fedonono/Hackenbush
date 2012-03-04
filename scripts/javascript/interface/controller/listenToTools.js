@@ -14,9 +14,10 @@ var controller = {
 		
 		
         $(".toolChooser").click( function(event) {
-            controller.tool = event.currentTarget.id;
-			if(controller.tool === "eraseAll") editionField.eraseAll();
-			if(controller.tool === "drawGrass") editionField.drawGrass();
+            
+            if(event.currentTarget.id === "eraseAll") editionField.eraseAll();
+            else controller.tool = event.currentTarget.id;
+			
         });
         
     }    

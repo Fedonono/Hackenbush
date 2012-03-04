@@ -73,10 +73,18 @@
             var id = editionField.getNodeByCoord(x, y);
             
             if(id){
+                
                 var item = editionField.items.nodes["#"+id];
                 goal.x = item.x;
                 goal.y = item.y;
+                
             }
+            else if(goal.x >= start.x - 12 && goal.x <= start.x + 12 && goal.y >= start.y - 12 && goal.y <= start.y + 12) {
+               
+                goal.x = start.x;
+                goal.y = start.y;
+                
+            }    
             else if(goal.y+6 > height - 30) goal.y = height-30;
             
             var edgeUi = new EdgeUI(color, start.id, goal.id);

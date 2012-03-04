@@ -87,8 +87,34 @@
         },
         
         update : function(){
+            
+            //TO DO : update par parcours du graph.
+            
             console.log(editionField.graph);
-            //todo : tout redessiner ;)
+            
+            drawingArea.reset();
+            
+            var x, y ;
+            
+            for (var i = 0; i < editionField.items.edges.length; i++){
+                
+                var edge = editionField.items.edges[i];
+                var start, goal;
+                
+                if(editionField.items.nodes["#"+edge.start]) start = editionField.items.nodes["#"+edge.start];
+                if (editionField.items.nodes["#"+edge.goal]) goal = editionField.items.nodes["#"+edge.goal];
+                if(start && goal) drawingArea.drawEdge(start, goal, edge.color);
+                
+            }
+            
+            for( var itemKey in editionField.items.nodes){
+                
+                x = editionField.items.nodes[itemKey].x;
+                y = editionField.items.nodes[itemKey].y;
+                
+                drawingArea.drawNode(x, y);
+            }
+            
             drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);
             
         },
