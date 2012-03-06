@@ -9,25 +9,19 @@
      
         nodeIdCounter : 0, 
     
-        graph : new HackenbushGraph(),
-    
-        items : {
-            nodes : new Array(),
-            edges : new Array()
-        },
-    
-        dashItems : {
-            nodes: new Array(),
-            edges: new Array()
-        },
+        graphGame : new HackenbushGraph(false),
         
-        currentItem : null,
+        graphUi : new HackenbushGraph(false),
+    
+        dash : new HackenbushGraph(false),
+        
+        currentNodeId : 0,
         
         getNodeByCoord : function(x, y) {
           
-            for(var itemKey in editionField.items.nodes){
+            for(var itemKey in editionField.graphUi.nodes){
                 
-                var item = editionField.items.nodes[itemKey];
+                var item = editionField.graphUi.nodes[itemKey].weight;
                 
                 if(x >= item.x - 12 && x <= item.x + 12 && y >= item.y - 12 && y <= item.y + 12) return itemKey.replace('#', '')*1;
                 
@@ -39,131 +33,112 @@
         
         addNode : function(x, y) {
             
-            var nodeUi;
-            
+            var point;
             var id = editionField.getNodeByCoord(x, y);
             
             if(id){
-                nodeUi = editionField.items.nodes["#"+id];
-                delete editionField.items.nodes["#"+id];
+                point = editionField.graphUi.nodes["#"+id].weight;
             }
             else{
                 id = ++editionField.nodeIdCounter;
-                editionField.graph.addNode(id);
+                editionField.graphGame.addNode(id);
             
                 if(y+6 > height - 30){
-                    editionField.graph.groundNode(id);
+                    editionField.graphGame.groundNode(id);
                     y = height-30;
                 }
-                nodeUi = new NodeUI(id, x, y);            
+                
+                point = new Point( x, y);
+                editionField.graphUi.addWeightedNode(id, point);
             }
-            editionField.dashItems.nodes["#"+id] = nodeUi;
-            editionField.dashItems.nodes.length++;
-            editionField.currentItem = nodeUi;
+            
+            editionField.dash.addWeightedNode(id, point);
+            editionField.currentNodeId = id;
             
             drawingArea.refresh();
-        
         },
         
         edit : function(x, y, color){
             
-            var start = editionField.currentItem;
-            var goal = new NodeUI("goal", x, y);
+            var start = editionField.dash.getNodeValue(editionField.currentNodeId);
             
             var id = editionField.getNodeByCoord(x, y);
-            
             if(id){
-                
-                var item = editionField.items.nodes["#"+id];
-                goal.x = item.x;
-                goal.y = item.y;
-                
+                var item = editionField.graphUi.getNodeValue(id);
+                x = item.x;
+                y = item.y;   
             }
-            else if(goal.x >= start.x - 12 && goal.x <= start.x + 12 && goal.y >= start.y - 12 && goal.y <= start.y + 12) {
-               
-                goal.x = start.x;
-                goal.y = start.y;
+            else{
+                if(x >= start.x - 12 && x <= start.x + 12 && y >= start.y - 12 && y <= start.y + 12) {
+                    x = start.x;
+                    y = start.y;
+                }    
+                else if(y + 6 > height - 30) y = height-30;
+            }
+            
+            id = editionField.nodeIdCounter + 42;
+            var goal = new Point(x, y);
+            
+            if(!editionField.dash.nodeExists(id)) {
                 
-            }    
-            else if(goal.y+6 > height - 30) goal.y = height-30;
-            
-            var edgeUi = new EdgeUI(color, start.id, goal.id);
-            
-            editionField.dashItems.nodes["goal"] = goal;
-            editionField.dashItems.edges[0] = edgeUi;
-            
+                editionField.dash.addWeightedNode(id, goal);
+                editionField.dash.addWeightedEdge(editionField.currentNodeId, id, color);
+            }
+            else{
+                
+                editionField.dash.setNodeValue(id, goal);
+            }
+                
             drawingArea.refresh();
-            
         },
         
         addEdge : function() {
             
-            if(editionField.dashItems.nodes["goal"]){
+            var dashId = editionField.nodeIdCounter + 42;
+            var startId = editionField.currentNodeId;
+            
+            if(editionField.dash.nodeExists(dashId)){
                 
-                var x = editionField.dashItems.nodes["goal"].x;
-                var y = editionField.dashItems.nodes["goal"].y;
-                delete editionField.dashItems.nodes["goal"];
+                var indexEdge = editionField.dash.nodes["#"+startId].neighbors["#"+dashId].length - 1;
+                var color = editionField.dash.getEdgeValue(startId, dashId, indexEdge);
                 
-                var id = editionField.getNodeByCoord(x, y);
+                var point = editionField.dash.getNodeValue(dashId);
+                var id = editionField.getNodeByCoord(point.x, point.y);
                 
                 if(!id) {
-                    editionField.addNode(x, y);
+                    editionField.addNode(point.x, point.y);
                     id = editionField.nodeIdCounter;
                 }
-                else{
-                    editionField.dashItems.nodes["#"+id] = editionField.items.nodes["#"+id];
-                    editionField.dashItems.nodes.length++;
-                    
-                    delete editionField.items.nodes["#"+id];
-                    editionField.items.nodes.length--;
-                }
                 
-                if(editionField.dashItems.edges[0]){
-                    
-                    var edgeUi = editionField.dashItems.edges[0]
-                    edgeUi.goal = id;
-                    editionField.graph.addWeightedEdge(edgeUi.start, edgeUi.goal, edgeUi.color);
-                    
-                }
+                editionField.graphGame.addWeightedEdge(startId, id, color);
+                editionField.graphUi.addWeightedEdge(startId, id, color); 
             }
-            drawingArea.refresh();
             
+        },
+        
+        erase : function(x, y){
+            var id = editionField.getNodeByCoord(x, y);
+            if(id){
+                editionField.graphGame.removeNode(id);
+                editionField.graphUi.removeNode(id);
+            }
         },
         
         apply : function(){            
 
-            for(var itemKey in editionField.dashItems.nodes){
-                
-                editionField.items.nodes[itemKey] = editionField.dashItems.nodes[itemKey];
-                editionField.items.nodes.length++;
-                
-                delete editionField.dashItems.nodes[itemKey];
-                editionField.dashItems.nodes.length--;
-                
-            }
-            
-            for(var i = 0; i < editionField.dashItems.edges.length; i++){
-                
-                editionField.items.edges.push(editionField.dashItems.edges.pop());
-                
-            }
+            editionField.dash = new HackenbushGraph();
+            editionField.currentNodeId = 0;
             
             editionField.currentItem = null;
             editionField.currentEdge = null;
             drawingArea.update();
-            drawingArea.refresh();
-        },
-
-        drawGrass : function() {
-            drawingArea.drawGrass();
         },
     
         eraseAll : function() {
             
-            editionField.graph = new HackenbushGraph();
-            editionField.items.nodes = new Array();
-            editionField.items.edges = new Array();
-            drawingArea.reset();
+            editionField.graphGame = new HackenbushGraph();
+            editionField.graphUi = new HackenbushGraph();
+            drawingArea.update();
             
         }
     

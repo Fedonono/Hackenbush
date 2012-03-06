@@ -58,61 +58,63 @@
             
             drawingArea.context.putImageData(drawingArea.imageData, 0, 0);
             
-            var x, y ;
-            
-            for (var i = 0; i < editionField.dashItems.edges.length; i++){
+            for (var itemKey in editionField.dash.nodes){
+                var node = editionField.dash.nodes[itemKey];
+                var start = node.weight;                
                 
-                var edge = editionField.dashItems.edges[i];
-                var start, goal;
-                
-                if(editionField.dashItems.nodes["#"+edge.start]) start = editionField.dashItems.nodes["#"+edge.start];
-                else if (editionField.items.nodes["#"+edge.start]) start = editionField.items.nodes["#"+edge.start];
-                
-                if(editionField.dashItems.nodes["goal"]) goal = editionField.dashItems.nodes["goal"];
-                else if(editionField.dashItems.nodes["#"+edge.goal]) goal = editionField.dashItems.nodes["#"+edge.goal];
-                else if (editionField.items.nodes["#"+edge.goal]) goal = editionField.items.nodes["#"+edge.goal];
-                
-                if(start && goal) drawingArea.drawEdge(start, goal, edge.color);
-                
+                for(var neighborKey in node.neighbors){
+                    
+                    var goal = editionField.dash.nodes[neighborKey].weight;
+                    var edges = node.neighbors[neighborKey];
+                    
+                    for(var i = 0; i < edges.length; i++){
+                        
+                        var color = edges[i].weight;
+                        drawingArea.drawEdge(start, goal, color);
+                    }
+                    
+                }
             }
             
-            for( var itemKey in editionField.dashItems.nodes){
+            for (itemKey in editionField.dash.nodes){
                 
-                x = editionField.dashItems.nodes[itemKey].x;
-                y = editionField.dashItems.nodes[itemKey].y;
-                
-                drawingArea.drawNode(x, y);
+                var point = editionField.dash.nodes[itemKey].weight;
+                drawingArea.drawNode(point.x, point.y);
             }
-            
         },
         
         update : function(){
             
             //TO DO : update par parcours du graph.
             
-            console.log(editionField.graph);
+            console.log(editionField.graphUi);
             
             drawingArea.reset();
             
-            var x, y ;
             
-            for (var i = 0; i < editionField.items.edges.length; i++){
+            for (var itemKey in editionField.graphUi.nodes){
+                var node = editionField.graphUi.nodes[itemKey];
+                var start = node.weight;                
                 
-                var edge = editionField.items.edges[i];
-                var start, goal;
-                
-                if(editionField.items.nodes["#"+edge.start]) start = editionField.items.nodes["#"+edge.start];
-                if (editionField.items.nodes["#"+edge.goal]) goal = editionField.items.nodes["#"+edge.goal];
-                if(start && goal) drawingArea.drawEdge(start, goal, edge.color);
-                
+                for(var neighborKey in node.neighbors){
+                    
+                    var goal = editionField.graphUi.nodes[neighborKey].weight;
+                    var edges = node.neighbors[neighborKey];
+                    
+                    for(var i = 0; i < edges.length; i++){
+                        
+                        var color = edges[i].weight;
+                        drawingArea.drawEdge(start, goal, color);
+                    }
+                    
+                }
             }
             
-            for( var itemKey in editionField.items.nodes){
+            for( var itemKey in editionField.graphUi.nodes){
                 
-                x = editionField.items.nodes[itemKey].x;
-                y = editionField.items.nodes[itemKey].y;
+                var point = editionField.graphUi.nodes[itemKey].weight;
                 
-                drawingArea.drawNode(x, y);
+                drawingArea.drawNode(point.x, point.y);
             }
             
             drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);

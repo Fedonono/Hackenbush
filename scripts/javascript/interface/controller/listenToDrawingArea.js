@@ -33,6 +33,7 @@
             if(startCoords.x > canvas[0].width - Xtolerance || startCoords.x < Xtolerance || startCoords.y > canvas[0].height - Ytolerance || startCoords.y < Ytolerance) return
             
             if(controller.tool === "edit") editionField.addNode(startCoords.x, startCoords.y);
+            if(controller.tool === "erase") editionField.erase(startCoords.x, startCoords.y);
             
             
         });
