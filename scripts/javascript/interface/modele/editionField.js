@@ -117,6 +117,7 @@
         },
         
         erase : function(x, y){
+            
             var id = editionField.getNodeByCoord(x, y);
             if(id){
                 editionField.graphGame.removeNode(id);
