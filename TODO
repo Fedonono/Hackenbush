@@ -1,24 +1,8 @@
-Implement how to get r,g,b with an RGBint :
-var b =  RGBint & 255;
-var g = (RGBint >> 8) & 255;
-var r =   (RGBint >> 16) & 255;
-test with => hex : 59c5ed && int : 5883373 && r : 89, g : 197, b : 237
 
-Do the interface.
-
-dans le dossier scripts/javascript/interface/controller:
-	tous les scripts touchant à la gestion d'evenement (car c'est le controller qui donne les ordres au modele en fonction des actions de l'utilisateur)
-
-dans le dossier scripts/javascript/interface/modele:
-	tous les scripts touchant à la modelisation du jeu en memoire 
-
-dans le dossier scripts/javascript/interface/view:
-	tous les fichier touchant à la modelisation du jeu en graphique sur la vue ainsi que les scripts de style tel que canvas.js et background.js
-
-
-Tester W3C validator !
-
-
-- Faire herbe
 - Division à changer avec lib
 - chargement page image
+
+- une jolie image pour le boutton select
+- virer le style dans edition.html et le mettre dans un fichier css
+- faire la bdd
+

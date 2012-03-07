@@ -33,7 +33,8 @@
             if(startCoords.x > canvas[0].width - Xtolerance || startCoords.x < Xtolerance || startCoords.y > canvas[0].height - Ytolerance || startCoords.y < Ytolerance) return
             
             if(controller.tool === "edit") editionField.addNode(startCoords.x, startCoords.y);
-            if(controller.tool === "erase") editionField.erase(startCoords.x, startCoords.y);
+            else if(controller.tool === "erase") editionField.erase(startCoords.x, startCoords.y);
+            else if(controller.tool === "select") editionField.setSelectedItem(startCoords.x, startCoords.y);
             
             
         });
@@ -43,6 +44,7 @@
                 var canvasCoords =  getMouseCoords(event);  
                 if(canvasCoords.x > canvas[0].width - Xtolerance || canvasCoords.x < Xtolerance || canvasCoords.y > canvas[0].height - Ytolerance || canvasCoords.y < Ytolerance) return
                 if(controller.tool === "edit") editionField.edit(canvasCoords.x, canvasCoords.y, controller.color);
+                if(controller.tool === "select") editionField.move(canvasCoords.x, canvasCoords.y);
              
             }
         });
@@ -51,6 +53,7 @@
             mousedown = false;
             
             if(controller.tool === "edit")editionField.addEdge();
+            if(controller.tool === "select")editionField.saveChanges();
             editionField.apply();
             
         });

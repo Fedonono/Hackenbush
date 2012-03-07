@@ -60,7 +60,7 @@
             
             for (var itemKey in editionField.dash.nodes){
                 var node = editionField.dash.nodes[itemKey];
-                var start = node.weight;                
+                var start = node.weight;
                 
                 for(var neighborKey in node.neighbors){
                     
@@ -85,9 +85,7 @@
         
         update : function(){
             
-            //TO DO : update par parcours du graph.
-            
-            console.log(editionField.graphUi);
+            //console.log(editionField.graphUi);
             
             drawingArea.reset();
             
@@ -102,19 +100,24 @@
                     var edges = node.neighbors[neighborKey];
                     
                     for(var i = 0; i < edges.length; i++){
-                        
-                        var color = edges[i].weight;
-                        drawingArea.drawEdge(start, goal, color);
+                        var startId = itemKey.replace('#','')*1;
+                        var goalId = neighborKey.replace('#','')*1;
+                        if(startId !== editionField.currentNodeId && goalId !==editionField.currentNodeId){
+                            var color = edges[i].weight;
+                            drawingArea.drawEdge(start, goal, color);
+                        }
                     }
-                    
                 }
+                    
             }
+        
             
             for( var itemKey in editionField.graphUi.nodes){
-                
                 var point = editionField.graphUi.nodes[itemKey].weight;
-                
-                drawingArea.drawNode(point.x, point.y);
+                var id = itemKey.replace('#', '')*1;
+                if(id !== editionField.currentNodeId){
+                    drawingArea.drawNode(point.x, point.y);
+                }
             }
             
             drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);

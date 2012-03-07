@@ -17,7 +17,6 @@ var controller = {
             
             if(event.currentTarget.id === "eraseAll") editionField.eraseAll();
             else controller.tool = event.currentTarget.id;
-			
         });
         
     }    

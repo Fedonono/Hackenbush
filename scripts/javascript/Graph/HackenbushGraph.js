@@ -150,4 +150,8 @@ var HackenbushGraph = function(){
        
        this.groundedNodes.splice(index, 1);
    }
+   
+   this.groundPathExists = function(id){
+	   return true;
+   }
 }

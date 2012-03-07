@@ -2,14 +2,11 @@
     
     var field = $("#canvasArea");
 
-    var width = field[0].width;
     var height = field[0].height;
 
     window.editionField = {
      
         nodeIdCounter : 0, 
-    
-        graphGame : new HackenbushGraph(false),
         
         graphUi : new HackenbushGraph(false),
     
@@ -17,14 +14,44 @@
         
         currentNodeId : 0,
         
+        setSelectedItem : function(x, y){
+          
+            var id = editionField.getNodeByCoord(x, y);
+            if(id){
+                
+                editionField.currentNodeId = id;
+                var node = editionField.graphUi.getNodeById(id);
+                editionField.dash.addWeightedNode(id, node.weight);
+                
+                for(var itemKey in node.neighbors) {
+                    var neighborId = itemKey.replace("#", '')*1;
+                    if(!editionField.dash.nodeExists(neighborId)){
+                        var point = editionField.graphUi.getNodeValue(neighborId);
+                        editionField.dash.addWeightedNode(neighborId, point);  
+                    }
+                }
+                
+                for(itemKey in node.neighbors) {
+                    neighborId = itemKey.replace("#", '')*1;
+                    var edges = node.neighbors[itemKey];
+                    for(var i = 0; i < edges.length; i++) {
+                        var color = editionField.graphUi.getEdgeValue(id, neighborId, i);
+                        editionField.dash.addWeightedEdge(id, neighborId, color);
+                    }
+                }
+            }
+            
+            
+            drawingArea.update();
+            drawingArea.refresh();
+        },
+        
         getNodeByCoord : function(x, y) {
           
             for(var itemKey in editionField.graphUi.nodes){
                 
                 var item = editionField.graphUi.nodes[itemKey].weight;
-                
                 if(x >= item.x - 12 && x <= item.x + 12 && y >= item.y - 12 && y <= item.y + 12) return itemKey.replace('#', '')*1;
-                
             }
             
             return null;          
@@ -33,23 +60,19 @@
         
         addNode : function(x, y) {
             
+            if(y+6 > height - 30) y = height-30;
+            
             var point;
             var id = editionField.getNodeByCoord(x, y);
             
-            if(id){
-                point = editionField.graphUi.nodes["#"+id].weight;
-            }
-            else{
-                id = ++editionField.nodeIdCounter;
-                editionField.graphGame.addNode(id);
+            if(id) point = editionField.graphUi.getNodeValue(id);
             
-                if(y+6 > height - 30){
-                    editionField.graphGame.groundNode(id);
-                    y = height-30;
-                }
+            else{
                 
+                id = ++editionField.nodeIdCounter;                
                 point = new Point( x, y);
                 editionField.graphUi.addWeightedNode(id, point);
+                if(y+6 > height - 30) editionField.graphUi.groundNode(id);
             }
             
             editionField.dash.addWeightedNode(id, point);
@@ -58,22 +81,35 @@
             drawingArea.refresh();
         },
         
-        edit : function(x, y, color){
+        move : function(x, y){
             
-            var start = editionField.dash.getNodeValue(editionField.currentNodeId);
+            if(editionField.currentNodeId){
+                var point;
+                if(y + 6 > height - 30) y = height - 30;
+                var id = editionField.getNodeByCoord(x, y);
+                if(id) {
+                    var coord = editionField.graphUi.getNodeValue(id);
+                    point = new Point(coord.x, coord.y);
+                }
+                else{
+                    point = new Point(x,y);
+                }
+                editionField.dash.setNodeValue(editionField.currentNodeId, point);
+            }
+
+            drawingArea.refresh();
+        },
+        
+        edit : function(x, y, color){
+                        
+            if(y + 6 > height - 30) y = height-30;
             
             var id = editionField.getNodeByCoord(x, y);
+            
             if(id){
                 var item = editionField.graphUi.getNodeValue(id);
                 x = item.x;
                 y = item.y;   
-            }
-            else{
-                if(x >= start.x - 12 && x <= start.x + 12 && y >= start.y - 12 && y <= start.y + 12) {
-                    x = start.x;
-                    y = start.y;
-                }    
-                else if(y + 6 > height - 30) y = height-30;
             }
             
             id = editionField.nodeIdCounter + 42;
@@ -109,38 +145,96 @@
                     editionField.addNode(point.x, point.y);
                     id = editionField.nodeIdCounter;
                 }
-                
-                editionField.graphGame.addWeightedEdge(startId, id, color);
                 editionField.graphUi.addWeightedEdge(startId, id, color); 
             }
             
+        },
+        
+        saveChanges : function(){
+            
+            var searchDuplicate = function(currentNodeId){
+                
+                var currentPoint = editionField.dash.getNodeValue(currentNodeId);
+                
+                for(var itemKey in editionField.graphUi.nodes){
+                    var id = itemKey.replace('#', '')*1;
+                    var point = editionField.graphUi.getNodeValue(id);
+                    if(id !== currentNodeId && currentPoint.x === point.x && currentPoint.y === point.y)return id;
+                }
+                return 0;
+            }
+            
+            var mergeNodes = function(oldId, id){
+                var oldNode = editionField.graphUi.getNodeById(oldId);
+                
+                for(var neighborKey in oldNode.neighbors){
+                    var neighborId = neighborKey.replace('#', '')*1;
+                    var edges = oldNode.neighbors[neighborKey];
+                    for(var i = 0; i < edges.length; i++){
+                        var color = edges[i].weight;
+                        editionField.graphUi.addWeightedEdge(id, neighborId, color);
+                    }
+                }
+                editionField.graphUi.removeNode(oldId);
+            }
+            
+          
+            var currentNodeId = editionField.currentNodeId;
+            if(currentNodeId){
+                
+                var currentPoint = editionField.dash.getNodeValue(currentNodeId);
+                editionField.graphUi.setNodeValue(currentNodeId, currentPoint);
+                
+                var id = searchDuplicate(currentNodeId);
+                console.log(id);
+                if(id){
+                    mergeNodes(currentNodeId, id); 
+                }       
+            }
+            
+        //edges
         },
         
         erase : function(x, y){
             
             var id = editionField.getNodeByCoord(x, y);
             if(id){
-                editionField.graphGame.removeNode(id);
                 editionField.graphUi.removeNode(id);
             }
         },
         
-        apply : function(){            
-
+        
+        applyHackenbushRules : function(){
+           
+           var nodeIdQueue;
+           var groundPathExists = function(id){
+               
+           }
+           
+            for(var itemKey in editionField.graphUi.nodes){
+                var id = itemKey.replace("#", '')*1;
+                var degree = editionField.graphUi.getDegree(id);
+                if(degree === 0) editionField.graphUi.removeNode(id);
+            }
+            
+        },
+        
+        apply : function(){
+            
             editionField.dash = new HackenbushGraph();
             editionField.currentNodeId = 0;
             
-            editionField.currentItem = null;
-            editionField.currentEdge = null;
+            editionField.applyHackenbushRules();
             drawingArea.update();
         },
+        
     
         eraseAll : function() {
             
-            editionField.graphGame = new HackenbushGraph();
             editionField.graphUi = new HackenbushGraph();
-            drawingArea.update();
+            editionField.dash = new HackenbushGraph();
             
+            drawingArea.update();
         }
     
     };
