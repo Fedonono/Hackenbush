@@ -1,6 +1,6 @@
 (function(){
 
-    controller.listenToDrawingArea = function() {
+    controller.listenToEditionField = function() {
         
         
         var mousedown = false;
@@ -59,6 +59,6 @@
         });
     }
     
-    controller.listenToDrawingArea();    
+    controller.listenToEditionField();    
 })();
 
