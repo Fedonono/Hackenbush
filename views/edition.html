@@ -1,0 +1,27 @@
+<div id="main-container-canvas">
+    <div id="main-left">
+        <div class="button toolChooser" id="save">Save</div>
+        <div class="button toolChooser" id="edit">Edit</div>
+        <div class="button toolChooser" id="select">Select</div>
+        <div class="button toolChooser" id="erase">Eraser</div>
+        <div class="button toolChooser" id="eraseAll">Delete</div>
+        <div class="button toolChooser" id="load">load</div>
+    </div>
+    <div id="main-center">
+        <canvas id="canvasArea" width="800" height="600">Your browser does not support the canvas element.</canvas>
+    </div>
+    <div id="main-right">
+        <div class="button colorChooser" id="red" style="background-color:red;"> </div>
+        <div class="button colorChooser" id="green" style="background-color:green;"> </div>
+        <div class="button colorChooser" id="blue" style="background-color:blue;"> </div>
+    </div>	
+</div>
+
+<script type ="text/javascript" src ="./scripts/javascript/interface/view/drawingArea.js"></script>
+
+<script type ="text/javascript" src ="./scripts/javascript/interface/modele/Point.js"></script>
+<script type ="text/javascript" src ="./scripts/javascript/interface/modele/BezierCurve.js"></script>
+<script type ="text/javascript" src ="./scripts/javascript/interface/modele/editionField.js"></script>
+
+<script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToTools.js"></script>
+<script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToEditionField.js"></script>
