@@ -367,7 +367,7 @@ var SimpleGraph = function(directed){
 	 * @return true if the id is an integer and false if isn't
 	 */
 	this.isInt = function(value){
-		if(value === parseInt(value) && !isNaN(value))
+		if(value === parseInt(value))
 			return true;
 		else
 			return false;
