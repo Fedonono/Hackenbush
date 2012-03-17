@@ -1,15 +1,16 @@
 <div id="main-container-canvas">
     <div id="main-left">
         <div class="button toolChooser" id="save">Save</div>
+        <div class="button toolChooser" id="draw">Draw</div>
         <div class="button toolChooser" id="edit">Edit</div>
-        <div class="button toolChooser" id="select">Select</div>
         <div class="button toolChooser" id="erase">Eraser</div>
         <div class="button toolChooser" id="eraseAll">Delete</div>
         <div class="button toolChooser" id="load">load</div>
-        <div class="toolbox" id="toolbox">Option(s)
+        
+        <div class="options" id="options">Option(s)
             <div id="p1">
                 <label>p1 : </label>
-                <select id="colorChooserp1" onchange="go()">
+                <select id="player1" onchange="go()">
                     <option value="red" class="red">Red</option>
                     <option value="green" class="green">Green</option>
                     <option value="blue" class="blue">Blue</option>
@@ -17,10 +18,10 @@
             </div>
             <div id ="p2">
                 <label>p2 : </label>
-                <select id="colorChooserp2" onchange="go()">
-                    <option value="red" class="red">Red</option>
-                    <option value="green" class="green">Green</option>
+                <select id="player2" onchange="go()">
                     <option value="blue" class="blue">Blue</option>
+                    <option value="green" class="green">Green</option>
+                    <option value="red" class="red">Red</option>
                 </select>
             </div>
         </div>

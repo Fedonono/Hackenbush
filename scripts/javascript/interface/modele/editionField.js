@@ -115,7 +115,7 @@
         },
         
         
-        edit : function(x, y, color){
+        draw : function(x, y, color){
                         
             if(y + 6 > height - 30) y = height-30;
             
