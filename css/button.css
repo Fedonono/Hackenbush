@@ -1,74 +1,63 @@
-.button, .button-bottom, .locked, .selected {
+.toolbox, .button, .button-bottom, .locked, .selected {
     border: 4px solid rgba(201,201,201,0.5);
     box-shadow: 0 0 8px rgba(221,201,201,1);
+	font-family: Helvetica, Arial;
+	font-weight: 900;
+	font-variant:small-caps;
+	color : rgba(221,201,201,0.9);
+	text-align: center;
+}
+
+.button, .button-bottom, .locked, .selected {
     width: 70px;
 	height: 70px;
 	position: relative;
-	text-align: center;
-	font-family: Helvetica, Arial;
-	font-weight: 900;
-	font-variant:small-caps;
-	color : rgba(221,201,201,0.8);
 }
 
-.options {
-	background-color: rgba(158,166,182,0.15);/* PART 1 end */
-	border-radius: 0.5em; /* PART 2 */
-	line-height: 10px; /* end*/
-    border: 4px solid rgba(201,201,201,0.5);/* PART 3 */
-    box-shadow: 0 0 8px rgba(221,201,201,1);
+.toolbox {
 	position: absolute;
-	font-family: Helvetica, Arial;
-	font-weight: 900;
-	font-variant:small-caps;
-	color : rgba(221,201,201,0.8);	 /* end*/
-	/* part 4 */
-	float: right;
-	clear: both; /* end*/
-    /* Custom*/
+	line-height: 10px;
 	width: 150px;
 	height: 82px;
-	margin: 0px 0px 0px 0px;
+	margin: 0px;
+	padding: 5px 0px 0px 5px;
 	top: 620px;
 	left: 68px;
 	z-index: 1;
-	display: block;
 }
 
-.mini-button {
-    border: 4px solid rgba(201,201,201,0.5);
-    box-shadow: 0 0 8px rgba(221,201,201,1);
-    width: 10px;
-	height: 10px;
-	position: relative;
-	font-variant:small-caps;
-	color : rgba(221,201,201,0.8);
+.toolbox , .player, .playerMenu {
 	float: left;
-	clear: none; /* end*/
-	text-align: left;
-	display: block;
+	clear: none;
 }
 
-.player {
+.player, .playerMenu {
 	text-align: left;
-	display: block;
+	padding-top: 2px;
 }
+
+.toolbox, .button, .locked {
+	border-radius: 0.5em;
+}
+
 
 .button, .locked {
-	border-radius: 0.5em;
 	line-height: 107px;
 }
 
-.button.toolChooser, .locked {
+.toolbox, .button.toolChooser, .locked {
 	background-color: rgba(158,166,182,0.15);
+}
+
+.button.toolChooser, .locked {
 	background-image: url(../ressources/toolChooser.png);
 }
 
-#save {
+#save, #load {
 	background-position:0px -7px;
 }
 
-#save:hover {
+#save:hover, #load:hover {
 	background-position:0px 63px;
 }
 
@@ -165,4 +154,16 @@
 .colorChooser {
 	margin: 0px 5px 110px 0px;
 	top: 35px;
+}
+
+.red {
+	background-color: red;
+}
+
+.green  {
+	background-color: green;
+}
+
+.blue {
+	background-color: blue;
 }

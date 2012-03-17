@@ -6,16 +6,26 @@
         <div class="button toolChooser" id="erase">Eraser</div>
         <div class="button toolChooser" id="eraseAll">Delete</div>
         <div class="button toolChooser" id="load">load</div>
-        <div class="options" id="options">Option(s)
-			<div class="player">p1 :
-				<div class="mini-button colorChooser" id="red" style="background-color:red;"> </div>
-				<div class="mini-button colorChooser" id="green" style="background-color:green;"> </div>
-				<div class="mini-button colorChooser" id="blue" style="background-color:blue;"> </div>
+        <div class="toolbox" id="toolbox">Option(s)
+			<div class="player">
+				<form class="playerMenu">p1 :
+					<select id="colorChooserp1" onchange="go()">
+					  <option>Color Chooser</option>
+					  <option value="red" class="red"> </option>
+					  <option value="green" class="green"> </option>
+					  <option value="blue" class="blue"> </option>
+					</select>
+				</form>
 			</div>
-			<div class="player">p2 :
-				<div class="mini-button colorChooser" id="red" style="background-color:red;"> </div>
-				<div class="mini-button colorChooser" id="green" style="background-color:green;"> </div>
-				<div class="mini-button colorChooser" id="blue" style="background-color:blue;"> </div>
+			<div class="player">
+				<form class="playerMenu">p2 :
+					<select id="colorChooserp2" onchange="go()">
+					  <option>Color Chooser</option>
+					  <option value="red" class="red"> </option>
+					  <option value="green" class="green"> </option>
+					  <option value="blue" class="blue"> </option>
+					</select>
+				</form>
 			</div>
 		</div>
     </div>
@@ -23,9 +33,9 @@
         <canvas id="canvasArea" width="800" height="600">Your browser does not support the canvas element.</canvas>
     </div>
     <div id="main-right">
-        <div class="button colorChooser" id="red" style="background-color:red;"> </div>
-        <div class="button colorChooser" id="green" style="background-color:green;"> </div>
-        <div class="button colorChooser" id="blue" style="background-color:blue;"> </div>
+        <div class="button colorChooser red" id="red"> </div>
+        <div class="button colorChooser green" id="green"> </div>
+        <div class="button colorChooser blue" id="blue""> </div>
     </div>	
 </div>
 
