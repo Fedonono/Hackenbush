@@ -14,6 +14,7 @@
         
         currentNodeId : 0,
         
+        
         setSelectedItem : function(x, y){
           
             var id = editionField.getNodeByCoord(x, y);
@@ -25,7 +26,7 @@
                 
                 for(var itemKey in node.neighbors) {
                     var neighborId = itemKey.replace("#", '')*1;
-                    if(!editionField.dash.nodeExists(neighborId)){
+                    if(!editionField.dash.nodeExists(neighborId)) {
                         var point = editionField.graphUi.getNodeValue(neighborId);
                         editionField.dash.addWeightedNode(neighborId, point);  
                     }
@@ -35,7 +36,7 @@
                     neighborId = itemKey.replace("#", '')*1;
                     var edges = node.neighbors[itemKey];
                     for(var i = 0; i < edges.length; i++) {
-                        var color = editionField.graphUi.getEdgeValue(id, neighborId, i);
+                        var color = editionField.graphUi.getEdgeValue(id, neighborId, i).color;
                         editionField.dash.addWeightedEdge(id, neighborId, color);
                     }
                 }
@@ -45,7 +46,8 @@
             drawingArea.update();
             drawingArea.refresh();
         },
-        
+       
+       
         getNodeByCoord : function(x, y) {
           
             for(var itemKey in editionField.graphUi.nodes){
@@ -68,26 +70,25 @@
             if(id) point = editionField.graphUi.getNodeValue(id);
             
             else{
-                
                 id = ++editionField.nodeIdCounter;                
                 point = new Point( x, y);
                 editionField.graphUi.addWeightedNode(id, point);
-                if(y+6 > height - 30) editionField.graphUi.groundNode(id);
             }
-            
             editionField.dash.addWeightedNode(id, point);
             editionField.currentNodeId = id;
             
             drawingArea.refresh();
         },
         
+        
         move : function(x, y){
             
             if(editionField.currentNodeId){
                 var point;
                 if(y + 6 > height - 30) y = height - 30;
+                
                 var id = editionField.getNodeByCoord(x, y);
-                if(id) {
+                if(id && id !== editionField.currentNodeId) {
                     var coord = editionField.graphUi.getNodeValue(id);
                     point = new Point(coord.x, coord.y);
                 }
@@ -99,6 +100,7 @@
 
             drawingArea.refresh();
         },
+        
         
         edit : function(x, y, color){
                         
@@ -128,6 +130,7 @@
             drawingArea.refresh();
         },
         
+        
         addEdge : function() {
             
             var dashId = editionField.nodeIdCounter + 42;
@@ -135,7 +138,7 @@
             
             if(editionField.dash.nodeExists(dashId)){
                 
-                var indexEdge = editionField.dash.nodes["#"+startId].neighbors["#"+dashId].length - 1;
+                var indexEdge = editionField.dash.getNodeById(startId).neighbors["#"+dashId].length - 1;
                 var color = editionField.dash.getEdgeValue(startId, dashId, indexEdge);
                 
                 var point = editionField.dash.getNodeValue(dashId);
@@ -145,14 +148,21 @@
                     editionField.addNode(point.x, point.y);
                     id = editionField.nodeIdCounter;
                 }
-                editionField.graphUi.addWeightedEdge(startId, id, color); 
+                var start = editionField.graphUi.getNodeValue(startId);
+                var goal = editionField.graphUi.getNodeValue(id);
+                var averageX = (start.x + goal.x)/2;
+                var averageY = (start.y + goal.y)/2;
+                var bezierCurve = new BezierCurve(new Point(averageX, averageY), new Point(averageX, averageY), color);
+                
+                editionField.graphUi.addWeightedEdge(startId, id, bezierCurve); 
             }
             
         },
         
+        
         saveChanges : function(){
-            
-            var searchDuplicate = function(currentNodeId){
+            //FUNCTIONS
+            function searchDuplicate(currentNodeId){
                 
                 var currentPoint = editionField.dash.getNodeValue(currentNodeId);
                 
@@ -164,7 +174,7 @@
                 return 0;
             }
             
-            var mergeNodes = function(oldId, id){
+            function mergeNodes(oldId, id){
                 var oldNode = editionField.graphUi.getNodeById(oldId);
                 
                 for(var neighborKey in oldNode.neighbors){
@@ -178,7 +188,7 @@
                 editionField.graphUi.removeNode(oldId);
             }
             
-          
+            //ALGORITHM
             var currentNodeId = editionField.currentNodeId;
             if(currentNodeId){
                 
@@ -186,14 +196,12 @@
                 editionField.graphUi.setNodeValue(currentNodeId, currentPoint);
                 
                 var id = searchDuplicate(currentNodeId);
-                console.log(id);
                 if(id){
                     mergeNodes(currentNodeId, id); 
                 }       
             }
-            
-        //edges
         },
+        
         
         erase : function(x, y){
             
@@ -201,6 +209,11 @@
             if(id){
                 editionField.graphUi.removeNode(id);
             }
+        },
+        
+        
+        buildGraphGame : function() {
+            
         },
         
         
@@ -218,6 +231,7 @@
             }
             
         },
+        
         
         apply : function(){
             

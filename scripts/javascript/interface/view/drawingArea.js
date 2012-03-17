@@ -18,7 +18,7 @@
             var context = drawingArea.context;
             context.lineWidth = 1;
             context.strokeStyle = "#000000";
-            context.fillStyle = "#FFD3F9" ;
+            context.fillStyle = "white" ;
             
             context.beginPath();
             context.arc(x, y, 6, 0, 2 * Math.PI);
@@ -28,7 +28,7 @@
             
         },
         
-        drawEdge : function(start, goal, color){
+        drawLine : function(start, goal, color){
             
             var context = drawingArea.context;
             context.lineWidth = 3;
@@ -40,6 +40,19 @@
             context.stroke();
             context.closePath();
             
+        },
+        
+        drawBezierCurve : function(start, goal, bezierCurve){
+            
+            var context = drawingArea.context;
+            context.lineWidth = 3;
+            context.strokeStyle = bezierCurve.color;
+            
+            context.beginPath();
+            context.moveTo(start.x, start.y);
+            context.lineTo(goal.x, goal.y);
+            context.stroke();
+            context.closePath();
         },
     
  
@@ -70,7 +83,7 @@
                     for(var i = 0; i < edges.length; i++){
                         
                         var color = edges[i].weight;
-                        drawingArea.drawEdge(start, goal, color);
+                        drawingArea.drawLine(start, goal, color);
                     }
                     
                 }
@@ -103,16 +116,15 @@
                         var startId = itemKey.replace('#','')*1;
                         var goalId = neighborKey.replace('#','')*1;
                         if(startId !== editionField.currentNodeId && goalId !==editionField.currentNodeId){
-                            var color = edges[i].weight;
-                            drawingArea.drawEdge(start, goal, color);
+                            var beizerCurve = edges[i].weight;
+                            drawingArea.drawBezierCurve(start, goal, beizerCurve);
                         }
                     }
                 }
                     
             }
         
-            
-            for( var itemKey in editionField.graphUi.nodes){
+            for(itemKey in editionField.graphUi.nodes){
                 var point = editionField.graphUi.nodes[itemKey].weight;
                 var id = itemKey.replace('#', '')*1;
                 if(id !== editionField.currentNodeId){
