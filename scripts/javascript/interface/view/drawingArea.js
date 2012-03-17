@@ -43,7 +43,7 @@
         },
         
         drawBezierCurve : function(start, goal, bezierCurve){
-            
+            console.log(bezierCurve);
             var context = drawingArea.context;
             context.lineWidth = 3;
             context.strokeStyle = bezierCurve.color;
@@ -82,10 +82,9 @@
                     
                     for(var i = 0; i < edges.length; i++){
                         
-                        var color = edges[i].weight;
-                        drawingArea.drawLine(start, goal, color);
-                    }
-                    
+                        var bezierCurve = edges[i].weight;
+                        drawingArea.drawBezierCurve(start, goal, bezierCurve);
+                    }                   
                 }
             }
             

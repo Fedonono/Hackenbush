@@ -36,8 +36,8 @@
                     neighborId = itemKey.replace("#", '')*1;
                     var edges = node.neighbors[itemKey];
                     for(var i = 0; i < edges.length; i++) {
-                        var color = editionField.graphUi.getEdgeValue(id, neighborId, i).color;
-                        editionField.dash.addWeightedEdge(id, neighborId, color);
+                        var bezierCurve = editionField.graphUi.getEdgeValue(id, neighborId, i);
+                        editionField.dash.addWeightedEdge(id, neighborId, bezierCurve);
                     }
                 }
             }
@@ -118,9 +118,14 @@
             var goal = new Point(x, y);
             
             if(!editionField.dash.nodeExists(id)) {
-                
                 editionField.dash.addWeightedNode(id, goal);
-                editionField.dash.addWeightedEdge(editionField.currentNodeId, id, color);
+                var startPoint = editionField.graphUi.getNodeValue(editionField.currentNodeId);
+                var averageX = (x + startPoint.x)/2;
+                var averageY = (y + startPoint.y)/2;
+                var orientationP1 = new Point(averageX, averageY);
+                var orientationP2 = new Point(averageX, averageY);
+                var bezierCurve = new BezierCurve(orientationP1, orientationP2, color)
+                editionField.dash.addWeightedEdge(editionField.currentNodeId, id, bezierCurve);
             }
             else{
                 
@@ -139,7 +144,7 @@
             if(editionField.dash.nodeExists(dashId)){
                 
                 var indexEdge = editionField.dash.getNodeById(startId).neighbors["#"+dashId].length - 1;
-                var color = editionField.dash.getEdgeValue(startId, dashId, indexEdge);
+                var color = editionField.dash.getEdgeValue(startId, dashId, indexEdge).color;
                 
                 var point = editionField.dash.getNodeValue(dashId);
                 var id = editionField.getNodeByCoord(point.x, point.y);
@@ -198,7 +203,7 @@
                 var id = searchDuplicate(currentNodeId);
                 if(id){
                     mergeNodes(currentNodeId, id); 
-                }       
+                }
             }
         },
         
