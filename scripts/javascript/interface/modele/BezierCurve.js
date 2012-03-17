@@ -1,7 +1,7 @@
 var BezierCurve = function(orientationPoint1, orientationPoint2, color){
     
-    this.beginOrientation = orientationPoint1;
-    this.endOrientation = orientationPoint2;
+    this.beginOrientationPoint = orientationPoint1;
+    this.endOrientationPoint = orientationPoint2;
     
     this.color = color;
     

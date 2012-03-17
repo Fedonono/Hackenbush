@@ -50,7 +50,7 @@
             
             context.beginPath();
             context.moveTo(start.x, start.y);
-            context.lineTo(goal.x, goal.y);
+            context.bezierCurveTo(bezierCurve.beginOrientationPoint.x, bezierCurve.beginOrientationPoint.y, bezierCurve.endOrientationPoint.x, bezierCurve.endOrientationPoint.y, goal.x, goal.y);
             context.stroke();
             context.closePath();
         },
