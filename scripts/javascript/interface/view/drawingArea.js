@@ -43,7 +43,7 @@
         },
         
         drawBezierCurve : function(start, goal, bezierCurve){
-            console.log(bezierCurve);
+
             var context = drawingArea.context;
             context.lineWidth = 3;
             context.strokeStyle = bezierCurve.color;
