@@ -40,14 +40,17 @@
         });
         
         canvas.mousemove(function(event) {
+            var canvasCoords =  getMouseCoords(event);  
+            
             if(mousedown){
-                var canvasCoords =  getMouseCoords(event);  
                 if(canvasCoords.x > canvas[0].width - Xtolerance || canvasCoords.x < Xtolerance || canvasCoords.y > canvas[0].height - Ytolerance || canvasCoords.y < Ytolerance) return
                 if(controller.tool === "edit") editionField.edit(canvasCoords.x, canvasCoords.y, controller.color);
                 if(controller.tool === "select") editionField.move(canvasCoords.x, canvasCoords.y);
              
             }
+            else editionField.mouseOverSomething(canvasCoords.x, canvasCoords.y);
         });
+        
         
         $('body').mouseup(function(event){
             mousedown = false;

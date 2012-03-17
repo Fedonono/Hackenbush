@@ -28,6 +28,16 @@
             
         },
         
+        drawShadowNode : function(x, y){
+          
+          var context = drawingArea.context;
+          context.shadowColor = "black";
+          context.shadowBlur = 20;
+          drawingArea.drawNode(x, y);
+          context.shadowBlur = 0;
+          
+        },
+        
         drawLine : function(start, goal, color){
             
             var context = drawingArea.context;
@@ -71,6 +81,12 @@
             
             drawingArea.context.putImageData(drawingArea.imageData, 0, 0);
             
+            var point;
+            if(editionField.currentNodeId){
+                point = editionField.dash.getNodeValue(editionField.currentNodeId);
+                drawingArea.drawShadowNode(point.x, point.y);
+            } 
+            
             for (var itemKey in editionField.dash.nodes){
                 var node = editionField.dash.nodes[itemKey];
                 var start = node.weight;
@@ -90,7 +106,7 @@
             
             for (itemKey in editionField.dash.nodes){
                 
-                var point = editionField.dash.nodes[itemKey].weight;
+                point = editionField.dash.nodes[itemKey].weight;
                 drawingArea.drawNode(point.x, point.y);
             }
         },

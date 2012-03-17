@@ -59,6 +59,19 @@
             return null;          
         },
         
+        mouseOverSomething : function(x, y){
+         
+            var id = editionField.getNodeByCoord(x, y);
+            if(id) {
+                editionField.currentNodeId = id;
+                editionField.dash.addWeightedNode(id, editionField.graphUi.getNodeValue(id));
+            }
+            else editionField.currentNodeId = 0;
+            
+            drawingArea.refresh();
+            editionField.dash = new HackenbushGraph();
+        },
+        
         
         addNode : function(x, y) {
             
@@ -224,10 +237,10 @@
         
         applyHackenbushRules : function(){
            
-           var nodeIdQueue;
-           var groundPathExists = function(id){
+            var nodeIdQueue;
+            var groundPathExists = function(id){
                
-           }
+            }
            
             for(var itemKey in editionField.graphUi.nodes){
                 var id = itemKey.replace("#", '')*1;
