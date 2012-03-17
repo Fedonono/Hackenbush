@@ -237,19 +237,12 @@
         },
         
         
-        applyHackenbushRules : function(){
-           
-            var nodeIdQueue;
-            var groundPathExists = function(id){
-               
-            }
-           
+        removeLonelyNodes : function(){           
             for(var itemKey in editionField.graphUi.nodes){
                 var id = itemKey.replace("#", '')*1;
                 var degree = editionField.graphUi.getDegree(id);
                 if(degree === 0) editionField.graphUi.removeNode(id);
             }
-            
         },
         
         
@@ -257,8 +250,7 @@
             
             editionField.dash = new HackenbushGraph();
             editionField.currentNodeId = 0;
-            
-            editionField.applyHackenbushRules();
+            editionField.removeLonelyNodes();
             drawingArea.update();
         },
         
