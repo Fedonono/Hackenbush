@@ -130,19 +130,21 @@
             id = editionField.nodeIdCounter + 42;
             var goal = new Point(x, y);
             
-            if(!editionField.dash.nodeExists(id)) {
-                editionField.dash.addWeightedNode(id, goal);
-                var startPoint = editionField.graphUi.getNodeValue(editionField.currentNodeId);
+            var startPoint = editionField.graphUi.getNodeValue(editionField.currentNodeId);
                 var averageX = (x + startPoint.x)/2;
                 var averageY = (y + startPoint.y)/2;
                 var orientationP1 = new Point(averageX, averageY);
                 var orientationP2 = new Point(averageX, averageY);
                 var bezierCurve = new BezierCurve(orientationP1, orientationP2, color)
+                
+            if(!editionField.dash.nodeExists(id)) {
+                editionField.dash.addWeightedNode(id, goal);
                 editionField.dash.addWeightedEdge(editionField.currentNodeId, id, bezierCurve);
             }
             else{
                 
                 editionField.dash.setNodeValue(id, goal);
+                editionField.dash.setEdgeValue(editionField.currentNodeId, id, 0, bezierCurve);
             }
                 
             drawingArea.refresh();
