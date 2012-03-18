@@ -30,7 +30,7 @@
         
         drawShadowNode : function(x, y){
 		  if (controller.tool === "edit") this.setCursor('selected');
-		  if (controller.tool === "erase") canvas.css("cursor", "url('./ressources/cursor-scissors-active.png'), pointer");
+		  if (controller.tool === "erase") canvas.css("cursor", "url('./ressources/cursor-scissors-active.png'), not-allowed");
           var context = drawingArea.context;
           context.shadowColor = "grey";
           context.shadowBlur = 20;
