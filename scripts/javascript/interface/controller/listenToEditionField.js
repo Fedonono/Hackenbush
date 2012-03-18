@@ -48,21 +48,16 @@
                 if(controller.tool === "edit") editionField.move(canvasCoords.x, canvasCoords.y);
              
             }
-           else editionField.mouseOverSomething(canvasCoords.x, canvasCoords.y);
+            else editionField.mouseOverSomething(canvasCoords.x, canvasCoords.y);
         });
         
         
         $('body').mouseup(function(event){
             mousedown = false;
             
-            if(controller.tool === "draw"){
-                editionField.addEdge();
-                editionField.apply();
-            }
-            if(controller.tool === "edit"){
-                editionField.saveChanges();
-                editionField.apply();
-            } 
+            if(controller.tool === "draw") editionField.addEdge();
+            else if(controller.tool === "edit") editionField.saveChanges();
+            editionField.apply(); 
         });
     }
     

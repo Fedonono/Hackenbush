@@ -156,6 +156,7 @@ var HackenbushGraph = function(){
     }
    
     this.removeLonelyNodes = function(){
+        console.log("coucou");
         for(var itemKey in this.nodes){
             var id = itemKey.replace("#", '')*1;
             var degree = this.getDegree(id);
