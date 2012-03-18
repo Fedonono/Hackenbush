@@ -5,34 +5,28 @@
     font-weight: 900;
     font-variant:small-caps;
     color : rgba(221,201,201,0.9);
-    text-align: center;
 }
 
 .button, .button-bottom, .locked, .selected {
     width: 70px;
     height: 70px;
     position: relative;
+    text-align: center;
 }
 
 .options {
     position: absolute;
-    line-height: 10px;
-    width: 150px;
-    height: 82px;
-    margin: 0px;
-    padding: 5px 0px 0px 5px;
     top: 620px;
     left: 68px;
+    line-height: 10px;
+    width: 150px;
+    height: 89px;
+    margin: 0px;
+    padding: 5px 0px 0px 5px;
     z-index: 1;
-}
-
-.options {
     float: left;
     clear: none;
     text-align: left;
-    padding-top: 2px;
-    width: 150px;
-    height: 92px;
 }
 
 #p1{
