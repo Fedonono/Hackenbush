@@ -11,8 +11,7 @@
 	hackenbush.loadPage = function(page) {
 		$.ajax({
 			type: 'POST',
-			url: './views/'+page+'.html',
-			complete: console.log('AJAX response received !'),
+			url: './views/'+page+'.html',		
 			success: function(data)	{
 				var main = $('#main');
 				main.html();
