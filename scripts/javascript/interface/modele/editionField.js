@@ -13,6 +13,7 @@
         dash : new HackenbushGraph(false),
         
         currentNodeId : 0,
+        
         mouseoverNode:null,
         
         playerColors : new Array(),
@@ -38,14 +39,12 @@
             else if(playerInt === 1) player = player1;
             else if(playerInt === 2) player = player2;
             else return;
-            
             //FUNCTION
             function swap(array, i, j){
                 var temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
             }
-            
             function preventFromSameColor(){
                 for(var i = 0; i < playerColors.length; i++){
                     if(i !== playerInt){
@@ -282,6 +281,8 @@
             
             editionField.dash = new HackenbushGraph();
             editionField.currentNodeId = 0;
+            editionField.mouseoverNode = null;
+            editionField.buildGraphGame();
             editionField.graphUi.removeLonelyNodes();
             drawingArea.update();
         },
