@@ -1,4 +1,5 @@
 #canvasArea {
+	cursor: crosshair;
 	top: 5px;
 	position: relative;
 	border: 5px solid rgba(255,0,0,0.5);

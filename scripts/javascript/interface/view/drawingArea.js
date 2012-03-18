@@ -29,9 +29,9 @@
         },
         
         drawShadowNode : function(x, y){
-          
+		  if (controller.tool === "edit") this.setCursor('selected');
           var context = drawingArea.context;
-          context.shadowColor = "black";
+          context.shadowColor = "grey";
           context.shadowBlur = 20;
           drawingArea.drawNode(x, y);
           context.shadowBlur = 0;
@@ -89,7 +89,10 @@
             else if(editionField.mouseoverNode){
                 point = editionField.mouseoverNode.weight;
                 drawingArea.drawShadowNode(point.x, point.y);
-            } 
+            }
+			else {
+				this.setCursor(controller.tool);
+			}
             
             for (var itemKey in editionField.dash.nodes){
                 var node = editionField.dash.nodes[itemKey];
@@ -154,6 +157,13 @@
             drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);
             
         },
+
+		setCursor : function(tool) {
+			if (tool === "draw") canvas.css("cursor", "crosshair");
+			else if(tool === "erase") canvas.css("cursor", "url('./ressources/cursor-scissors.png'), pointer");
+            else if(tool === "edit") canvas.css("cursor", "pointer");
+			else if (tool === "selected") canvas.css("cursor", "move");
+		},
         
         reset : function(){
             var context = drawingArea.context;

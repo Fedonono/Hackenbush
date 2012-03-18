@@ -50,20 +50,12 @@
     background-image: url(../ressources/toolChooser.png);
 }
 
-#save, #load {
+#save {
     background-position:0px -7px;
 }
 
-#save:hover, #load:hover {
+#save:hover {
     background-position:0px 63px;
-}
-
-#setEdgeColor {
-    background-position:-70px -7px;
-}
-
-#setEdgeColor:hover {
-    background-position:-70px 63px;
 }
 
 #draw {
@@ -74,6 +66,14 @@
     background-position:-140px 60px;
 }
 
+#edit {
+    background-position:-68px -5px;
+}
+
+#edit:hover {
+    background-position:-68px 60px;
+}
+
 #eraseAll {
     background-position:-210px -10px;
 }
@@ -82,12 +82,12 @@
     background-position:-210px 56px;
 }
 
-#drawGrass {
-    background-position:-280px -7px;
+#load {
+    background-position:-283px -7px;
 }
 
-#drawGrass:hover {
-    background-position:-280px 57px;
+#load:hover {
+    background-position:-283px 57px;
 }
 
 #erase {
