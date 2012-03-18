@@ -14,6 +14,19 @@
         
         currentNodeId : 0,
         
+        playerColors : new Array(),
+        
+        initPlayerColors : function(){
+            var player1 = $("#player1");
+            var player2 = $("#player2");
+            var both = $("#both");
+            
+            
+        },
+        
+        setPlayerColor : function(player, color){
+            
+        },
         
         setSelectedItem : function(x, y){
           
@@ -234,23 +247,13 @@
         
         buildGraphGame : function() {
             
-        },
-        
-        
-        removeLonelyNodes : function(){           
-            for(var itemKey in editionField.graphUi.nodes){
-                var id = itemKey.replace("#", '')*1;
-                var degree = editionField.graphUi.getDegree(id);
-                if(degree === 0) editionField.graphUi.removeNode(id);
-            }
-        },
-        
+        },        
         
         apply : function(){
             
             editionField.dash = new HackenbushGraph();
             editionField.currentNodeId = 0;
-            editionField.removeLonelyNodes();
+            editionField.graphUi.removeLonelyNodes();
             drawingArea.update();
         },
         

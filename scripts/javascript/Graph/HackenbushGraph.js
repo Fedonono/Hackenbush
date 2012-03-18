@@ -23,7 +23,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the node exists but k is outside the allowed range
 	 */			
     this.getColorAsInteger = function(id, k) {
-		var node = this.getNodeById(id);
+        var node = this.getNodeById(id);
         
         var degree = this.getDegree(id);
         
@@ -38,11 +38,11 @@ var HackenbushGraph = function(){
             actualDegree+=node.neighbors[destId].length;
             if ((k <= actualDegree) && (previousDegree < k)) {
                 index = k-previousDegree;
-				var colorHex = this.getEdgeValue(id, this.splitId(destId), index-1);
-				if (colorHex !== undefined)
-					return parseInt("0x" + colorHex); // hex to RGBint
-				else
-					return colorHex;
+                var colorHex = this.getEdgeValue(id, this.splitId(destId), index-1);
+                if (colorHex !== undefined)
+                    return parseInt("0x" + colorHex); // hex to RGBint
+                else
+                    return colorHex;
             }
         }
     }
@@ -57,7 +57,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the node exists but k is outside the allowed range	 
 	 */			
     this.remove = function(id, k) {
-		var node = this.getNodeById(id);
+        var node = this.getNodeById(id);
         
         var degree = this.getDegree(id);
         
@@ -113,8 +113,8 @@ var HackenbushGraph = function(){
         if(!this.nodeExists(id))
             throw new UnexistingNodeException(id);
 
-		if (this.groundedNodes.indexOf(id) !== -1)
-			throw new AlreadyGroundedNodeException(id);
+        if (this.groundedNodes.indexOf(id) !== -1)
+            throw new AlreadyGroundedNodeException(id);
         
         this.groundedNodes.push(id);
     }
@@ -132,26 +132,34 @@ var HackenbushGraph = function(){
         if(!this.nodeExists(id))
             throw new UnexistingNodeException(id);
 
-		var indexFind = this.groundedNodes.indexOf(id);
-		if (indexFind === -1)
-			throw new NotConnectedToGroundException(id);
+        var indexFind = this.groundedNodes.indexOf(id);
+        if (indexFind === -1)
+            throw new NotConnectedToGroundException(id);
 
-		this.spliceGroundedNodes(indexFind);
+        this.spliceGroundedNodes(indexFind);
     }
    
-   /**
+    /**
     * Used to remove an id of the groundedNodes table
     * 
 	*@throws InvalidIndexException if k is outside the allowed range or the k is < 0 or not an integer
 	*/
-   this.spliceGroundedNodes = function(index){       
-       if(!this.isInt(index) || index < 0 || index >= this.groundedNodes.length)
-           throw new InvalidIndexException(index);
+    this.spliceGroundedNodes = function(index){       
+        if(!this.isInt(index) || index < 0 || index >= this.groundedNodes.length)
+            throw new InvalidIndexException(index);
        
-       this.groundedNodes.splice(index, 1);
-   }
+        this.groundedNodes.splice(index, 1);
+    }
    
-   this.groundPathExists = function(id){
-	   return true;
-   }
+    this.groundPathExists = function(id){
+        return true;
+    }
+   
+    this.removeLonelyNodes = function(){
+        for(var itemKey in this.nodes){
+            var id = itemKey.replace("#", '')*1;
+            var degree = this.getDegree(id);
+            if(degree === 0) this.removeNode(id);
+        }
+    }
 }

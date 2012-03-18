@@ -8,19 +8,27 @@
         <div class="button toolChooser" id="load">load</div>
         
         <div class="options" id="options">Option(s)
-            <div id="p1">
-                <label>p1 : </label>
-                <select id="player1" onchange="go()">
+            <div  id="p1">
+                <label>P1 : </label>
+                <select  id="player1" onchange="go()">
                     <option value="red" class="red">Red</option>
                     <option value="green" class="green">Green</option>
                     <option value="blue" class="blue">Blue</option>
                 </select>
             </div>
             <div id ="p2">
-                <label>p2 : </label>
+                <label>P2 : </label>
                 <select id="player2" onchange="go()">
                     <option value="blue" class="blue">Blue</option>
+                    <option value="red" class="red">Red</option>
                     <option value="green" class="green">Green</option>
+                </select>
+            </div>
+            <div id ="both">
+                <label>BOTH : </label>
+                <select id="bothPlayers" onchange="go()">
+                    <option value="green" class="green">Green</option>
+                    <option value="blue" class="blue">Blue</option>
                     <option value="red" class="red">Red</option>
                 </select>
             </div>
