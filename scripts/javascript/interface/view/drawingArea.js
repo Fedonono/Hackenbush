@@ -82,7 +82,11 @@
             drawingArea.context.putImageData(drawingArea.imageData, 0, 0);
             
             var point;
-            if(editionField.mouseoverNode){
+            if(editionField.currentNodeId){
+                point = editionField.dash.getNodeValue(editionField.currentNodeId);
+                drawingArea.drawShadowNode(point.x, point.y);
+            }
+            else if(editionField.mouseoverNode){
                 point = editionField.mouseoverNode.weight;
                 drawingArea.drawShadowNode(point.x, point.y);
             } 
