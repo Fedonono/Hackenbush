@@ -10,7 +10,7 @@
         <div class="options" id="options">Option(s)
             <div  id="p1">
                 <label>P1 : </label>
-                <select  id="player1" onchange="editionField.setPlayerColors()">
+                <select  id="player1" onchange="editionField.setPlayerColors(1)">
                     <option value="red" class="red">Red</option>
                     <option value="green" class="green">Green</option>
                     <option value="blue" class="blue">Blue</option>
@@ -18,7 +18,7 @@
             </div>
             <div id ="p2">
                 <label>P2 : </label>
-                <select id="player2" onchange="editionField.setPlayerColors()">
+                <select id="player2" onchange="editionField.setPlayerColors(2)">
                     <option value="blue" class="blue">Blue</option>
                     <option value="red" class="red">Red</option>
                     <option value="green" class="green">Green</option>
@@ -26,7 +26,7 @@
             </div>
             <div id ="both">
                 <label>BOTH : </label>
-                <select id="bothPlayers" onchange="editionField.setPlayerColors()">
+                <select id="bothPlayers" onchange="editionField.setPlayerColors(3)">
                     <option value="green" class="green">Green</option>
                     <option value="blue" class="blue">Blue</option>
                     <option value="red" class="red">Red</option>

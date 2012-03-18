@@ -17,21 +17,47 @@
         
         playerColors : new Array(),
         
-        setPlayerColors : function(){
+        initPlayerColors : function(playerInt){
+            var player1 = $("#player1");
+            var player2 = $("#player2");
+            var both = $("#bothPlayers");
+            editionField.playerColors[0] = both[0].value;
+            editionField.playerColors[1] = player1[0].value;
+            editionField.playerColors[2] = player2[0].value;
+        },
+        
+        setPlayerColors : function(playerInt) {
+            // VAR
+            var player1 = $("#player1");
+            var player2 = $("#player2");
+            var both = $("#bothPlayers");
+            var playerColors = editionField.playerColors;
+            var player;
             
+            if(playerInt === 0) player = both;
+            else if(playerInt === 1) player = player1;
+            else if(playerInt === 2) player = player2;
+            else return;
+            
+            //FUNCTION
             function swap(array, i, j){
                 var temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
             }
             
-            var player1 = $("#player1");
-            var player2 = $("#player2");
-            var both = $("#bothPlayers");
-            
-            editionField.playerColors[0] = both[0].value;
-            editionField.playerColors[1] = player1[0].value;
-            editionField.playerColors[2] = player2[0].value;
+            function preventFromSameColor(){
+                for(var i = 0; i < playerColors.length; i++){
+                    if(i !== playerInt){
+                        if(playerColors[i] === player[0].value) swap(playerColors, i, playerInt);
+                    }
+                }
+                playerColors[playerInt] = player[0].value;
+                player1[0].value = playerColors[1];
+                player2[0].value = playerColors[2];
+                both[0].value = playerColors[0];
+            }
+            preventFromSameColor();
         },
         
         setSelectedItem : function(x, y){
@@ -147,11 +173,11 @@
             var goal = new Point(x, y);
             
             var startPoint = editionField.graphUi.getNodeValue(editionField.currentNodeId);
-                var averageX = (x + startPoint.x)/2;
-                var averageY = (y + startPoint.y)/2;
-                var orientationP1 = new Point(averageX, averageY);
-                var orientationP2 = new Point(averageX, averageY);
-                var bezierCurve = new BezierCurve(orientationP1, orientationP2, color)
+            var averageX = (x + startPoint.x)/2;
+            var averageY = (y + startPoint.y)/2;
+            var orientationP1 = new Point(averageX, averageY);
+            var orientationP2 = new Point(averageX, averageY);
+            var bezierCurve = new BezierCurve(orientationP1, orientationP2, color)
                 
             if(!editionField.dash.nodeExists(id)) {
                 editionField.dash.addWeightedNode(id, goal);
@@ -270,5 +296,5 @@
         }
     
     };
-    editionField.setPlayerColors();
+    editionField.initPlayerColors();
 })();
