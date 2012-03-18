@@ -48,7 +48,7 @@
                 if(controller.tool === "edit") editionField.move(canvasCoords.x, canvasCoords.y);
              
             }
-            else editionField.mouseOverSomething(canvasCoords.x, canvasCoords.y);
+           else editionField.mouseOverSomething(canvasCoords.x, canvasCoords.y);
         });
         
         

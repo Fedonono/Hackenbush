@@ -13,19 +13,19 @@
         dash : new HackenbushGraph(false),
         
         currentNodeId : 0,
+        mouseoverNode:null,
         
         playerColors : new Array(),
         
-        initPlayerColors : function(){
+        setPlayerColors : function(){
+            
             var player1 = $("#player1");
             var player2 = $("#player2");
-            var both = $("#both");
+            var both = $("#bothPlayers");
             
-            
-        },
-        
-        setPlayerColor : function(player, color){
-            
+            editionField.playerColors[0] = both[0].value;
+            editionField.playerColors[1] = player1[0].value;
+            editionField.playerColors[2] = player2[0].value;
         },
         
         setSelectedItem : function(x, y){
@@ -76,13 +76,10 @@
          
             var id = editionField.getNodeByCoord(x, y);
             if(id) {
-                editionField.currentNodeId = id;
-                editionField.dash.addWeightedNode(id, editionField.graphUi.getNodeValue(id));
+                editionField.mouseoverNode = editionField.graphUi.getNodeById(id);
             }
-            else editionField.currentNodeId = 0;
-            
+            else editionField.mouseoverNode = null;
             drawingArea.refresh();
-            editionField.dash = new HackenbushGraph();
         },
         
         
@@ -267,5 +264,5 @@
         }
     
     };
-
+    editionField.setPlayerColors();
 })();
