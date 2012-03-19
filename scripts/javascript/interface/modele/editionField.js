@@ -265,7 +265,7 @@
                 else if(editionField.graphUi.getNodeValue(currentNodeId).y+6 >= height-30 && !editionField.graphUi.isAlreadyGrounded(currentNodeId))
                     editionField.graphUi.groundNode(currentNodeId);
                 
-                else if (editionField.graphUi.isAlreadyGrounded(currentNodeId)) 
+                else if (editionField.graphUi.getNodeValue(currentNodeId).y+6 < height-30 &&  editionField.graphUi.isAlreadyGrounded(currentNodeId)) 
                     editionField.graphUi.unGroundNode(currentNodeId);
             }
         },
