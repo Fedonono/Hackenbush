@@ -1,6 +1,6 @@
 window.savedGames = new Array();
 
-savedGame.saveGame = function (name, graphGame, graphUi, imageData) {
+savedGames.saveGame = function (name, graphGame, graphUi, imageData) {
 
     var game = {
         name :name,
@@ -10,11 +10,11 @@ savedGame.saveGame = function (name, graphGame, graphUi, imageData) {
     }
     var gameJson = JSON.stringify(game);
     
-    savedGame.push(gameJson);
+    savedGames.push(gameJson);
 }
 
-savedGame.loadGame = function(index) {
-    var gameJson = savedGame[index];
+savedGames.loadGame = function(index) {
+    var gameJson = savedGames[index];
     return JSON.parse(gameJson);
 }
 
