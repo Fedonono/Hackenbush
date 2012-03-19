@@ -300,7 +300,6 @@
                 }
             }
             editionField.linkedToGround = visited;
-            console.log(editionField.linkedToGround);
         },
         
         apply : function(){
