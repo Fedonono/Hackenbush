@@ -262,7 +262,7 @@
                 
                 if(id) mergeNodes(currentNodeId, id); 
                 
-                else if(editionField.graphUi.getNodeValue(currentNodeId).y + 6 > 30 && !editionField.graphUi.isAlreadyGrounded(currentNodeId))
+                else if(editionField.graphUi.getNodeValue(currentNodeId).y + 6 > height+30 && !editionField.graphUi.isAlreadyGrounded(currentNodeId))
                     editionField.graphUi.groundNode(currentNodeId);
                 
                 else if (editionField.graphUi.isAlreadyGrounded(currentNodeId)) 
@@ -281,22 +281,26 @@
             var visited = new Array();
             var groundLength = editionField.graphUi.getGroundedNodesCount();
             
-            function depthTraversal(graph, rootId){
+            function depthTraversal(rootId){
                 visited["#"+rootId] = true;
-                var neighborhoodSize = graph.getNeighborHoodSize(rootId);
+                var neighborhoodSize = editionField.graphUi.getNeighborhoodSize(rootId);
+                
                 for(var k = 1; k <= neighborhoodSize; k++ ){
-                    var neighborId = graph.getNeigbor(rootId, k);
-                    
+                    var neighborId = editionField.graphUi.getNeighbor(rootId, k);
+                    if(!visited["#"+neighborId]){
+                        depthTraversal(neighborId);
+                    }
                 }
             }
             
             for( var i = 1; i <= groundLength; i++){
                 var nodeId = editionField.graphUi.getGroundedNode(i);
                 if(!visited["#"+nodeId]){
-                    depthTraversal(editionField.graphUi, nodeId);
+                    depthTraversal(nodeId);
                 }
             }
             editionField.linkedToGround = visited;
+            console.log(editionField.linkedToGround);
         },
         
         apply : function(){

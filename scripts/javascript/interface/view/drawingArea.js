@@ -35,16 +35,19 @@
             context.shadowBlur = 0;
         },
         
-        drawBezierCurve : function(start, goal, bezierCurve){
+        drawBezierCurve : function(start, goal, bezierCurve, alpha){
             var context = drawingArea.context;
             context.lineWidth = 3;
             context.strokeStyle = bezierCurve.color;
+            context.globalAlpha = alpha;
             
             context.beginPath();
             context.moveTo(start.x, start.y);
             context.bezierCurveTo(bezierCurve.beginOrientationPoint.x, bezierCurve.beginOrientationPoint.y, bezierCurve.endOrientationPoint.x, bezierCurve.endOrientationPoint.y, goal.x, goal.y);
             context.stroke();
             context.closePath();
+            
+            context.globalAlpha = 1;
         },
     
  
@@ -83,7 +86,9 @@
                     
                     for(var i = 0; i < edges.length; i++){
                         var bezierCurve = edges[i].weight;
-                        drawingArea.drawBezierCurve(start, goal, bezierCurve);
+                        var alpha = 0.3;
+                        if(editionField.linkedToGround[itemKey]) alpha = 1;
+                        drawingArea.drawBezierCurve(start, goal, bezierCurve, alpha);
                     }                   
                 }
             }
@@ -110,7 +115,9 @@
                         var goalId = neighborKey.replace('#','')*1;
                         if(startId !== editionField.currentNodeId && goalId !==editionField.currentNodeId){
                             var beizerCurve = edges[i].weight;
-                            drawingArea.drawBezierCurve(start, goal, beizerCurve);
+                            var alpha = 0.3;
+                            if(editionField.linkedToGround["#"+startId]) alpha = 1;
+                            drawingArea.drawBezierCurve(start, goal, beizerCurve, alpha);
                         }
                     }
                 }
