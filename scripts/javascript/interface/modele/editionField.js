@@ -299,7 +299,6 @@
                 }
             }
             editionField.linkedToGround = visited;
-            console.log(visited);
         },
         
         apply : function(){
