@@ -25,36 +25,17 @@
             context.stroke();
             context.fill();
             context.closePath();
-            
         },
         
         drawShadowNode : function(x, y){
-		  if (controller.tool === "edit") this.setCursor('selected');
-		  if (controller.tool === "erase") canvas.css("cursor", "url('./ressources/cursor-scissors-active.png'), not-allowed");
-          var context = drawingArea.context;
-          context.shadowColor = "grey";
-          context.shadowBlur = 20;
-          drawingArea.drawNode(x, y);
-          context.shadowBlur = 0;
-          
-        },
-        
-        drawLine : function(start, goal, color){
-            
             var context = drawingArea.context;
-            context.lineWidth = 3;
-            context.strokeStyle = color;
-            
-            context.beginPath();
-            context.moveTo(start.x, start.y);
-            context.lineTo(goal.x, goal.y);
-            context.stroke();
-            context.closePath();
-            
+            context.shadowColor = "black";
+            context.shadowBlur = 20;
+            drawingArea.drawNode(x, y);
+            context.shadowBlur = 0;
         },
         
         drawBezierCurve : function(start, goal, bezierCurve){
-
             var context = drawingArea.context;
             context.lineWidth = 3;
             context.strokeStyle = bezierCurve.color;
@@ -68,63 +49,52 @@
     
  
         drawGrass : function() {
-            
             var context = drawingArea.context;
             context.beginPath();
             context.fillStyle = '#00ff00';
             context.fillRect(0,height-30,width,30);
             context.closePath();
             drawingArea.imageData = context.getImageData(0, 0, width, height);
-            
         },
-    
+        
         refresh : function() {
-            
             drawingArea.context.putImageData(drawingArea.imageData, 0, 0);
             
             var point;
             if(editionField.currentNodeId){
                 point = editionField.dash.getNodeValue(editionField.currentNodeId);
                 drawingArea.drawShadowNode(point.x, point.y);
+                drawingArea.cursorIsOver();
             }
             else if(editionField.mouseoverNode){
                 point = editionField.mouseoverNode.weight;
                 drawingArea.drawShadowNode(point.x, point.y);
+                drawingArea.cursorIsOver();
             }
-			else {
-				this.setCursor(controller.tool);
-			}
+            else this.setCursor(controller.tool);
             
             for (var itemKey in editionField.dash.nodes){
                 var node = editionField.dash.nodes[itemKey];
                 var start = node.weight;
                 
                 for(var neighborKey in node.neighbors){
-                    
                     var goal = editionField.dash.nodes[neighborKey].weight;
                     var edges = node.neighbors[neighborKey];
                     
                     for(var i = 0; i < edges.length; i++){
-                        
                         var bezierCurve = edges[i].weight;
                         drawingArea.drawBezierCurve(start, goal, bezierCurve);
                     }                   
                 }
             }
-            
             for (itemKey in editionField.dash.nodes){
-                
                 point = editionField.dash.nodes[itemKey].weight;
                 drawingArea.drawNode(point.x, point.y);
             }
         },
         
-        update : function(){
-            
-            //console.log(editionField.graphUi);
-            
+        update : function(){            
             drawingArea.reset();
-            
             
             for (var itemKey in editionField.graphUi.nodes){
                 var node = editionField.graphUi.nodes[itemKey];
@@ -156,15 +126,21 @@
             }
             
             drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);
-            
         },
+        
+        
 
-		setCursor : function(tool) {
-			if (tool === "draw") canvas.css("cursor", "crosshair");
-			else if(tool === "erase") canvas.css("cursor", "url('./ressources/cursor-scissors.png'), pointer");
+        setCursor : function(tool) {
+            if (tool === "draw") canvas.css("cursor", "crosshair");
+            else if(tool === "erase") canvas.css("cursor", "url('./ressources/cursor-scissors.png'), pointer");
             else if(tool === "edit") canvas.css("cursor", "pointer");
-			else if (tool === "selected") canvas.css("cursor", "move");
-		},
+            else if (tool === "selected") canvas.css("cursor", "move");
+        },
+        
+        cursorIsOver : function() {
+            if (controller.tool === "edit") drawingArea.setCursor('selected');
+            if (controller.tool === "erase") canvas.css("cursor", "url('./ressources/cursor-scissors-active.png'), not-allowed");
+        },
         
         reset : function(){
             var context = drawingArea.context;

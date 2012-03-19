@@ -18,6 +18,8 @@
         
         playerColors : new Array(),
         
+        linkedToGround : new Array(),
+        
         initPlayerColors : function(playerInt){
             var player1 = $("#player1");
             var player2 = $("#player2");
@@ -127,6 +129,7 @@
                 id = ++editionField.nodeIdCounter;                
                 point = new Point( x, y);
                 editionField.graphUi.addWeightedNode(id, point);
+                if(y+6 > height - 30) editionField.graphUi.groundNode(id);
             }
             editionField.dash.addWeightedNode(id, point);
             editionField.currentNodeId = id;
@@ -255,44 +258,60 @@
                 
                 var currentPoint = editionField.dash.getNodeValue(currentNodeId);
                 editionField.graphUi.setNodeValue(currentNodeId, currentPoint);
-                
                 var id = searchDuplicate(currentNodeId);
-                if(id){
-                    mergeNodes(currentNodeId, id); 
-                }
+                
+                if(id) mergeNodes(currentNodeId, id); 
+                
+                else if(editionField.graphUi.getNodeValue(currentNodeId).y + 6 > 30 && !editionField.graphUi.isAlreadyGrounded(currentNodeId))
+                    editionField.graphUi.groundNode(currentNodeId);
+                
+                else if (editionField.graphUi.isAlreadyGrounded(currentNodeId)) 
+                    editionField.graphUi.unGroundNode(currentNodeId);
+                
             }
         },
         
         
         erase : function(x, y){
-            
             var id = editionField.getNodeByCoord(x, y);
-            if(id){
-                editionField.graphUi.removeNode(id);
-            }
+            if(id)editionField.graphUi.removeNode(id);
         },
         
-        
-        buildGraphGame : function() {
+        setLinkedToGround : function(){
+            var visited = new Array();
+            var groundLength = editionField.graphUi.getGroundedNodesCount();
             
-        },        
+            function depthTraversal(graph, rootId){
+                visited["#"+rootId] = true;
+                var neighborhoodSize = graph.getNeighborHoodSize(rootId);
+                for(var k = 1; k <= neighborhoodSize; k++ ){
+                    var neighborId = graph.getNeigbor(rootId, k);
+                    
+                }
+            }
+            
+            for( var i = 1; i <= groundLength; i++){
+                var nodeId = editionField.graphUi.getGroundedNode(i);
+                if(!visited["#"+nodeId]){
+                    depthTraversal(editionField.graphUi, nodeId);
+                }
+            }
+            editionField.linkedToGround = visited;
+        },
         
         apply : function(){
-            
             editionField.dash = new HackenbushGraph();
             editionField.currentNodeId = 0;
             editionField.mouseoverNode = null;
-            editionField.buildGraphGame();
             editionField.graphUi.removeLonelyNodes();
+            editionField.setLinkedToGround();
             drawingArea.update();
         },
         
     
         eraseAll : function() {
-            
             editionField.graphUi = new HackenbushGraph();
             editionField.dash = new HackenbushGraph();
-            
             drawingArea.update();
         }
     

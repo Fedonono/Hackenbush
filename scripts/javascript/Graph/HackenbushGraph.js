@@ -89,7 +89,31 @@ var HackenbushGraph = function(){
             throw new InvalidIndexException(k);
         
         return this.groundedNodes[k-1];
-    }	
+    }
+    
+    this.getGroundedNodeIndex = function(id) {         
+        
+        var index = this.groundedNodes.indexOf(id);
+        
+        if(!this.nodeExists(id))
+            throw new UnexistingNodeException(id);
+
+        if (index === -1)
+            throw new NotConnectedToGroundException(id);
+        
+        return index;
+    }
+    
+    this.isAlreadyGrounded = function(id) {
+        
+        var index = this.groundedNodes.indexOf(id);
+        
+        if(!this.nodeExists(id))
+            throw new UnexistingNodeException(id);
+        
+        if(index !== -1) return true;
+        return false;
+    }
 	
     /** 
 	 * Returns the number of grounded nodes (i.e. linked to the ground).
@@ -110,10 +134,8 @@ var HackenbushGraph = function(){
      *@throws AlreadyGroundedNodeException if the node is already grounded
 	 */    
     this.groundNode = function(id){
-        if(!this.nodeExists(id))
-            throw new UnexistingNodeException(id);
-
-        if (this.groundedNodes.indexOf(id) !== -1)
+        
+        if (this.isAlreadyGrounded(id))
             throw new AlreadyGroundedNodeException(id);
         
         this.groundedNodes.push(id);
