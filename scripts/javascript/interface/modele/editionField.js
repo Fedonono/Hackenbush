@@ -262,12 +262,11 @@
                 
                 if(id) mergeNodes(currentNodeId, id); 
                 
-                else if(editionField.graphUi.getNodeValue(currentNodeId).y + 6 > height+30 && !editionField.graphUi.isAlreadyGrounded(currentNodeId))
+                else if(editionField.graphUi.getNodeValue(currentNodeId).y+6 >= height-30 && !editionField.graphUi.isAlreadyGrounded(currentNodeId))
                     editionField.graphUi.groundNode(currentNodeId);
                 
                 else if (editionField.graphUi.isAlreadyGrounded(currentNodeId)) 
                     editionField.graphUi.unGroundNode(currentNodeId);
-                
             }
         },
         
@@ -300,6 +299,7 @@
                 }
             }
             editionField.linkedToGround = visited;
+            console.log(visited);
         },
         
         apply : function(){
