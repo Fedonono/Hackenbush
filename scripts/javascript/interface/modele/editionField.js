@@ -8,10 +8,6 @@
      
         nodeIdCounter : 0, 
         
-        graphUi : new HackenbushGraph(false),
-    
-        dash : new HackenbushGraph(false),
-        
         currentNodeId : 0,
         
         mouseoverNode:null,
@@ -63,18 +59,18 @@
         
         setSelectedItem : function(x, y){
           
-            var id = editionField.getNodeByCoord(x, y);
+            var id = drawingArea.getNodeByCoord(x, y);
             if(id){
                 
                 editionField.currentNodeId = id;
-                var node = editionField.graphUi.getNodeById(id);
-                editionField.dash.addWeightedNode(id, node.weight);
+                var node = drawingArea.graphUi.getNodeById(id);
+                drawingArea.dash.addWeightedNode(id, node.weight);
                 
                 for(var itemKey in node.neighbors) {
                     var neighborId = itemKey.replace("#", '')*1;
-                    if(!editionField.dash.nodeExists(neighborId)) {
-                        var point = editionField.graphUi.getNodeValue(neighborId);
-                        editionField.dash.addWeightedNode(neighborId, point);  
+                    if(!drawingArea.dash.nodeExists(neighborId)) {
+                        var point = drawingArea.graphUi.getNodeValue(neighborId);
+                        drawingArea.dash.addWeightedNode(neighborId, point);  
                     }
                 }
                 
@@ -82,8 +78,8 @@
                     neighborId = itemKey.replace("#", '')*1;
                     var edges = node.neighbors[itemKey];
                     for(var i = 0; i < edges.length; i++) {
-                        var bezierCurve = editionField.graphUi.getEdgeValue(id, neighborId, i);
-                        editionField.dash.addWeightedEdge(id, neighborId, bezierCurve);
+                        var bezierCurve = drawingArea.graphUi.getEdgeValue(id, neighborId, i);
+                        drawingArea.dash.addWeightedEdge(id, neighborId, bezierCurve);
                     }
                 }
             }
@@ -93,23 +89,12 @@
             drawingArea.refresh();
         },
        
-       
-        getNodeByCoord : function(x, y) {
-          
-            for(var itemKey in editionField.graphUi.nodes){
-                
-                var item = editionField.graphUi.nodes[itemKey].weight;
-                if(x >= item.x - 12 && x <= item.x + 12 && y >= item.y - 12 && y <= item.y + 12) return itemKey.replace('#', '')*1;
-            }
-            
-            return null;          
-        },
         
         mouseOverSomething : function(x, y){
          
-            var id = editionField.getNodeByCoord(x, y);
+            var id = drawingArea.getNodeByCoord(x, y);
             if(id) {
-                editionField.mouseoverNode = editionField.graphUi.getNodeById(id);
+                editionField.mouseoverNode = drawingArea.graphUi.getNodeById(id);
             }
             else editionField.mouseoverNode = null;
             drawingArea.refresh();
@@ -121,17 +106,17 @@
             if(y+6 > height - 30) y = height-30;
             
             var point;
-            var id = editionField.getNodeByCoord(x, y);
+            var id = drawingArea.getNodeByCoord(x, y);
             
-            if(id) point = editionField.graphUi.getNodeValue(id);
+            if(id) point = drawingArea.graphUi.getNodeValue(id);
             
             else{
                 id = ++editionField.nodeIdCounter;                
                 point = new Point( x, y);
-                editionField.graphUi.addWeightedNode(id, point);
-                if(y+6 > height - 30) editionField.graphUi.groundNode(id);
+                drawingArea.graphUi.addWeightedNode(id, point);
+                if(y+6 > height - 30) drawingArea.graphUi.groundNode(id);
             }
-            editionField.dash.addWeightedNode(id, point);
+            drawingArea.dash.addWeightedNode(id, point);
             editionField.currentNodeId = id;
             
             drawingArea.refresh();
@@ -144,15 +129,15 @@
                 var point;
                 if(y + 6 > height - 30) y = height - 30;
                 
-                var id = editionField.getNodeByCoord(x, y);
+                var id = drawingArea.getNodeByCoord(x, y);
                 if(id && id !== editionField.currentNodeId) {
-                    var coord = editionField.graphUi.getNodeValue(id);
+                    var coord = drawingArea.graphUi.getNodeValue(id);
                     point = new Point(coord.x, coord.y);
                 }
                 else{
                     point = new Point(x,y);
                 }
-                editionField.dash.setNodeValue(editionField.currentNodeId, point);
+                drawingArea.dash.setNodeValue(editionField.currentNodeId, point);
             }
 
             drawingArea.refresh();
@@ -163,10 +148,10 @@
                         
             if(y + 6 > height - 30) y = height-30;
             
-            var id = editionField.getNodeByCoord(x, y);
+            var id = drawingArea.getNodeByCoord(x, y);
             
             if(id){
-                var item = editionField.graphUi.getNodeValue(id);
+                var item = drawingArea.graphUi.getNodeValue(id);
                 x = item.x;
                 y = item.y;   
             }
@@ -174,21 +159,21 @@
             id = editionField.nodeIdCounter + 42;
             var goal = new Point(x, y);
             
-            var startPoint = editionField.graphUi.getNodeValue(editionField.currentNodeId);
+            var startPoint = drawingArea.graphUi.getNodeValue(editionField.currentNodeId);
             var averageX = (x + startPoint.x)/2;
             var averageY = (y + startPoint.y)/2;
             var orientationP1 = new Point(averageX, averageY);
             var orientationP2 = new Point(averageX, averageY);
             var bezierCurve = new BezierCurve(orientationP1, orientationP2, color)
                 
-            if(!editionField.dash.nodeExists(id)) {
-                editionField.dash.addWeightedNode(id, goal);
-                editionField.dash.addWeightedEdge(editionField.currentNodeId, id, bezierCurve);
+            if(!drawingArea.dash.nodeExists(id)) {
+                drawingArea.dash.addWeightedNode(id, goal);
+                drawingArea.dash.addWeightedEdge(editionField.currentNodeId, id, bezierCurve);
             }
             else{
                 
-                editionField.dash.setNodeValue(id, goal);
-                editionField.dash.setEdgeValue(editionField.currentNodeId, id, 0, bezierCurve);
+                drawingArea.dash.setNodeValue(id, goal);
+                drawingArea.dash.setEdgeValue(editionField.currentNodeId, id, 0, bezierCurve);
             }
                 
             drawingArea.refresh();
@@ -200,25 +185,25 @@
             var dashId = editionField.nodeIdCounter + 42;
             var startId = editionField.currentNodeId;
             
-            if(editionField.dash.nodeExists(dashId)){
+            if(drawingArea.dash.nodeExists(dashId)){
                 
-                var indexEdge = editionField.dash.getNodeById(startId).neighbors["#"+dashId].length - 1;
-                var color = editionField.dash.getEdgeValue(startId, dashId, indexEdge).color;
+                var indexEdge = drawingArea.dash.getNodeById(startId).neighbors["#"+dashId].length - 1;
+                var color = drawingArea.dash.getEdgeValue(startId, dashId, indexEdge).color;
                 
-                var point = editionField.dash.getNodeValue(dashId);
-                var id = editionField.getNodeByCoord(point.x, point.y);
+                var point = drawingArea.dash.getNodeValue(dashId);
+                var id = drawingArea.getNodeByCoord(point.x, point.y);
                 
                 if(!id) {
                     editionField.addNode(point.x, point.y);
                     id = editionField.nodeIdCounter;
                 }
-                var start = editionField.graphUi.getNodeValue(startId);
-                var goal = editionField.graphUi.getNodeValue(id);
+                var start = drawingArea.graphUi.getNodeValue(startId);
+                var goal = drawingArea.graphUi.getNodeValue(id);
                 var averageX = (start.x + goal.x)/2;
                 var averageY = (start.y + goal.y)/2;
                 var bezierCurve = new BezierCurve(new Point(averageX, averageY), new Point(averageX, averageY), color);
                 
-                editionField.graphUi.addWeightedEdge(startId, id, bezierCurve); 
+                drawingArea.graphUi.addWeightedEdge(startId, id, bezierCurve); 
             }
             
         },
@@ -228,64 +213,64 @@
             //FUNCTIONS
             function searchDuplicate(currentNodeId){
                 
-                var currentPoint = editionField.dash.getNodeValue(currentNodeId);
+                var currentPoint = drawingArea.dash.getNodeValue(currentNodeId);
                 
-                for(var itemKey in editionField.graphUi.nodes){
+                for(var itemKey in drawingArea.graphUi.nodes){
                     var id = itemKey.replace('#', '')*1;
-                    var point = editionField.graphUi.getNodeValue(id);
+                    var point = drawingArea.graphUi.getNodeValue(id);
                     if(id !== currentNodeId && currentPoint.x === point.x && currentPoint.y === point.y)return id;
                 }
                 return 0;
             }
             
             function mergeNodes(oldId, id){
-                var oldNode = editionField.graphUi.getNodeById(oldId);
+                var oldNode = drawingArea.graphUi.getNodeById(oldId);
                 
                 for(var neighborKey in oldNode.neighbors){
                     var neighborId = neighborKey.replace('#', '')*1;
                     var edges = oldNode.neighbors[neighborKey];
                     for(var i = 0; i < edges.length; i++){
                         var color = edges[i].weight;
-                        editionField.graphUi.addWeightedEdge(id, neighborId, color);
+                        drawingArea.graphUi.addWeightedEdge(id, neighborId, color);
                     }
                 }
-                editionField.graphUi.removeNode(oldId);
+                drawingArea.graphUi.removeNode(oldId);
             }
             
             //ALGORITHM
             var currentNodeId = editionField.currentNodeId;
             if(currentNodeId){
                 
-                var currentPoint = editionField.dash.getNodeValue(currentNodeId);
-                editionField.graphUi.setNodeValue(currentNodeId, currentPoint);
+                var currentPoint = drawingArea.dash.getNodeValue(currentNodeId);
+                drawingArea.graphUi.setNodeValue(currentNodeId, currentPoint);
                 var id = searchDuplicate(currentNodeId);
                 
                 if(id) mergeNodes(currentNodeId, id); 
                 
-                else if(editionField.graphUi.getNodeValue(currentNodeId).y+6 >= height-30 && !editionField.graphUi.isAlreadyGrounded(currentNodeId))
-                    editionField.graphUi.groundNode(currentNodeId);
+                else if(drawingArea.graphUi.getNodeValue(currentNodeId).y+6 >= height-30 && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId))
+                    drawingArea.graphUi.groundNode(currentNodeId);
                 
-                else if (editionField.graphUi.getNodeValue(currentNodeId).y+6 < height-30 &&  editionField.graphUi.isAlreadyGrounded(currentNodeId)) 
-                    editionField.graphUi.unGroundNode(currentNodeId);
+                else if (drawingArea.graphUi.getNodeValue(currentNodeId).y+6 < height-30 &&  drawingArea.graphUi.isAlreadyGrounded(currentNodeId)) 
+                    drawingArea.graphUi.unGroundNode(currentNodeId);
             }
         },
         
         
         erase : function(x, y){
-            var id = editionField.getNodeByCoord(x, y);
-            if(id)editionField.graphUi.removeNode(id);
+            var id = drawingArea.getNodeByCoord(x, y);
+            if(id)drawingArea.graphUi.removeNode(id);
         },
         
         setLinkedToGround : function(){
             var visited = new Array();
-            var groundLength = editionField.graphUi.getGroundedNodesCount();
+            var groundLength = drawingArea.graphUi.getGroundedNodesCount();
             
             function depthTraversal(rootId){
                 visited["#"+rootId] = true;
-                var neighborhoodSize = editionField.graphUi.getNeighborhoodSize(rootId);
+                var neighborhoodSize = drawingArea.graphUi.getNeighborhoodSize(rootId);
                 
                 for(var k = 1; k <= neighborhoodSize; k++ ){
-                    var neighborId = editionField.graphUi.getNeighbor(rootId, k);
+                    var neighborId = drawingArea.graphUi.getNeighbor(rootId, k);
                     if(!visited["#"+neighborId]){
                         depthTraversal(neighborId);
                     }
@@ -293,7 +278,7 @@
             }
             
             for( var i = 1; i <= groundLength; i++){
-                var nodeId = editionField.graphUi.getGroundedNode(i);
+                var nodeId = drawingArea.graphUi.getGroundedNode(i);
                 if(!visited["#"+nodeId]){
                     depthTraversal(nodeId);
                 }
@@ -302,18 +287,18 @@
         },
         
         apply : function(){
-            editionField.dash = new HackenbushGraph();
+            drawingArea.dash = new HackenbushGraph();
             editionField.currentNodeId = 0;
             editionField.mouseoverNode = null;
-            editionField.graphUi.removeLonelyNodes();
+            drawingArea.graphUi.removeLonelyNodes();
             editionField.setLinkedToGround();
             drawingArea.update();
         },
         
     
         eraseAll : function() {
-            editionField.graphUi = new HackenbushGraph();
-            editionField.dash = new HackenbushGraph();
+            drawingArea.graphUi = new HackenbushGraph();
+            drawingArea.dash = new HackenbushGraph();
             drawingArea.update();
         }
     

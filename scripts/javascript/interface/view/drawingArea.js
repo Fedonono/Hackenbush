@@ -12,6 +12,21 @@
         context : context,
     
         imageData : context.getImageData(0, 0, width, height),
+        
+        graphUi : new HackenbushGraph(),
+        
+        dash : new HackenbushGraph(),
+        
+        getNodeByCoord : function(x, y) {
+          
+            for(var itemKey in drawingArea.graphUi.nodes){
+                
+                var item = drawingArea.graphUi.nodes[itemKey].weight;
+                if(x >= item.x - 12 && x <= item.x + 12 && y >= item.y - 12 && y <= item.y + 12) return itemKey.replace('#', '')*1;
+            }
+            
+            return null;          
+        },
     
         drawNode : function(x, y){
 
@@ -65,7 +80,7 @@
             
             var point;
             if(editionField.currentNodeId){
-                point = editionField.dash.getNodeValue(editionField.currentNodeId);
+                point = drawingArea.dash.getNodeValue(editionField.currentNodeId);
                 drawingArea.drawShadowNode(point.x, point.y);
                 drawingArea.cursorIsOver();
             }
@@ -76,12 +91,12 @@
             }
             else this.setCursor(controller.tool);
             
-            for (var itemKey in editionField.dash.nodes){
-                var node = editionField.dash.nodes[itemKey];
+            for (var itemKey in drawingArea.dash.nodes){
+                var node = drawingArea.dash.nodes[itemKey];
                 var start = node.weight;
                 
                 for(var neighborKey in node.neighbors){
-                    var goal = editionField.dash.nodes[neighborKey].weight;
+                    var goal = drawingArea.dash.nodes[neighborKey].weight;
                     var edges = node.neighbors[neighborKey];
                     
                     for(var i = 0; i < edges.length; i++){
@@ -92,8 +107,8 @@
                     }                   
                 }
             }
-            for (itemKey in editionField.dash.nodes){
-                point = editionField.dash.nodes[itemKey].weight;
+            for (itemKey in drawingArea.dash.nodes){
+                point = drawingArea.dash.nodes[itemKey].weight;
                 drawingArea.drawNode(point.x, point.y);
             }
         },
@@ -101,13 +116,13 @@
         update : function(){            
             drawingArea.reset();
             
-            for (var itemKey in editionField.graphUi.nodes){
-                var node = editionField.graphUi.nodes[itemKey];
+            for (var itemKey in drawingArea.graphUi.nodes){
+                var node = drawingArea.graphUi.nodes[itemKey];
                 var start = node.weight;                
                 
                 for(var neighborKey in node.neighbors){
                     
-                    var goal = editionField.graphUi.nodes[neighborKey].weight;
+                    var goal = drawingArea.graphUi.nodes[neighborKey].weight;
                     var edges = node.neighbors[neighborKey];
                     
                     for(var i = 0; i < edges.length; i++){
@@ -124,8 +139,8 @@
                     
             }
         
-            for(itemKey in editionField.graphUi.nodes){
-                var point = editionField.graphUi.nodes[itemKey].weight;
+            for(itemKey in drawingArea.graphUi.nodes){
+                var point = drawingArea.graphUi.nodes[itemKey].weight;
                 var id = itemKey.replace('#', '')*1;
                 if(id !== editionField.currentNodeId){
                     drawingArea.drawNode(point.x, point.y);
