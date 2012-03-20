@@ -75,7 +75,7 @@ var SimpleGraph = function(directed){
 	 * @throws AlreadyExistingNodeException if a node with the speficied id already exists
 	 */		
     this.addNode = function(id) {
-        this.addWeightedNode(id, undefined);
+        this.addWeightedNode(id, null);
     }
 
     /** 

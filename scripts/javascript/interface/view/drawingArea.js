@@ -99,7 +99,7 @@
                     for(var i = 0; i < edges.length; i++){
                         var bezierCurve = edges[i].weight;
                         var alpha = 0.3;
-                        if(editionField.linkedToGround[itemKey]) alpha = 1;
+                        if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
                         drawingArea.drawBezierCurve(start, goal, bezierCurve, alpha);
                     }                   
                 }
@@ -128,7 +128,7 @@
                         if(startId !== controller.currentNodeId && goalId !==controller.currentNodeId){
                             var beizerCurve = edges[i].weight;
                             var alpha = 0.3;
-                            if(editionField.linkedToGround["#"+startId]) alpha = 1;
+                            if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
                             drawingArea.drawBezierCurve(start, goal, beizerCurve, alpha);
                         }
                     }

@@ -9,8 +9,8 @@ var HackenbushGraph = function(){
     AbstractHackenbushGraph.call(this, false);
     MultiGraph.call(this, false); // false: the graph modeling an Hackenbush game is not directed 
     this.groundedNodes = new Array();
+    this.linkedToGround = new Array();
 	
-    
 	
     /** 
 	 * Returns, as an integer, the color of the k th edge linked to the node identified by id.
@@ -139,6 +139,7 @@ var HackenbushGraph = function(){
             throw new AlreadyGroundedNodeException(id);
         
         this.groundedNodes.push(id);
+        this.setLinkedToGround();
     }
     
     
@@ -159,6 +160,7 @@ var HackenbushGraph = function(){
             throw new NotConnectedToGroundException(id);
 
         this.spliceGroundedNodes(indexFind);
+        this.setLinkedToGround();
     }
    
     /**
@@ -199,28 +201,78 @@ var HackenbushGraph = function(){
 
         if (!this.directed) { // if the graph isn't directed, we can recup all node directly connected with the id.
             for (sourceId in this.nodes[idString].neighbors) { // doesn't call removeNode to avoid all checks and problems with #id != id, we could split but I prefer this solution.
-				var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
+                var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
                 sourceIdInt = this.splitId(sourceId);
                 this.modDegree(sourceIdInt, '-'+edgesNumber);
                 delete this.nodes[sourceId].neighbors[idString];
                 this.decrNeighborsSize(sourceIdInt);
             }
             delete this.nodes[idString];
-			this.decrNodesSize();
+            this.decrNodesSize();
         }
 		
         if (this.directed) { 
             for (sourceId in this.nodes) {
                 sourceIdInt = this.splitId(sourceId); 
                 if (this.edgeExists(sourceIdInt, id, 0)) {
-					var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
+                    var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
                     this.modDegree(sourceIdInt, '-'+edgesNumber);
                     delete this.nodes[sourceId].neighbors[idString];
                     this.decrNeighborsSize(sourceIdInt);
                 }
             }
             delete this.nodes[idString];
-			this.decrNodesSize();
+            this.decrNodesSize();
         }
+    }
+    
+    this.setLinkedToGround = function() {
+        
+        var visited = new Array();
+        var groundLength = this.getGroundedNodesCount();
+        
+        var graph = this;
+        function depthTraversal(rootId){
+            visited["#"+rootId] = true;
+            var neighborhoodSize = graph.getNeighborhoodSize(rootId);
+                
+            for(var k = 1; k <= neighborhoodSize; k++ ){
+                var neighborId = graph.getNeighbor(rootId, k);
+                if(!visited["#"+neighborId]){
+                    depthTraversal(neighborId);
+                }
+            }
+        }
+            
+        for( var i = 1; i <= groundLength; i++){
+            var nodeId = this.getGroundedNode(i);
+            if(!visited["#"+nodeId]){
+                depthTraversal(nodeId);
+            }
+        }
+        this.linkedToGround = visited;
+    }
+    
+    this.addWeightedEdge = function(sourceId, destId, weight){
+        if (!this.edgeExists(sourceId, destId, 0)) {
+            this.nodes['#'+sourceId].neighbors['#'+destId] = new Array();
+            this.incrNeighborsSize(sourceId);
+            if (!this.directed && sourceId !== destId) {
+                this.nodes['#'+destId].neighbors['#'+sourceId] = new Array();
+                this.incrNeighborsSize(destId);
+            }
+        }
+
+        var edge = new Edge(weight, '#000000');
+
+        this.nodes['#'+sourceId].neighbors['#'+destId].push(edge);
+        this.incrDegree(sourceId);
+
+        if (!this.directed && sourceId !== destId) {
+            this.nodes['#'+destId].neighbors['#'+sourceId].push(edge);
+            this.incrDegree(destId);
+        }
+        
+        this.setLinkedToGround();
     }
 }

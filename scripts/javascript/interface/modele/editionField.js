@@ -10,7 +10,7 @@
         
         playerColors : new Array(),
         
-        linkedToGround : new Array(),
+        graphGame : new HackenbushGraph(),
         
         initPlayerColors : function(playerInt){
             var player1 = $("#player1");
@@ -286,7 +286,6 @@
             drawingArea.dash = new HackenbushGraph();
             controller.currentNodeId = 0;
             editionField.mouseoverNode = null;
-            editionField.setLinkedToGround();
             drawingArea.graphUi.removeLonelyNodes();
             drawingArea.update();
         },
