@@ -8,10 +8,6 @@
      
         nodeIdCounter : 0, 
         
-        currentNodeId : 0,
-        
-        mouseoverNode:null,
-        
         playerColors : new Array(),
         
         linkedToGround : new Array(),
@@ -62,7 +58,7 @@
             var id = drawingArea.getNodeByCoord(x, y);
             if(id){
                 
-                editionField.currentNodeId = id;
+                controller.currentNodeId = id;
                 var node = drawingArea.graphUi.getNodeById(id);
                 drawingArea.dash.addWeightedNode(id, node.weight);
                 
@@ -117,7 +113,7 @@
                 if(y+6 > height - 30) drawingArea.graphUi.groundNode(id);
             }
             drawingArea.dash.addWeightedNode(id, point);
-            editionField.currentNodeId = id;
+            controller.currentNodeId = id;
             
             drawingArea.refresh();
         },
@@ -125,19 +121,19 @@
         
         move : function(x, y){
             
-            if(editionField.currentNodeId){
+            if(controller.currentNodeId){
                 var point;
                 if(y + 6 > height - 30) y = height - 30;
                 
                 var id = drawingArea.getNodeByCoord(x, y);
-                if(id && id !== editionField.currentNodeId) {
+                if(id && id !== controller.currentNodeId) {
                     var coord = drawingArea.graphUi.getNodeValue(id);
                     point = new Point(coord.x, coord.y);
                 }
                 else{
                     point = new Point(x,y);
                 }
-                drawingArea.dash.setNodeValue(editionField.currentNodeId, point);
+                drawingArea.dash.setNodeValue(controller.currentNodeId, point);
             }
 
             drawingArea.refresh();
@@ -159,7 +155,7 @@
             id = editionField.nodeIdCounter + 42;
             var goal = new Point(x, y);
             
-            var startPoint = drawingArea.graphUi.getNodeValue(editionField.currentNodeId);
+            var startPoint = drawingArea.graphUi.getNodeValue(controller.currentNodeId);
             var averageX = (x + startPoint.x)/2;
             var averageY = (y + startPoint.y)/2;
             var orientationP1 = new Point(averageX, averageY);
@@ -168,12 +164,12 @@
                 
             if(!drawingArea.dash.nodeExists(id)) {
                 drawingArea.dash.addWeightedNode(id, goal);
-                drawingArea.dash.addWeightedEdge(editionField.currentNodeId, id, bezierCurve);
+                drawingArea.dash.addWeightedEdge(controller.currentNodeId, id, bezierCurve);
             }
             else{
                 
                 drawingArea.dash.setNodeValue(id, goal);
-                drawingArea.dash.setEdgeValue(editionField.currentNodeId, id, 0, bezierCurve);
+                drawingArea.dash.setEdgeValue(controller.currentNodeId, id, 0, bezierCurve);
             }
                 
             drawingArea.refresh();
@@ -183,7 +179,7 @@
         addEdge : function() {
             
             var dashId = editionField.nodeIdCounter + 42;
-            var startId = editionField.currentNodeId;
+            var startId = controller.currentNodeId;
             
             if(drawingArea.dash.nodeExists(dashId)){
                 
@@ -238,7 +234,7 @@
             }
             
             //ALGORITHM
-            var currentNodeId = editionField.currentNodeId;
+            var currentNodeId = controller.currentNodeId;
             if(currentNodeId){
                 
                 var currentPoint = drawingArea.dash.getNodeValue(currentNodeId);
@@ -288,10 +284,10 @@
         
         apply : function(){
             drawingArea.dash = new HackenbushGraph();
-            editionField.currentNodeId = 0;
+            controller.currentNodeId = 0;
             editionField.mouseoverNode = null;
-            drawingArea.graphUi.removeLonelyNodes();
             editionField.setLinkedToGround();
+            drawingArea.graphUi.removeLonelyNodes();
             drawingArea.update();
         },
         

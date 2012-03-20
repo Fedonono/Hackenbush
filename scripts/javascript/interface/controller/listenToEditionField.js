@@ -61,6 +61,9 @@
         });
     }
     
+    controller.currentNodeId = 0;
+    controller.mouseoverNode = null;
+    
     controller.listenToEditionField();    
 })();
 

@@ -15,17 +15,14 @@
         
         graphUi : new HackenbushGraph(),
         
-        dash : new HackenbushGraph(),
+        dash : new HackenbushGraph(),      
         
         getNodeByCoord : function(x, y) {
-          
             for(var itemKey in drawingArea.graphUi.nodes){
-                
                 var item = drawingArea.graphUi.nodes[itemKey].weight;
                 if(x >= item.x - 12 && x <= item.x + 12 && y >= item.y - 12 && y <= item.y + 12) return itemKey.replace('#', '')*1;
             }
-            
-            return null;          
+            return 0;          
         },
     
         drawNode : function(x, y){
@@ -79,8 +76,8 @@
             drawingArea.context.putImageData(drawingArea.imageData, 0, 0);
             
             var point;
-            if(editionField.currentNodeId){
-                point = drawingArea.dash.getNodeValue(editionField.currentNodeId);
+            if(controller.currentNodeId){
+                point = drawingArea.dash.getNodeValue(controller.currentNodeId);
                 drawingArea.drawShadowNode(point.x, point.y);
                 drawingArea.cursorIsOver();
             }
@@ -128,7 +125,7 @@
                     for(var i = 0; i < edges.length; i++){
                         var startId = itemKey.replace('#','')*1;
                         var goalId = neighborKey.replace('#','')*1;
-                        if(startId !== editionField.currentNodeId && goalId !==editionField.currentNodeId){
+                        if(startId !== controller.currentNodeId && goalId !==controller.currentNodeId){
                             var beizerCurve = edges[i].weight;
                             var alpha = 0.3;
                             if(editionField.linkedToGround["#"+startId]) alpha = 1;
@@ -142,7 +139,7 @@
             for(itemKey in drawingArea.graphUi.nodes){
                 var point = drawingArea.graphUi.nodes[itemKey].weight;
                 var id = itemKey.replace('#', '')*1;
-                if(id !== editionField.currentNodeId){
+                if(id !== controller.currentNodeId){
                     drawingArea.drawNode(point.x, point.y);
                 }
             }
