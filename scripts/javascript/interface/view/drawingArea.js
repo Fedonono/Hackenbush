@@ -67,8 +67,12 @@
             var context = drawingArea.context;
             context.beginPath();
             context.fillStyle = '#00ff00';
+            context.shadowColor = '#00ff00';
+            context.shadowBlur = 30;
             context.fillRect(0,height-30,width,30);
             context.closePath();
+            context.shadowColor = 'black';
+            context.shadowBlur = 0;
             drawingArea.imageData = context.getImageData(0, 0, width, height);
         },
         
@@ -81,8 +85,8 @@
                 drawingArea.drawShadowNode(point.x, point.y);
                 drawingArea.cursorIsOver();
             }
-            else if(editionField.mouseoverNode){
-                point = editionField.mouseoverNode.weight;
+            else if(controller.mouseoverNode){
+                point = controller.mouseoverNode.weight;
                 drawingArea.drawShadowNode(point.x, point.y);
                 drawingArea.cursorIsOver();
             }

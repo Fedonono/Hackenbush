@@ -90,9 +90,9 @@
          
             var id = drawingArea.getNodeByCoord(x, y);
             if(id) {
-                editionField.mouseoverNode = drawingArea.graphUi.getNodeById(id);
+                controller.mouseoverNode = drawingArea.graphUi.getNodeById(id);
             }
-            else editionField.mouseoverNode = null;
+            else controller.mouseoverNode = null;
             drawingArea.refresh();
         },
         
@@ -257,40 +257,14 @@
             if(id)drawingArea.graphUi.removeNode(id);
         },
         
-        setLinkedToGround : function(){
-            var visited = new Array();
-            var groundLength = drawingArea.graphUi.getGroundedNodesCount();
-            
-            function depthTraversal(rootId){
-                visited["#"+rootId] = true;
-                var neighborhoodSize = drawingArea.graphUi.getNeighborhoodSize(rootId);
-                
-                for(var k = 1; k <= neighborhoodSize; k++ ){
-                    var neighborId = drawingArea.graphUi.getNeighbor(rootId, k);
-                    if(!visited["#"+neighborId]){
-                        depthTraversal(neighborId);
-                    }
-                }
-            }
-            
-            for( var i = 1; i <= groundLength; i++){
-                var nodeId = drawingArea.graphUi.getGroundedNode(i);
-                if(!visited["#"+nodeId]){
-                    depthTraversal(nodeId);
-                }
-            }
-            editionField.linkedToGround = visited;
-        },
-        
         apply : function(){
             drawingArea.dash = new HackenbushGraph();
             controller.currentNodeId = 0;
-            editionField.mouseoverNode = null;
+            controller.mouseoverNode = null;
             drawingArea.graphUi.removeLonelyNodes();
             drawingArea.update();
         },
         
-    
         eraseAll : function() {
             drawingArea.graphUi = new HackenbushGraph();
             drawingArea.dash = new HackenbushGraph();
