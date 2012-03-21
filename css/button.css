@@ -39,11 +39,14 @@
 
 .options, .button, .button-bottom, .locked, .selected  {
     border: 4px solid rgba(201,201,201,0.5);
-    color : #e0cece;
     box-shadow: 0 0 8px rgba(221,201,201,1);
     font-family: Helvetica, Arial;
     font-weight: 900;
     font-variant:small-caps;
+}
+
+.options, .button, .button-bottom, .locked, .selected , .game {
+    color : #d3bebe;
 }
 
 .button.toolChooser, .locked {
