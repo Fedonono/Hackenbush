@@ -8,7 +8,6 @@
     <link type="text/css" href="./css/background.css" rel="stylesheet">
     <link type="text/css" href="./css/button.css" rel="stylesheet">
 	<link type="text/css" href="./css/jquery-ui.css" rel="stylesheet">
-	<link type="text/css" href="./css/load.css" rel="stylesheet">
 </head>
 <body> 
 	<div id="head">
@@ -18,70 +17,64 @@
 	<div class="vague_bg2" id="fixedbg2" style="left: 0px;"></div>
 	<div id="main">
 		<div id="main-container">
-		
-		
-		
-<div id="main-container-canvas">
-    <div id="main-left">
-        <div class="button toolChooser" id="save">Save</div>
-        <div class="button toolChooser" id="draw">Draw</div>
-        <div class="button toolChooser" id="edit">Edit</div>
-        <div class="button toolChooser" id="erase">Eraser</div>
-        <div class="button toolChooser" id="eraseAll">Delete</div>
-        <div class="button toolChooser" id="load">load</div>
-        
-        <div class="options" id="options">Option(s)
-            <div  id="p1">
-                <label>P1 : </label>
-                <select  id="player1" onchange="controller.setPlayerColors(1)">
-                    <option value="red" class="red">Red</option>
-                    <option value="green" class="green">Green</option>
-                    <option value="blue" class="blue">Blue</option>
-                </select>
-            </div>
-            <div id ="p2">
-                <label>P2 : </label>
-                <select id="player2" onchange="controller.setPlayerColors(2)">
-                    <option value="blue" class="blue">Blue</option>
-                    <option value="red" class="red">Red</option>
-                    <option value="green" class="green">Green</option>
-                </select>
-            </div>
-            <div id ="both">
-                <label>BOTH : </label>
-                <select id="bothPlayers" onchange="controller.setPlayerColors(0)">
-                    <option value="green" class="green">Green</option>
-                    <option value="blue" class="blue">Blue</option>
-                    <option value="red" class="red">Red</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div id="main-center">
-        <canvas id="canvasArea" width="800" height="600">Your browser does not support the canvas element.</canvas>
-    </div>
-    <div id="main-right">
-        <div class="button colorChooser red" id="red"> </div>
-        <div class="button colorChooser green" id="green"> </div>
-        <div class="button colorChooser blue" id="blue"> </div>
-    </div>	
-</div>
+			<div id="main-container-canvas">
+				<div id="main-left">
+					<div class="button toolChooser" id="save">Save</div>
+					<div class="button toolChooser" id="draw">Draw</div>
+					<div class="button toolChooser" id="edit">Edit</div>
+					<div class="button toolChooser" id="erase">Eraser</div>
+					<div class="button toolChooser" id="eraseAll">Delete</div>
+					<div class="button toolChooser" id="load">load</div>
+					
+					<div class="options" id="options">Option(s)
+						<div  id="p1">
+							<label>P1 : </label>
+							<select  id="player1" onchange="controller.setPlayerColors(1)">
+								<option value="red" class="red">Red</option>
+								<option value="green" class="green">Green</option>
+								<option value="blue" class="blue">Blue</option>
+							</select>
+						</div>
+						<div id ="p2">
+							<label>P2 : </label>
+							<select id="player2" onchange="controller.setPlayerColors(2)">
+								<option value="blue" class="blue">Blue</option>
+								<option value="red" class="red">Red</option>
+								<option value="green" class="green">Green</option>
+							</select>
+						</div>
+						<div id ="both">
+							<label>BOTH : </label>
+							<select id="bothPlayers" onchange="controller.setPlayerColors(0)">
+								<option value="green" class="green">Green</option>
+								<option value="blue" class="blue">Blue</option>
+								<option value="red" class="red">Red</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div id="main-center">
+					<canvas id="canvasArea" width="800" height="600">Your browser does not support the canvas element.</canvas>
+				</div>
+				<div id="main-right">
+					<div class="button colorChooser red" id="red"> </div>
+					<div class="button colorChooser green" id="green"> </div>
+					<div class="button colorChooser blue" id="blue"> </div>
+				</div>	
+			</div>
 
-<div id="save-from" title="Save a New Graph">
-	<font class="validateTips">If the graph with entered name already exist, there will be replaced by the new Graph.</font>
+			<div id="save-form" class="modal-dialog" title="Save a New Graph">
+				<font class="validateTips">If the graph with entered name already exist, there will be replaced by the new Graph.</font>
 
-	<form>
-	<fieldset>
-		<label for="name">Name</label>
-		<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
-	</fieldset>
-	</form>
-</div>
+				<form>
+				<fieldset>
+					<label for="name">Name</label>
+					<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+				</fieldset>
+				</form>
+			</div>
 
-<div id="load-from" title="Load a Graph"></div>	
-		
-		
-		
+			<div id="load-form" class="modal-dialog" title="Load a Graph"></div>
 		</div>
 	</div>
 	<div id="main-bottom">
@@ -141,6 +134,7 @@
 	<script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToTools.js"></script>
 	<script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToEditionField.js"></script>
 
+	<script type ="text/javascript" src ="./scripts/javascript/interface/controller/formChecks.js"></script>
 	<script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToModalDialog.js"></script>
 
 </body>
