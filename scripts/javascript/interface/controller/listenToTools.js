@@ -18,7 +18,7 @@ var controller = {
 			if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") drawingArea.setCursor(toolSelected);
             if(toolSelected === "eraseAll") editionField.eraseAll();
 			if(toolSelected === "save") $('#save-form').dialog( "open" );
-			if(toolSelected === "load") { var load-form = $('#load-form'); load-form.dialog( "open" ); load-form.load("./scripts/php/view/loadGame.php"); }
+			if(toolSelected === "load") { var loadForm = $('#load-form'); loadForm.dialog( "open" ); loadForm.load("./scripts/php/view/loadGame.php"); }
 			else controller.tool = toolSelected;
         });
         
