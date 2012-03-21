@@ -152,14 +152,14 @@
 
     drawingArea.setCursor = function(tool) {
         if (tool === "draw") canvas.css("cursor", "crosshair");
-        else if(tool === "erase") canvas.css("cursor", "url('./ressources/cursor-scissors.png'), pointer");
+        else if(tool === "erase") canvas.css("cursor", "url('./ressources/images/cursor-scissors.png'), pointer");
         else if(tool === "edit") canvas.css("cursor", "pointer");
         else if (tool === "selected") canvas.css("cursor", "move");
     },
         
     drawingArea.cursorIsOver = function() {
         if (controller.tool === "edit") drawingArea.setCursor('selected');
-        if (controller.tool === "erase") canvas.css("cursor", "url('./ressources/cursor-scissors-active.png'), not-allowed");
+        if (controller.tool === "erase") canvas.css("cursor", "url('./ressources/images/cursor-scissors-active.png'), not-allowed");
     },
         
     drawingArea.reset = function(){
