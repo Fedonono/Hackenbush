@@ -1,12 +1,3 @@
-.options, .button, .button-bottom, .locked, .selected {
-    border: 4px solid rgba(201,201,201,0.5);
-    box-shadow: 0 0 8px rgba(221,201,201,1);
-    font-family: Helvetica, Arial;
-    font-weight: 900;
-    font-variant:small-caps;
-    color : rgba(221,201,201,0.9);
-}
-
 .button, .button-bottom, .locked, .selected {
     width: 70px;
     height: 70px;
@@ -43,11 +34,20 @@
 }
 
 .options, .button.toolChooser, .locked {
-    background-color: rgba(158,166,182,0.15);
+    background-color: #f0f1f4;
+}
+
+.options, .button, .button-bottom, .locked, .selected  {
+    border: 4px solid rgba(201,201,201,0.5);
+    color : #e0cece;
+    box-shadow: 0 0 8px rgba(221,201,201,1);
+    font-family: Helvetica, Arial;
+    font-weight: 900;
+    font-variant:small-caps;
 }
 
 .button.toolChooser, .locked {
-    background-image: url(../ressources/toolChooser.png);
+    background-image: url(../ressources/images/toolChooser.png);
 }
 
 #save {
@@ -99,7 +99,7 @@
 }
 
 .button-bottom, .selected {
-    background-image: url(../ressources/button-bottom.png);
+    background-image: url(../ressources/images/button-bottom.png);
     background-position: -4px -4px;
     background-repeat: no-repeat;
     border-radius: 2em;
@@ -118,7 +118,7 @@
 }
 
 .toolChooser, .locked {
-    margin: 0px 5px 15px 0px;
+    margin: 0px 5px 20px 0px;
     float: right;
     clear: both;
 }

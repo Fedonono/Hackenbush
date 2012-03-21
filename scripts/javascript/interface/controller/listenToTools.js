@@ -17,7 +17,7 @@ var controller = {
 			var toolSelected = event.currentTarget.id;
 			if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") drawingArea.setCursor(toolSelected);
             if(toolSelected === "eraseAll") editionField.eraseAll();
-            else controller.tool = toolSelected;
+			else controller.tool = toolSelected;
         });
         
     }    
