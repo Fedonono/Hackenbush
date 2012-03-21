@@ -1,0 +1,16 @@
+.load {
+	width: 750px;
+}
+
+.game {
+	background-color: #f0f1f4;
+	width: 220px;
+	padding: 10px 13px 5px 13px;
+	text-align: center;
+	float: left;
+	clear: none;
+}
+
+.game:hover {
+	background-color: white;
+}

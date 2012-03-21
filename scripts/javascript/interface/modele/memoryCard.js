@@ -8,8 +8,7 @@
 				graphUi : graphUi
 			}
 			var gameJson = JSON.stringify(game);
-			console.log(imageData);
-			var imgData = imageData;
+			var imgData = encodeURIComponent(imageData); // have to encode to conserve the sign '+' when there is ajax
 
 			memoryCard.saveToFile(name, gameJson, imgData);
 		},
@@ -26,39 +25,6 @@
 					console.error('Error: ' + textStatus);
 				},
 			});
-		},
-
-		/* load Game */
-        loadGame : function() {
-			$.getJSON('./ressources/savedGames.json', function(data) {
-				var div = document.createElement('div');
-				div.classList.add('game');
-				var img = document.createElement('img');
-				img.classList.add('load-img');
-				img.setAttribute('src', data.imageData);
-				var font = document.createElement('font');
-				font.classList.add('load-text');
-				font.innerHTML = data.name;
-				div.appendChild(img);
-				div.appendChild(font);
-				console.log(div);
-				$('.load').html(div);
-			});
-		},
-
-		loadAllGames : function() {
-		//récup nom fichier puis envoyez à loadGame
-				$.ajax({
-					type: 'POST',
-					url: './scripts/php/controller/loadGame.php',
-					success: function(data)	{
-						console.log('game loaded');
-						console.log(data);
-					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						console.error('Error: ' + textStatus);
-					},
-				});
 		},
 
 		/* misc */
@@ -82,6 +48,16 @@
 			var oScaledCanvas = memoryCard.scaleCanvas(oCanvas, iWidth, iHeight);
 			var strData = oScaledCanvas.toDataURL("image/png");
 			return strData;
+		},
+
+		// generates a <img> object containing the imagedata
+		makeImageObject : function(strSource) {
+			var oImgElement = document.createElement("img");
+			oImgElement.src = strSource;
+			console.log(strSource);
+			console.log(oImgElement.src);
+			console.log(oImgElement);
+			return oImgElement;
 		}
 	};
 })();

@@ -1,7 +1,10 @@
 <?php
 
 class GameData {
-	//function GameData($name, $
+	function GameData($name, $imageData) {
+		$this->name = $name;
+		$this->imageData = $imageData;
+	}
 }
 
 class HackenBush {
@@ -17,7 +20,10 @@ class HackenBush {
   }
 
   private static function getInfo($filename) {
-	//$gameData = new GameData(...);
+	$file = fopen("../../../ressources/savedGames/".$filename, "rb");
+	$contents = stream_get_contents($file);
+	fclose($file);
+	$gameData = new GameData(basename($filename, ".txt"), $contents);
 	return $gameData;
   }
   /**
@@ -60,20 +66,20 @@ class HackenBush {
   //public function getGames() {
   public function getGames() {
     $dirGames = "../../../ressources/savedGames/";
-	$gamesData;
+	$gamesData = array();
 	$index = 0;
 	if (is_dir($dirGames)) {
 		if ($dh = opendir($dirGames)) {
 			while (($file = readdir($dh)) !== false) {
-				if (HackenBush::getInstance()->ext($file) == 'json') {
-					$gameData[$index] = HackenBush::getInstance()->getInfo($file);
+				if (HackenBush::getInstance()->ext($file) == 'txt') {
+					$gamesData[$index] = HackenBush::getInstance()->getInfo($file);
 					$index++;
 				}
 			}
 			closedir($dh);
 		}
 	}
-	return gamesData;
+	return $gamesData;
   }
 }
 
