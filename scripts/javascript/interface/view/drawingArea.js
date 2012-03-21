@@ -20,7 +20,7 @@
             if(x >= item.x - 12 && x <= item.x + 12 && y >= item.y - 12 && y <= item.y + 12) return itemKey.replace('#', '')*1;
         }
         return 0;          
-    },
+    }
     
     drawingArea.drawNode = function(x, y){
 
@@ -34,7 +34,7 @@
         context.stroke();
         context.fill();
         context.closePath();
-    };
+    }
         
     drawingArea.drawShadowNode = function(x, y){
         var context = drawingArea.context;
@@ -42,7 +42,7 @@
         context.shadowBlur = 20;
         drawingArea.drawNode(x, y);
         context.shadowBlur = 0;
-    };
+    }
         
     drawingArea.drawBezierCurve = function(start, goal, bezierCurve, alpha){
         var context = drawingArea.context;
@@ -57,7 +57,7 @@
         context.closePath();
             
         context.globalAlpha = 1;
-    },
+    }
     
  
     drawingArea.drawGrass = function() {
@@ -71,7 +71,7 @@
         context.shadowColor = 'black';
         context.shadowBlur = 0;
         drawingArea.imageData = context.getImageData(0, 0, width, height);
-    },
+    }
         
     drawingArea.refresh = function() {
         drawingArea.context.putImageData(drawingArea.imageData, 0, 0);
@@ -109,7 +109,7 @@
             point = drawingArea.dash.nodes[itemKey].weight;
             drawingArea.drawNode(point.x, point.y);
         }
-    },
+    }
         
     drawingArea.update = function(){            
         drawingArea.reset();
@@ -146,7 +146,7 @@
         }
             
         drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);
-    },
+    }
         
         
 
@@ -155,12 +155,12 @@
         else if(tool === "erase") canvas.css("cursor", "url('./ressources/images/cursor-scissors.png'), pointer");
         else if(tool === "edit") canvas.css("cursor", "pointer");
         else if (tool === "selected") canvas.css("cursor", "move");
-    },
+    }
         
     drawingArea.cursorIsOver = function() {
         if (controller.tool === "edit") drawingArea.setCursor('selected');
         if (controller.tool === "erase") canvas.css("cursor", "url('./ressources/images/cursor-scissors-active.png'), not-allowed");
-    },
+    }
         
     drawingArea.reset = function(){
         var context = drawingArea.context;
