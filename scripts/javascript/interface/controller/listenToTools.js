@@ -7,6 +7,8 @@
 	
     controller.tool = "draw"; // default tool : draw
     
+    controller.playerColors = new Array();
+    
     
     controller.listenToTools = function(){
         
@@ -28,8 +30,50 @@
             else controller.tool = toolSelected;
         });
         
-    }    
-    controller.listenToTools();
+    }
 
+    controller.initPlayerColors = function(){
+        var player1 = $("#player1");
+        var player2 = $("#player2");
+        var both = $("#bothPlayers");
+        controller.playerColors[0] = both[0].value;
+        controller.playerColors[1] = player1[0].value;
+        controller.playerColors[2] = player2[0].value;
+    }
+        
+    controller.setPlayerColors = function(playerInt) {
+        // VAR
+        var player1 = $("#player1");
+        var player2 = $("#player2");
+        var both = $("#bothPlayers");
+        var playerColors = controller.playerColors;
+        var player;
+            
+        if(playerInt === 0) player = both;
+        else if(playerInt === 1) player = player1;
+        else if(playerInt === 2) player = player2;
+        else return;
+        //FUNCTION
+        function swap(array, i, j){
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        function preventFromSameColor(){
+            for(var i = 0; i < playerColors.length; i++){
+                if(i !== playerInt){
+                    if(playerColors[i] === player[0].value) swap(playerColors, i, playerInt);
+                }
+            }
+            playerColors[playerInt] = player[0].value;
+            player1[0].value = playerColors[1];
+            player2[0].value = playerColors[2];
+            both[0].value = playerColors[0];
+        }
+        preventFromSameColor();
+    };
+    controller.initPlayerColors();
+
+    controller.listenToTools();
 })()
 

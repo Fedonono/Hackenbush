@@ -4,7 +4,7 @@
      
         nodeIdCounter : 0, 
         
-        graphGame : new HackenbushGraph(),
+        graphGame : new HackenbushGraph()
         
     };
 })();
