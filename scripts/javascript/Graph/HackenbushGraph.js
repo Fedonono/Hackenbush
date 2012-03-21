@@ -310,29 +310,43 @@ var HackenbushGraph = function(){
 
         if (!this.directed) { // if the graph isn't directed, we can recup all node directly connected with the id.
             for (sourceId in this.nodes[idString].neighbors) { // doesn't call removeNode to avoid all checks and problems with #id != id, we could split but I prefer this solution.
-				var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
+                var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
                 sourceIdInt = this.splitId(sourceId);
                 this.modDegree(sourceIdInt, '-'+edgesNumber);
                 delete this.nodes[sourceId].neighbors[idString];
                 this.decrNeighborsSize(sourceIdInt);
             }
             delete this.nodes[idString];
-			this.decrNodesSize();
+            this.decrNodesSize();
         }
 		
         if (this.directed) { 
             for (sourceId in this.nodes) {
                 sourceIdInt = this.splitId(sourceId); 
                 if (this.edgeExists(sourceIdInt, id, 0)) {
-					var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
+                    var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
                     this.modDegree(sourceIdInt, '-'+edgesNumber);
                     delete this.nodes[sourceId].neighbors[idString];
                     this.decrNeighborsSize(sourceIdInt);
                 }
             }
             delete this.nodes[idString];
-			this.decrNodesSize();
+            this.decrNodesSize();
         }
         this.setLinkedToGround();
+    }
+    
+    this.mergeNodes = function (oldId, id) {
+        var oldNode = this.getNodeById(oldId);
+                
+        for(var neighborKey in oldNode.neighbors){
+            var neighborId = neighborKey.replace('#', '')*1;
+            var edges = oldNode.neighbors[neighborKey];
+            for(var i = 0; i < edges.length; i++){
+                var weight = edges[i].weight;
+                this.addWeightedEdge(id, neighborId, weight);
+            }
+        }
+        this.removeNode(oldId);
     }
 }

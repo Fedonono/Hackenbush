@@ -168,6 +168,5 @@
         drawingArea.drawGrass();
     }
     
-
     drawingArea.drawGrass();
 })();

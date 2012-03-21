@@ -169,22 +169,7 @@
                 if(id !== currentNodeId && currentPoint.x === point.x && currentPoint.y === point.y)return id;
             }
             return 0;
-        }
-            
-        function mergeNodes(oldId, id){
-            var oldNode = drawingArea.graphUi.getNodeById(oldId);
-                
-            for(var neighborKey in oldNode.neighbors){
-                var neighborId = neighborKey.replace('#', '')*1;
-                var edges = oldNode.neighbors[neighborKey];
-                for(var i = 0; i < edges.length; i++){
-                    var color = edges[i].weight;
-                    drawingArea.graphUi.addWeightedEdge(id, neighborId, color);
-                }
-            }
-            drawingArea.graphUi.removeNode(oldId);
-        }
-            
+        }            
         //ALGORITHM
         var currentNodeId = controller.currentNodeId;
         if(currentNodeId){
@@ -193,7 +178,7 @@
             drawingArea.graphUi.setNodeValue(currentNodeId, currentPoint);
             var id = searchDuplicate(currentNodeId);
                 
-            if(id) mergeNodes(currentNodeId, id); 
+            if(id) drawingArea.graphUi.mergeNodes(currentNodeId, id); 
                 
             else if(drawingArea.graphUi.getNodeValue(currentNodeId).y+6 >= height-30 && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId))
                 drawingArea.graphUi.groundNode(currentNodeId);
