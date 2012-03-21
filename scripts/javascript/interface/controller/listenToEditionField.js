@@ -1,4 +1,7 @@
+
 (function(){
+
+    if(!window.controller) window.controller= new Object();
 
     controller.listenToEditionField = function() {
         
@@ -32,9 +35,9 @@
             //taking care of the border width
             if(startCoords.x > canvas[0].width - Xtolerance || startCoords.x < Xtolerance || startCoords.y > canvas[0].height - Ytolerance || startCoords.y < Ytolerance) return
             
-            if(controller.tool === "draw") editionField.addNode(startCoords.x, startCoords.y);
-            else if(controller.tool === "erase") editionField.erase(startCoords.x, startCoords.y);
-            else if(controller.tool === "edit") editionField.setSelectedItem(startCoords.x, startCoords.y);
+            if(controller.tool === "draw") controller.addNode(startCoords.x, startCoords.y);
+            else if(controller.tool === "erase") controller.erase(startCoords.x, startCoords.y);
+            else if(controller.tool === "edit") controller.setSelectedItem(startCoords.x, startCoords.y);
             
             
         });
@@ -44,26 +47,22 @@
             
             if(mousedown){
                 if(canvasCoords.x > canvas[0].width - Xtolerance || canvasCoords.x < Xtolerance || canvasCoords.y > canvas[0].height - Ytolerance || canvasCoords.y < Ytolerance) return
-                if(controller.tool === "draw") editionField.draw(canvasCoords.x, canvasCoords.y, controller.color);
-                if(controller.tool === "edit") editionField.move(canvasCoords.x, canvasCoords.y);
+                if(controller.tool === "draw") controller.draw(canvasCoords.x, canvasCoords.y, controller.color);
+                if(controller.tool === "edit") controller.move(canvasCoords.x, canvasCoords.y);
              
             }
-            else editionField.mouseOverSomething(canvasCoords.x, canvasCoords.y);
+            else controller.mouseOverSomething(canvasCoords.x, canvasCoords.y);
         });
         
         
         $('body').mouseup(function(event){
             mousedown = false;
             
-            if(controller.tool === "draw") editionField.addEdge();
-            else if(controller.tool === "edit") editionField.saveChanges();
-            editionField.apply(); 
+            if(controller.tool === "draw") controller.addEdge();
+            else if(controller.tool === "edit") controller.saveChanges();
+            controller.apply(); 
         });
-    }
-    
-    controller.currentNodeId = 0;
-    controller.mouseoverNode = null;
-    
-    controller.listenToEditionField();    
+    }     
+    controller.listenToEditionField(); 
 })();
 
