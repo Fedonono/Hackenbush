@@ -3,9 +3,10 @@
 	window.memoryCard = {
 		/* save Game */
 		saveGame : function (name, graphGame, graphUi, imageData) {
+			var graphUiObj = memoryCard.arrayToObject(graphUi);
 			var game = {
 				graphGame : graphGame,
-				graphUi : graphUi
+				graphUi : graphUiObj
 			}
 			var gameJson = JSON.stringify(game);
 			var imgData = encodeURIComponent(imageData); // have to encode to conserve the sign '+' when there is ajax
@@ -18,16 +19,66 @@
 				type: 'POST',
 				url: './scripts/php/controller/saveGame.php',
 				data: 'name='+name+'&data='+gameJson+'&imageData='+imageData,
-				success: function(data)	{
-					console.log('game saved');
-				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					console.error('Error: ' + textStatus);
-				},
+				}
+			});
+		},
+
+		/* load Game */
+        loadGame : function(name) {
+			$.getJSON('./ressources/savedGames/'+name+'.json', function(data) {
+				memoryCard.objectToArray(drawingArea.graphUi, data);
+				$('#load-form').dialog("close");
+				drawingArea.update();
 			});
 		},
 
 		/* misc */
+		objectToArray : function(graphUi, data) {
+			graphUi.nodes = new Array();
+			memoryCard.getObjProperties(graphUi, data.graphUi, false);
+		},
+
+		arrayToObject : function(graphUi) {
+			var graphUiObj = new Object();
+			graphUiObj.nodes = new Object();
+			memoryCard.getObjProperties(graphUiObj, graphUi, true);
+			return graphUiObj;
+		},
+		
+		getObjProperties : function(graphUi, data, toObj) {
+			graphUi.groundedNodes = data.groundedNodes;
+			graphUi.nodes.length = data.nodes.length;
+			var sourceId;
+			for (sourceId in data.nodes) {
+				if (sourceId !== "length") {
+					graphUi.nodes[sourceId] = new Object();
+					if (toObj)
+						graphUi.nodes[sourceId].neighbors = new Object();
+					else
+						graphUi.nodes[sourceId].neighbors = new Array();
+					graphUi.nodes[sourceId].degree = data.nodes[sourceId].degree;
+					graphUi.nodes[sourceId].id = data.nodes[sourceId].id;
+					graphUi.nodes[sourceId].neighbors.length = data.nodes[sourceId].neighbors.length;
+					graphUi.nodes[sourceId].weight = data.nodes[sourceId].weight;
+					for (var destId in data.nodes[sourceId].neighbors ) {
+						graphUi.nodes[sourceId].neighbors[destId] = data.nodes[sourceId].neighbors[destId];
+					}
+				}
+			}
+			if (toObj)
+				graphUi.linkedToGround = new Object();
+			else {
+				graphUi.linkedToGround = new Array();
+				if (sourceId !== "length")
+					modele.nodeIdCounter = sourceId.replace('#', '')*1;
+			}
+			for (var id in data.linkedToGround) {
+				graphUi.linkedToGround[id] = data.linkedToGround[id];
+			}
+		},
+		
 		scaleCanvas : function(oCanvas, iWidth, iHeight) {
 			if (iWidth && iHeight) {
 				var oSaveCanvas = document.createElement("canvas");
@@ -48,16 +99,6 @@
 			var oScaledCanvas = memoryCard.scaleCanvas(oCanvas, iWidth, iHeight);
 			var strData = oScaledCanvas.toDataURL("image/png");
 			return strData;
-		},
-
-		// generates a <img> object containing the imagedata
-		makeImageObject : function(strSource) {
-			var oImgElement = document.createElement("img");
-			oImgElement.src = strSource;
-			console.log(strSource);
-			console.log(oImgElement.src);
-			console.log(oImgElement);
-			return oImgElement;
 		}
 	};
 })();
