@@ -19,6 +19,9 @@
 				type: 'POST',
 				url: './scripts/php/controller/saveGame.php',
 				data: 'name='+name+'&data='+gameJson+'&imageData='+imageData,
+				success: function() {
+					$('input').val(name);
+				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					console.error('Error: ' + textStatus);
 				}
@@ -30,6 +33,7 @@
 			$.getJSON('./ressources/savedGames/'+name+'.json', function(data) {
 				memoryCard.objectToArray(drawingArea.graphUi, data);
 				$('#load-form').dialog("close");
+				$('input').val(name);
 				drawingArea.update();
 			});
 		},
