@@ -12,8 +12,13 @@
     drawingArea.context = context;
     
     drawingArea.imageData = context.getImageData(0, 0, width, height);
+    
+    drawingArea.grassHeight = 30;
         
+    drawingArea.isOnGrass = function(){
         
+    }
+    
     drawingArea.getNodeByCoord = function(x, y) {
         for(var itemKey in drawingArea.graphUi.nodes){
             var item = drawingArea.graphUi.nodes[itemKey].weight;

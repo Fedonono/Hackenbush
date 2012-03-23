@@ -53,7 +53,7 @@
     
     controller.addNode = function(x, y) {
             
-        if(y+6 > height - 30) y = height-30;
+        if(y+6 >= height - 30) y = height-30;
             
         var point;
         var id = drawingArea.getNodeByCoord(x, y);
@@ -64,7 +64,7 @@
             id = ++modele.nodeIdCounter;                
             point = new Point( x, y);
             drawingArea.graphUi.addWeightedNode(id, point);
-            if(y+6 > height - 30) drawingArea.graphUi.groundNode(id);
+            if(y+6 >= height - 30) drawingArea.graphUi.groundNode(id);
         }
         drawingArea.dash.addWeightedNode(id, point);
         controller.currentNodeId = id;
@@ -77,7 +77,7 @@
             
         if(controller.currentNodeId){
             var point;
-            if(y + 6 > height - 30) y = height - 30;
+            if(y + 6 >= height - 30) y = height - 30;
                 
             var id = drawingArea.getNodeByCoord(x, y);
             if(id && id !== controller.currentNodeId) {
@@ -96,7 +96,7 @@
     
     controller.draw = function(x, y, color){
                         
-        if(y + 6 > height - 30) y = height-30;
+        if(y + 6 >= height - 30) y = height-30;
             
         var id = drawingArea.getNodeByCoord(x, y);
             
