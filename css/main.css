@@ -42,10 +42,6 @@ a {
     border-bottom: 8px solid white;
 }
 
-#main-container-canvas {
-	display: inline; 
-}
-
 #main-center, #main-left, #main-right {
 	display:table-cell;
 }
@@ -73,4 +69,12 @@ a {
 
 #foot, #right-bottom {
 	text-align: right;
+}
+
+.visible {
+	display: inherit;
+}
+
+.hidden {
+	display: none;
 }

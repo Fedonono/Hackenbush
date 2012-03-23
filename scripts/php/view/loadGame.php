@@ -12,13 +12,7 @@
 			echo "</div>";
 		}
 		echo "</div>";
-		echo "<script type='text/javascript'>
-				var load = $('.load');
-				console.log('test');
-				load.delegate('div', 'click', function(ev) {
-					memoryCard.loadGame(ev.currentTarget.id);
-				});
-			</script>";
+		include('../controller/loadGame-controller.php');
 	} else
 		echo "There isn't game saved.";
 ?>

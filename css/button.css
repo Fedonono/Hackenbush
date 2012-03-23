@@ -49,7 +49,7 @@
     color : #d3bebe;
 }
 
-.button.toolChooser, .locked {
+.button.toolChooser, #main-left .locked {
     background-image: url(../ressources/images/toolChooser.png);
 }
 
@@ -65,7 +65,7 @@
     background-position:-140px -8px;
 }
 
-#draw:hover {
+.no-lock #draw:hover {
     background-position:-140px 60px;
 }
 
@@ -73,7 +73,7 @@
     background-position:-68px -5px;
 }
 
-#edit:hover {
+.no-lock #edit:hover {
     background-position:-68px 60px;
 }
 
@@ -81,7 +81,7 @@
     background-position:-210px -10px;
 }
 
-#eraseAll:hover {
+.no-lock #eraseAll:hover {
     background-position:-210px 56px;
 }
 
@@ -97,7 +97,7 @@
     background-position:-350px -10px;
 }
 
-#erase:hover {
+.no-lock #erase:hover {
     background-position:-350px 56px;
 }
 
@@ -118,9 +118,10 @@
     -o-transition: all 0.8s ease-in-out 0s;
     -webkit-transition: all 0.8s ease-in-out 0s;
     transition: all 0.8s ease-in-out 0s;
+	cursor: pointer;
 }
 
-.toolChooser, .locked {
+#main-left .toolChooser, #main-left .locked {
     margin: 0px 5px 20px 0px;
     float: right;
     clear: both;
@@ -148,10 +149,12 @@
 }
 
 .locked {
-    color: red;
+    color: rgba(255,0,0,0.4);
+    border: 4px solid rgba(255,0,0,0.2);
+    box-shadow: 0 0 8px rgba(255,0,0,0.2);
 }
 
-.colorChooser {
+#main-right .colorChooser , #main-right .locked{
     margin: 0px 5px 110px 0px;
     top: 35px;
 }
