@@ -53,7 +53,7 @@
     
     controller.addNode = function(x, y) {
             
-        if(y+6 >= height - 30) y = height-30;
+        if(drawingArea.isOnGrass(x,y)) y = height-drawingArea.grassHeight;
             
         var point;
         var id = drawingArea.getNodeByCoord(x, y);
@@ -64,7 +64,7 @@
             id = ++modele.nodeIdCounter;                
             point = new Point( x, y);
             drawingArea.graphUi.addWeightedNode(id, point);
-            if(y+6 >= height - 30) drawingArea.graphUi.groundNode(id);
+            if(drawingArea.isOnGrass(x,y)) drawingArea.graphUi.groundNode(id);
         }
         drawingArea.dash.addWeightedNode(id, point);
         controller.currentNodeId = id;
@@ -77,7 +77,7 @@
             
         if(controller.currentNodeId){
             var point;
-            if(y + 6 >= height - 30) y = height - 30;
+            if(drawingArea.isOnGrass(x,y)) y = height - drawingArea.grassHeight;;
                 
             var id = drawingArea.getNodeByCoord(x, y);
             if(id && id !== controller.currentNodeId) {
@@ -96,7 +96,7 @@
     
     controller.draw = function(x, y, color){
                         
-        if(y + 6 >= height - 30) y = height-30;
+        if(drawingArea.isOnGrass(x,y)) y = height - drawingArea.grassHeight;
             
         var id = drawingArea.getNodeByCoord(x, y);
             
@@ -177,13 +177,14 @@
             var currentPoint = drawingArea.dash.getNodeValue(currentNodeId);
             drawingArea.graphUi.setNodeValue(currentNodeId, currentPoint);
             var id = searchDuplicate(currentNodeId);
+            var point = drawingArea.graphUi.getNodeById(currentNodeId);
                 
-            if(id) drawingArea.graphUi.mergeNodes(currentNodeId, id); 
+            if (id) drawingArea.graphUi.mergeNodes(currentNodeId, id); 
                 
-            else if(drawingArea.graphUi.getNodeValue(currentNodeId).y+6 >= height-30 && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId))
+            else if (drawingArea.isOnGrass(point.x, point.y) && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId))
                 drawingArea.graphUi.groundNode(currentNodeId);
                 
-            else if (drawingArea.graphUi.getNodeValue(currentNodeId).y+6 < height-30 &&  drawingArea.graphUi.isAlreadyGrounded(currentNodeId)) 
+            else if (drawingArea.isOnGrass(point.x, point.y) &&  drawingArea.graphUi.isAlreadyGrounded(currentNodeId)) 
                 drawingArea.graphUi.unGroundNode(currentNodeId);
         }
     }

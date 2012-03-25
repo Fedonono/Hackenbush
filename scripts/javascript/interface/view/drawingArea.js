@@ -14,15 +14,20 @@
     drawingArea.imageData = context.getImageData(0, 0, width, height);
     
     drawingArea.grassHeight = 30;
+    
+    drawingArea.nodeRadius = 8;
         
-    drawingArea.isOnGrass = function(){
-        
+    drawingArea.isOnGrass = function(x, y){
+        if(y+drawingArea.nodeRadius >= height - drawingArea.grassHeight) return true;
+        return false;
     }
     
     drawingArea.getNodeByCoord = function(x, y) {
+        var radius = drawingArea.nodeRadius;
+        var distance = 2*radius;
         for(var itemKey in drawingArea.graphUi.nodes){
             var item = drawingArea.graphUi.nodes[itemKey].weight;
-            if(x >= item.x - 12 && x <= item.x + 12 && y >= item.y - 12 && y <= item.y + 12) return itemKey.replace('#', '')*1;
+            if(x >= item.x - distance && x <= item.x + distance && y >= item.y - distance && y <= item.y + distance) return itemKey.replace('#', '')*1;
         }
         return 0;          
     }
@@ -31,11 +36,12 @@
 
         var context = drawingArea.context;
         context.lineWidth = 1;
+
         context.strokeStyle = "#000000";
         context.fillStyle = "white" ;
             
         context.beginPath();
-        context.arc(x, y, 6, 0, 2 * Math.PI);
+        context.arc(x, y, drawingArea.nodeRadius, 0, 2 * Math.PI);
         context.stroke();
         context.fill();
         context.closePath();
@@ -71,7 +77,7 @@
         context.fillStyle = '#00ff00';
         context.shadowColor = '#00ff00';
         context.shadowBlur = 30;
-        context.fillRect(0,height-30,width,30);
+        context.fillRect(0,height-drawingArea.grassHeight,width,drawingArea.grassHeight);
         context.closePath();
         context.shadowColor = 'black';
         context.shadowBlur = 0;
