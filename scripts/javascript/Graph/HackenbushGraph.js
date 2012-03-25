@@ -300,41 +300,6 @@ var HackenbushGraph = function(){
         this.setLinkedToGround();
     }
     
-    this.removeNode = function(id) {
-        if (!this.nodeExists(id))
-            throw new UnexistingNodeException(id);
-
-        // Delete all nodes, edges in relation with argument id
-        var sourceId, destId, sourceIdInt;
-        var idString = '#'+id;
-
-        if (!this.directed) { // if the graph isn't directed, we can recup all node directly connected with the id.
-            for (sourceId in this.nodes[idString].neighbors) { // doesn't call removeNode to avoid all checks and problems with #id != id, we could split but I prefer this solution.
-                var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
-                sourceIdInt = this.splitId(sourceId);
-                this.modDegree(sourceIdInt, '-'+edgesNumber);
-                delete this.nodes[sourceId].neighbors[idString];
-                this.decrNeighborsSize(sourceIdInt);
-            }
-            delete this.nodes[idString];
-            this.decrNodesSize();
-        }
-		
-        if (this.directed) { 
-            for (sourceId in this.nodes) {
-                sourceIdInt = this.splitId(sourceId); 
-                if (this.edgeExists(sourceIdInt, id, 0)) {
-                    var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
-                    this.modDegree(sourceIdInt, '-'+edgesNumber);
-                    delete this.nodes[sourceId].neighbors[idString];
-                    this.decrNeighborsSize(sourceIdInt);
-                }
-            }
-            delete this.nodes[idString];
-            this.decrNodesSize();
-        }
-        this.setLinkedToGround();
-    }
     
     this.mergeNodes = function (oldId, id) {
         var oldNode = this.getNodeById(oldId);
