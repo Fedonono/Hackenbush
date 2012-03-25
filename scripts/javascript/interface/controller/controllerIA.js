@@ -62,7 +62,7 @@
             
         else{
             id = ++modele.nodeIdCounter;                
-            point = new Point( x, y);
+            point = new GraphicalPoint( x, y, drawingArea.nodeRadius,drawingArea.nodeFillColor, drawingArea.nodeBorderColor, drawingArea.nodeBorderWidth);
             drawingArea.graphUi.addWeightedNode(id, point);
             if(drawingArea.isOnGrass(x,y)) drawingArea.graphUi.groundNode(id);
         }
@@ -83,10 +83,10 @@
             var id = drawingArea.getNodeByCoord(x, y);
             if(id && id !== controller.currentNodeId) {
                 var coord = drawingArea.graphUi.getNodeValue(id);
-                point = new Point(coord.x, coord.y);
+                point = new GraphicalPoint(coord.x, coord.y, drawingArea.nodeRadius,drawingArea.nodeFillColor, drawingArea.nodeBorderColor, drawingArea.nodeBorderWidth);
             }
             else{
-                point = new Point(x,y);
+                point = new GraphicalPoint(x,y, drawingArea.nodeRadius,drawingArea.nodeFillColor, drawingArea.nodeBorderColor, drawingArea.nodeBorderWidth);
             }
             drawingArea.dash.setNodeValue(controller.currentNodeId, point);
         }
@@ -108,13 +108,13 @@
         }
             
         id = modele.nodeIdCounter + 42;
-        var goal = new Point(x, y);
+        var goal = new GraphicalPoint(x, y, drawingArea.nodeRadius,drawingArea.nodeFillColor, drawingArea.nodeBorderColor, drawingArea.nodeBorderWidth);
             
         var startPoint = drawingArea.graphUi.getNodeValue(controller.currentNodeId);
         var averageX = (x + startPoint.x)/2;
         var averageY = (y + startPoint.y)/2;
-        var orientationP1 = new Point(averageX, averageY);
-        var orientationP2 = new Point(averageX, averageY);
+        var orientationP1 = new GraphicalPoint(averageX, averageY, drawingArea.controlPRadius, drawingArea.controlPFillColor, color, drawingArea.controlPBorderWidth);
+        var orientationP2 = new GraphicalPoint(averageX, averageY, drawingArea.controlPRadius, drawingArea.controlPFillColor, color, drawingArea.controlPBorderWidth);
         var bezierCurve = new BezierCurve(orientationP1, orientationP2, color)
                 
         if(!drawingArea.dash.nodeExists(id)) {
@@ -151,7 +151,7 @@
             var goal = drawingArea.graphUi.getNodeValue(id);
             var averageX = (start.x + goal.x)/2;
             var averageY = (start.y + goal.y)/2;
-            var bezierCurve = new BezierCurve(new Point(averageX, averageY), new Point(averageX, averageY), color);
+            var bezierCurve = new BezierCurve(new GraphicalPoint(averageX, averageY), new GraphicalPoint(averageX, averageY), color);
                 
             drawingArea.graphUi.addWeightedEdge(startId, id, bezierCurve); 
         }

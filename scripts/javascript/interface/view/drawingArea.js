@@ -16,6 +16,13 @@
     drawingArea.grassHeight = 30;
     
     drawingArea.nodeRadius = 8;
+    drawingArea.nodeFillColor = "white";
+    drawingArea.nodeBorderColor = "black";
+    drawingArea.nodeBorderWidth = 1;
+        
+    drawingArea.controlPRadius = 5;
+    drawingArea.controlPFillColor = "white";
+    drawingArea.controlPBorderWidth = 1;
         
     drawingArea.isOnGrass = function(x, y){
         if(y+drawingArea.nodeRadius >= height - drawingArea.grassHeight) return true;
