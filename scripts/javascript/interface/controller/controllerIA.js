@@ -76,19 +76,19 @@
     controller.move = function(x, y){
             
         if(controller.currentNodeId){
-            var point;
+            var point = drawingArea.dash.getNodeValue(controller.currentNodeId);
             if(drawingArea.isOnGrass(x,y)) y = height - drawingArea.grassHeight;
-            ;
                 
             var id = drawingArea.getNodeByCoord(x, y);
             if(id && id !== controller.currentNodeId) {
                 var coord = drawingArea.graphUi.getNodeValue(id);
-                point = new Point(coord.x, coord.y);
+                point.x = coord.x;
+                point.y = coord.y;
             }
             else{
-                point = new Point(x,y);
+                point.x = x;
+                point.y = y;
             }
-            drawingArea.dash.setNodeValue(controller.currentNodeId, point);
         }
 
         drawingArea.refresh();
@@ -115,7 +115,7 @@
         var averageY = (y + startPoint.y)/2;
         var orientationP1 = new Point(averageX, averageY);
         var orientationP2 = new Point(averageX, averageY);
-        var bezierCurve = new BezierCurve(startPoint, orientationP1, orientationP2, goal, color)
+        var bezierCurve = new BezierCurve(orientationP1, orientationP2, color)
                 
         if(!drawingArea.dash.nodeExists(id)) {
             drawingArea.dash.addWeightedNode(id, goal);
@@ -151,7 +151,7 @@
             var goal = drawingArea.graphUi.getNodeValue(id);
             var averageX = (start.x + goal.x)/2;
             var averageY = (start.y + goal.y)/2;
-            var bezierCurve = new BezierCurve(start, new Point(averageX, averageY), new Point(averageX, averageY), goal, color);
+            var bezierCurve = new BezierCurve(new Point(averageX, averageY), new Point(averageX, averageY), color);
                 
             drawingArea.graphUi.addWeightedEdge(startId, id, bezierCurve); 
         }
@@ -179,7 +179,7 @@
             drawingArea.graphUi.setNodeValue(currentNodeId, currentPoint);
             var id = searchDuplicate(currentNodeId);
             var point = drawingArea.graphUi.getNodeValue(currentNodeId);
-            if (id) drawingArea.graphUi.mergeNodes(currentNodeId, id); 
+            if (id) drawingArea.graphUi.mergeNodes(currentNodeId, id);
                 
             else if (drawingArea.isOnGrass(point.x, point.y) && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId)){
                 drawingArea.graphUi.groundNode(currentNodeId);
