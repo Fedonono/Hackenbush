@@ -184,7 +184,7 @@
             else if (drawingArea.isOnGrass(point.x, point.y) && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId))
                 drawingArea.graphUi.groundNode(currentNodeId);
                 
-            else if (drawingArea.isOnGrass(point.x, point.y) &&  drawingArea.graphUi.isAlreadyGrounded(currentNodeId)) 
+            else if (!drawingArea.isOnGrass(point.x, point.y) &&  drawingArea.graphUi.isAlreadyGrounded(currentNodeId)) 
                 drawingArea.graphUi.unGroundNode(currentNodeId);
         }
     }

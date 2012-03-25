@@ -3,7 +3,7 @@
 
     if(!window.controller) window.controller= new Object();
 
-    controller.listenToEditionField = function() {
+    controller.listenToDrawingArea = function() {
         
         
         var mousedown = false;
@@ -63,6 +63,6 @@
             controller.apply(); 
         });
     }     
-    controller.listenToEditionField(); 
+    controller.listenToDrawingArea(); 
 })();
 
