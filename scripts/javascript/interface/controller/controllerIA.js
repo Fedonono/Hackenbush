@@ -77,7 +77,8 @@
             
         if(controller.currentNodeId){
             var point;
-            if(drawingArea.isOnGrass(x,y)) y = height - drawingArea.grassHeight;;
+            if(drawingArea.isOnGrass(x,y)) y = height - drawingArea.grassHeight;
+            ;
                 
             var id = drawingArea.getNodeByCoord(x, y);
             if(id && id !== controller.currentNodeId) {
@@ -177,12 +178,12 @@
             var currentPoint = drawingArea.dash.getNodeValue(currentNodeId);
             drawingArea.graphUi.setNodeValue(currentNodeId, currentPoint);
             var id = searchDuplicate(currentNodeId);
-            var point = drawingArea.graphUi.getNodeById(currentNodeId);
-                
+            var point = drawingArea.graphUi.getNodeValue(currentNodeId);
             if (id) drawingArea.graphUi.mergeNodes(currentNodeId, id); 
                 
-            else if (drawingArea.isOnGrass(point.x, point.y) && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId))
+            else if (drawingArea.isOnGrass(point.x, point.y) && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId)){
                 drawingArea.graphUi.groundNode(currentNodeId);
+            }
                 
             else if (!drawingArea.isOnGrass(point.x, point.y) &&  drawingArea.graphUi.isAlreadyGrounded(currentNodeId)) 
                 drawingArea.graphUi.unGroundNode(currentNodeId);
