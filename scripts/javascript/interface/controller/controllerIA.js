@@ -208,4 +208,8 @@
         drawingArea.dash = new HackenbushGraph();
         drawingArea.update();
     }
+    
+    controller.buildGraphGame = function(){
+        
+    }
 })()
