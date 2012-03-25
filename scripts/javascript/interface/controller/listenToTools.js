@@ -20,7 +20,7 @@
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
             if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") drawingArea.setCursor(toolSelected);
-            if(toolSelected === "eraseAll") controller.eraseAll();
+            if(toolSelected === "eraseAll") drawingArea.eraseAll();
             if(toolSelected === "save") $('#save-form').dialog( "open" );
             if(toolSelected === "load") {
                 var loadForm = $('#load-form');
