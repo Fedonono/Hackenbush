@@ -39,26 +39,26 @@
         return 0;          
     }
     
-    drawingArea.drawNode = function(x, y){
-
+    drawingArea.drawNode = function(point){
+        
         var context = drawingArea.context;
-        context.lineWidth = 1;
-
-        context.strokeStyle = "#000000";
-        context.fillStyle = "white" ;
+        context.lineWidth = drawingArea.nodeBorderWidth;
+        context.strokeStyle = drawingArea.nodeBorderColor;
+        context.fillStyle = drawingArea.nodeFillColor;
             
         context.beginPath();
-        context.arc(x, y, drawingArea.nodeRadius, 0, 2 * Math.PI);
+        context.arc(point.x, point.y, drawingArea.nodeRadius, 0, 2 * Math.PI);
         context.stroke();
         context.fill();
         context.closePath();
     }
         
-    drawingArea.drawShadowNode = function(x, y){
+    drawingArea.drawShadowNode = function(point){
+        
         var context = drawingArea.context;
         context.shadowColor = "black";
         context.shadowBlur = 20;
-        drawingArea.drawNode(x, y);
+        drawingArea.drawNode(point);
         context.shadowBlur = 0;
     }
         
@@ -97,12 +97,12 @@
         var point;
         if(controller.currentNodeId){
             point = drawingArea.dash.getNodeValue(controller.currentNodeId);
-            drawingArea.drawShadowNode(point.x, point.y);
+            drawingArea.drawShadowNode(point);
             drawingArea.cursorIsOver();
         }
         else if(controller.mouseoverNode){
             point = controller.mouseoverNode.weight;
-            drawingArea.drawShadowNode(point.x, point.y);
+            drawingArea.drawShadowNode(point);
             drawingArea.cursorIsOver();
         }
         else this.setCursor(controller.tool);
@@ -125,7 +125,7 @@
         }
         for (itemKey in drawingArea.dash.nodes){
             point = drawingArea.dash.nodes[itemKey].weight;
-            drawingArea.drawNode(point.x, point.y);
+            drawingArea.drawNode(point);
         }
     }
         
@@ -159,7 +159,7 @@
             var point = drawingArea.graphUi.nodes[itemKey].weight;
             var id = itemKey.replace('#', '')*1;
             if(id !== controller.currentNodeId){
-                drawingArea.drawNode(point.x, point.y);
+                drawingArea.drawNode(point);
             }
         }
             
