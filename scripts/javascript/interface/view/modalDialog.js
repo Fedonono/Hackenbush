@@ -3,8 +3,7 @@
 	$( "#dialog:ui-dialog" ).dialog( "destroy" );
 	
 	var name = $( "#name" ),
-		allFields = $( [] ).add( name ),
-		tips = $( ".validateTips" );
+		allFields = $( [] ).add( name );
 	
 	$('#save-form').dialog({
 		autoOpen: false,
@@ -41,6 +40,21 @@
 		autoOpen: false,
 		height: 500,
 		width: 800,
+		modal: true,
+		buttons: {
+			Cancel: function() {
+				$( this ).dialog( "close" );
+			}
+		},
+		close: function() {
+			allFields.val( "" ).removeClass( "ui-state-error" );
+		}
+	});
+
+	$('#help-modal').dialog({
+		autoOpen: false,
+		height: 500,
+		width: 600,
 		modal: true,
 		buttons: {
 			Cancel: function() {

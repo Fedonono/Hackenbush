@@ -5,16 +5,19 @@
     text-align: center;
 }
 
-.options {
+.options , .help{
     position: absolute;
     top: 631px;
+    z-index: 1;
+}
+
+.options {
     left: 68px;
     line-height: 10px;
     width: 150px;
     height: 92px;
     margin: 0px;
     padding: 5px 0px 0px 5px;
-    z-index: 1;
     float: left;
     clear: none;
     text-align: left;
@@ -33,7 +36,7 @@
     line-height: 107px;
 }
 
-.options, .button.toolChooser, .locked {
+.options, .help, .button.toolChooser, .locked {
     background-color: #f0f1f4;
 }
 
@@ -49,7 +52,7 @@
     color : #d3bebe;
 }
 
-.button.toolChooser, #main-left .locked {
+.button.toolChooser, #main-left .locked, .help {
     background-image: url(../ressources/images/toolChooser.png);
 }
 
@@ -99,6 +102,14 @@
 
 .no-lock #erase:hover {
     background-position:-350px 56px;
+}
+
+#help {
+    background-position:-422px -7px;
+}
+
+#help:hover {
+    background-position:-422px 58px;
 }
 
 .button-bottom, .selected {

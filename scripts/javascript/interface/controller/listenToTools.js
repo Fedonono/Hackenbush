@@ -27,6 +27,11 @@
                 loadForm.dialog( "open" );
                 loadForm.load("./scripts/php/view/loadGame.php");
             }
+            if(toolSelected === "help") {
+                var helpModal = $('#help-modal');
+                helpModal.dialog( "open" );
+                helpModal.load("./views/help.html");
+            }
             else controller.tool = toolSelected;
         });
         

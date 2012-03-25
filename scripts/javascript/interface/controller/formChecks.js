@@ -1,4 +1,5 @@
 function updateTips( t ) {
+	var tips = $( ".validateTips" );
 	tips
 		.text( t )
 		.addClass( "ui-state-highlight" );

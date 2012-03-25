@@ -49,8 +49,8 @@ class HackenBush {
    */
   //public function saveGame($name, $data) {
   public function saveGame($name, $data, $imageData) {
-    $savedGames = fopen("../../../ressources/savedGames/".$name.".json", "w+");
-    $savedGamesImg = fopen("../../../ressources/savedGames/".$name.".txt", "w+");
+    $savedGames = fopen("../../../ressources/savedGames/".$name.".json", "wb");
+    $savedGamesImg = fopen("../../../ressources/savedGames/".$name.".txt", "wb");
 	fwrite($savedGames, $data);
 	fwrite($savedGamesImg, $imageData);
 	fclose($savedGames);
