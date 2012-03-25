@@ -62,7 +62,9 @@
         context.shadowBlur = 0;
     }
         
-    drawingArea.drawBezierCurve = function(start, goal, bezierCurve, alpha){
+    drawingArea.drawBezierCurve = function(bezierCurve, alpha){
+        var start  = bezierCurve.start;
+        var goal = bezierCurve.goal;
         var context = drawingArea.context;
         context.lineWidth = 3;
         context.strokeStyle = bezierCurve.color;
@@ -109,17 +111,15 @@
             
         for (var itemKey in drawingArea.dash.nodes){
             var node = drawingArea.dash.nodes[itemKey];
-            var start = node.weight;
                 
             for(var neighborKey in node.neighbors){
-                var goal = drawingArea.dash.nodes[neighborKey].weight;
                 var edges = node.neighbors[neighborKey];
                     
                 for(var i = 0; i < edges.length; i++){
                     var bezierCurve = edges[i].weight;
                     var alpha = 0.3;
                     if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
-                    drawingArea.drawBezierCurve(start, goal, bezierCurve, alpha);
+                    drawingArea.drawBezierCurve(bezierCurve, alpha);
                 }                   
             }
         }
@@ -133,12 +133,9 @@
         drawingArea.reset();
             
         for (var itemKey in drawingArea.graphUi.nodes){
-            var node = drawingArea.graphUi.nodes[itemKey];
-            var start = node.weight;                
+            var node = drawingArea.graphUi.nodes[itemKey]; 
                 
             for(var neighborKey in node.neighbors){
-                    
-                var goal = drawingArea.graphUi.nodes[neighborKey].weight;
                 var edges = node.neighbors[neighborKey];
                     
                 for(var i = 0; i < edges.length; i++){
@@ -148,7 +145,7 @@
                         var beizerCurve = edges[i].weight;
                         var alpha = 0.3;
                         if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
-                        drawingArea.drawBezierCurve(start, goal, beizerCurve, alpha);
+                        drawingArea.drawBezierCurve(beizerCurve, alpha);
                     }
                 }
             }

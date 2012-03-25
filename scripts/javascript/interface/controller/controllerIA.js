@@ -115,7 +115,7 @@
         var averageY = (y + startPoint.y)/2;
         var orientationP1 = new Point(averageX, averageY);
         var orientationP2 = new Point(averageX, averageY);
-        var bezierCurve = new BezierCurve(orientationP1, orientationP2, color)
+        var bezierCurve = new BezierCurve(startPoint, orientationP1, orientationP2, goal, color)
                 
         if(!drawingArea.dash.nodeExists(id)) {
             drawingArea.dash.addWeightedNode(id, goal);
@@ -151,7 +151,7 @@
             var goal = drawingArea.graphUi.getNodeValue(id);
             var averageX = (start.x + goal.x)/2;
             var averageY = (start.y + goal.y)/2;
-            var bezierCurve = new BezierCurve(new Point(averageX, averageY), new Point(averageX, averageY), color);
+            var bezierCurve = new BezierCurve(start, new Point(averageX, averageY), new Point(averageX, averageY), goal, color);
                 
             drawingArea.graphUi.addWeightedEdge(startId, id, bezierCurve); 
         }
