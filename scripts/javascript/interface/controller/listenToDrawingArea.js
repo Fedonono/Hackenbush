@@ -35,11 +35,10 @@
             var X3 = goal.x;
             var Y3 = goal.y;
             
-            var step = 0.05;
             var t0, t1, Xstart, Ystart, Ygoal, direction, a, b, c, distance;
-            for(var t = 0; t < 1; t += step) {
-                t0 = t;
-                t1 = t + step;
+            for(var i = 0; i < 20; i++) {
+                t0 = i/20;
+                t1 = (i+1)/20;
                 Xstart = X0*(1 - t0)^3 + 3*X1*t0*(1-t0)^2 + 3*X2*t0^2*(1-t0) + X3*t0^3;
                 console.log(Xstart);
                 Ystart = Y0*(1 - t0)^3 + 3*Y1*t0*(1-t0)^2 + 3*Y2*t0^2*(1-t0) * Y3*t0^3;
