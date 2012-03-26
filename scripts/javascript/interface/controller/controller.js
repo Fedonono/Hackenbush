@@ -6,6 +6,11 @@
         modele.graphGame = drawingArea.buildGraphGame();
     };
 
+    controller.eraseAll = function(){
+        drawingArea.eraseAll();
+        modele.graphGame = new HackenbushGraph();
+    }
+    
     controller.saveGame = function (name, graphGame, graphUi, imageData) {
         var graphUiObj = controller.arrayToObject(graphUi);
         var game = {
