@@ -36,7 +36,7 @@ var MultiGraph = function(directed){
             }
         }
 
-        var edge = new Edge(weight, '#000000');
+        var edge = new Edge(weight, ++this.edgeIdCounter);
 
         this.nodes['#'+sourceId].neighbors['#'+destId].push(edge);
         this.incrDegree(sourceId);

@@ -11,6 +11,7 @@ var SimpleGraph = function(directed){
     AbstractSimpleGraph.call(this,directed);
     this.directed = directed;
     this.nodes = new Array();
+    this.edgeIdCounter = 0;
     
     /** 
 	 * Returns the node identified by id
@@ -56,7 +57,7 @@ var SimpleGraph = function(directed){
         if (this.edgeExists(sourceId, destId))
             throw new AlreadyExistingEdgeException(sourceId, destId);
 
-        var edge = new Edge(weight);
+        var edge = new Edge(weight, ++this.edgeIdCounter);
 
         this.nodes['#'+sourceId].neighbors['#'+destId] = edge;
         this.incrNeighborsSize(sourceId);

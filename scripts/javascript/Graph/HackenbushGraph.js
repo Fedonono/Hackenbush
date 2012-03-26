@@ -263,7 +263,7 @@ var HackenbushGraph = function(){
             }
         }
 
-        var edge = new Edge(weight, '#000000');
+        var edge = new Edge(weight, ++this.edgeIdCounter);
 
         this.nodes['#'+sourceId].neighbors['#'+destId].push(edge);
         this.incrDegree(sourceId);
@@ -289,7 +289,7 @@ var HackenbushGraph = function(){
             this.decrNeighborsSize(sourceId);
         }
 
-        if (!directed && sourceId !== destId) {
+        if (!this.directed && sourceId !== destId) {
             this.nodes['#'+destId].neighbors['#'+sourceId].splice(indexEdge, 1);
             this.decrDegree(destId);
             if (edgeSize === 0) {
