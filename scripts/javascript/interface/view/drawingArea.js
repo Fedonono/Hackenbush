@@ -166,7 +166,7 @@
 
 	drawingArea.elementSelected = function(tool) {
 		var elementTool = $('#'+tool);
-		var prevElementTool = $('.locked');
+		var prevElementTool = $('#main-left .locked');
 		if (prevElementTool.hasClass('locked')) {
 			prevElementTool.addClass('button');
 			prevElementTool.addClass('toolChooser');
