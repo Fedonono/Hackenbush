@@ -36,27 +36,26 @@
             var Y3 = goal.y;
             
             var t0, t1, Xstart, Ystart, Ygoal, direction, a, b, c, distance;
-            for(var i = 0; i < 20; i++) {
-                t0 = i/20;
-                t1 = (i+1)/20;
-                Xstart = X0*(1 - t0)^3 + 3*X1*t0*(1-t0)^2 + 3*X2*t0^2*(1-t0) + X3*t0^3;
-                console.log(Xstart);
-                Ystart = Y0*(1 - t0)^3 + 3*Y1*t0*(1-t0)^2 + 3*Y2*t0^2*(1-t0) * Y3*t0^3;
-                Xgoal = X0*(1 - t1)^3 + 3*X1*t1*(1-t1)^2 + 3*X2*t1^2*(1-t1) + X3*t1^3;
-                Ygoal = Y0*(1 - t1)^3 + 3*Y1*t1*(1-t1)^2 + 3*Y2*t1^2*(1-t1) + Y3*t1^3;
+            for(var i = 0; i < 100; i++) {
+                t0 = i/100;
+                t1 = (i+1)/100;
+                Xstart = X0*Math.pow(1 - t0, 3) + 3*X1*t0*Math.pow(1-t0, 2) + 3*X2*Math.pow(t0, 2)*(1-t0) + X3*Math.pow(t0, 3);
+                Ystart = Y0*Math.pow(1 - t0, 3) + 3*Y1*t0*Math.pow(1-t0, 2) + 3*Y2*Math.pow(t0, 2)*(1-t0) + Y3*Math.pow(t0, 3);
+                Xgoal = X0*Math.pow(1 - t1, 3) + 3*X1*t1*Math.pow(1-t1, 2) + 3*X2*Math.pow(t1, 2)*(1-t1) + X3*Math.pow(t1, 3);
+                Ygoal = Y0*Math.pow(1 - t1, 3) + 3*Y1*t1*Math.pow(1-t1, 2) + 3*Y2*Math.pow(t1, 2)*(1-t1) + Y3*Math.pow(t1, 3);
                 direction = new Point(Xgoal - Xstart, Ygoal - Ystart);
                 a = direction.y;
                 b = -direction.x;
-                c = -1*(a*Xstart + b*Ystart);
-                distance = Math.sqrt((a*x + b*y + c)^2 / (a^2 + b^2));
-                if(distance <= drawingArea.bezierCurveWidth/2){
-                  console.log("edge touché connard");
-                  return true;  
+                c = -1*(a*X0 + b*Y0);
+                distance = Math.sqrt(Math.pow(a*x + b*y + c, 2)/(Math.pow(a, 2) + Math.pow(b, 2)));
+                if(distance <= drawingArea.bezierCurveWidth){
+                    console.log("coucou");
+                    return true;  
                 }                 
             }
             return false;
         }
-        
+        var visitedEdges = new Object();
         for (var nodeKey in drawingArea.graphUi.nodes) {
             var startId = nodeKey.replace('#','')*1;
             var startNode = drawingArea.graphUi.getNodeById(startId);
@@ -64,7 +63,11 @@
             for(var neighborKey in startNode.neighbors) {
                 var edges = startNode.neighbors[neighborKey];
                 for(var i = 0; i < edges.length; i++){
-                    if(match(drawingArea.graphUi.getNodeValue(startId), edges[i].weight, drawingArea.graphUi.getNodeValue(startId)))return edges[i].weight;
+                    if(!visitedEdges['#'+edges[i].id]){
+                        visitedEdges['#'+edges[i].id] = true;
+                        if(match(drawingArea.graphUi.getNodeValue(startId), edges[i].weight, drawingArea.graphUi.getNodeValue(startId)))
+                            return edges[i].weight;
+                    }
                 }
             }
             return null;
