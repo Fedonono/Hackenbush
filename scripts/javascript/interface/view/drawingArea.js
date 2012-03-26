@@ -45,7 +45,6 @@
     }
         
     drawingArea.drawShadowNode = function(point){
-        
         var context = drawingArea.context;
         context.shadowColor = "black";
         context.shadowBlur = 20;

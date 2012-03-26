@@ -51,6 +51,7 @@
 				modClass($('#edit'));
 				modClass($('#erase'));
 				modClass($('#eraseAll'));
+				modClass($('#save'));
 			}
 		}
 		else {

@@ -16,14 +16,6 @@
         
         $(".colorChooser").click( function(event) {
             controller.color = event.currentTarget.id;
-			var prevElementColor = $('#main-right .locked');
-			if (prevElementColor.hasClass('locked')) {
-				prevElementColor.addClass('button');
-				prevElementColor.removeClass('locked');
-			}
-			var color = $('.'+controller.color);
-			color.removeClass('button');
-			color.addClass('locked');			
         });
 		
 		

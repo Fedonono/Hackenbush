@@ -1,13 +1,6 @@
-
-- Division à changer avec lib
-- chargement page image
-
-- une jolie image pour le boutton select
-- virer le style dans edition.html et le mettre dans un fichier css
-- faire la bdd
-
-
-
 NONO :
-- revoir button player css
 - subdiviser code poo
+- bloquez les select color (remplacer par div avec color)
+- sauvegardez graphGame + 
+	controller.playerColors[] => modif select en fonction de ça
+- mode jeu : p1/p2 win todo in css
