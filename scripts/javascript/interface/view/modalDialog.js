@@ -21,9 +21,9 @@
 				if ( bValid ) {
 					var canvas = drawingArea.canvas[0];
 					var graphUi = drawingArea.graphUi;
-					var imageData = memoryCard.saveAsPNG(canvas, true, 200, 150);
+					var imageData = controller.saveAsPNG(canvas, true, 200, 150);
 					if (canvas !== undefined && graphUi !== undefined && imageData !== undefined)
-						memoryCard.saveGame(name.val(), 0, graphUi, imageData);
+						controller.saveGame(name.val(), 0, graphUi, imageData);
 					$( this ).dialog( "close" );
 				}
 			},

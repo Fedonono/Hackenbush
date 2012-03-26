@@ -123,6 +123,10 @@
     vertical-align: middle;
 }
 
+.selected, .locked {
+	cursor: not-allowed;
+}
+
 .button, .button-bottom  {
     -moz-transition: all 0.8s ease-in-out 0s;
     -ms-transition: all 0.8s ease-in-out 0s;
