@@ -161,6 +161,19 @@
         else if(tool === "edit") canvas.css("cursor", "pointer");
         else if (tool === "selected") canvas.css("cursor", "move");
     }
+
+	drawingArea.elementSelected = function(tool) {
+		var elementTool = $('#'+tool);
+		var prevElementTool = $('.locked');
+		if (prevElementTool.hasClass('locked')) {
+			prevElementTool.addClass('button');
+			prevElementTool.addClass('toolChooser');
+			prevElementTool.removeClass('locked');
+		}
+		elementTool.removeClass('button');
+		elementTool.removeClass('toolChooser');
+		elementTool.addClass('locked');
+	}
         
     drawingArea.cursorIsOver = function() {
         if (controller.tool === "edit") drawingArea.setCursor('selected');

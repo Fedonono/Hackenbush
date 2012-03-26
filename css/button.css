@@ -31,7 +31,6 @@
     border-radius: 0.5em;
 }
 
-
 .button, .locked {
     line-height: 107px;
 }
@@ -128,11 +127,11 @@
 }
 
 .button, .button-bottom  {
-    -moz-transition: all 0.8s ease-in-out 0s;
-    -ms-transition: all 0.8s ease-in-out 0s;
-    -o-transition: all 0.8s ease-in-out 0s;
-    -webkit-transition: all 0.8s ease-in-out 0s;
-    transition: all 0.8s ease-in-out 0s;
+    -moz-transition: all 0.5s ease-in-out 0s;
+    -ms-transition: all 0.5s ease-in-out 0s;
+    -o-transition: all 0.5s ease-in-out 0s;
+    -webkit-transition: all 0.5s ease-in-out 0s;
+    transition: all 0.5s ease-in-out 0s;
 	cursor: pointer;
 }
 
@@ -142,7 +141,7 @@
     clear: both;
 }
 
-.button:hover, .button-bottom:hover, .selected  {
+.button:hover, .button-bottom:hover, .selected, .no-lock .locked  {
     border: 4px inset rgba(77,255,77,0.4);
     color: rgba(77,255,77,0.6);
 }
@@ -163,7 +162,7 @@
     transform: translateY(-10px);
 }
 
-.locked {
+.lock .locked {
     color: rgba(255,0,0,0.4);
     border: 4px solid rgba(255,0,0,0.2);
     box-shadow: 0 0 8px rgba(255,0,0,0.2);

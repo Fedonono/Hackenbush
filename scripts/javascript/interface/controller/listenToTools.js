@@ -21,7 +21,10 @@
 		
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
-            if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") drawingArea.setCursor(toolSelected);
+            if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") {
+				drawingArea.elementSelected(toolSelected);
+				drawingArea.setCursor(toolSelected);
+			}
             if(toolSelected === "eraseAll") controller.eraseAll();
             if(toolSelected === "save"){
                 controller.buildGraphGame();

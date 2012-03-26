@@ -78,3 +78,9 @@ a {
 .hidden {
 	display: none;
 }
+
+.square {
+	list-style-type:square;
+	font-size: 15px;
+	line-height: 25px;
+}
