@@ -94,7 +94,7 @@
             drawingArea.drawShadowNode(point);
             drawingArea.cursorIsOver();
         }
-        else this.setCursor(drawingArea.tool);
+        else drawingArea.setCursor(controller.tool);
             
         for (var itemKey in drawingArea.dash.nodes){
             var node = drawingArea.dash.nodes[itemKey];
