@@ -26,11 +26,35 @@
         
         function match(start, bezierCurve, goal){
             
-            var controlP1 = bezierCurve.controlP1;
-            var controlP2 = bezierCurve.controlP2;
+            var X0 = start.x;
+            var Y0 = start.y;
+            var X1 = bezierCurve.controlP1.x;
+            var Y1 = bezierCurve.controlP1.y;
+            var X2 = bezierCurve.controlP2.x;
+            var Y2 = bezierCurve.controlP2.y;
+            var X3 = goal.x;
+            var Y3 = goal.y;
             
-            //if()
-            
+            var step = 0.05;
+            var t0, t1, Xstart, Ystart, Ygoal, direction, a, b, c, distance;
+            for(var t = 0; t < 1; t += step) {
+                t0 = t;
+                t1 = t + step;
+                Xstart = X0*(1 - t0)^3 + 3*X1*t0*(1-t0)^2 + 3*X2*t0^2*(1-t0) + X3*t0^3;
+                console.log(Xstart);
+                Ystart = Y0*(1 - t0)^3 + 3*Y1*t0*(1-t0)^2 + 3*Y2*t0^2*(1-t0) * Y3*t0^3;
+                Xgoal = X0*(1 - t1)^3 + 3*X1*t1*(1-t1)^2 + 3*X2*t1^2*(1-t1) + X3*t1^3;
+                Ygoal = Y0*(1 - t1)^3 + 3*Y1*t1*(1-t1)^2 + 3*Y2*t1^2*(1-t1) + Y3*t1^3;
+                direction = new Point(Xgoal - Xstart, Ygoal - Ystart);
+                a = direction.y;
+                b = -direction.x;
+                c = -1*(a*Xstart + b*Ystart);
+                distance = Math.sqrt((a*x + b*y + c)^2 / (a^2 + b^2));
+                if(distance <= drawingArea.bezierCurveWidth/2){
+                  console.log("edge touché connard");
+                  return true;  
+                }                 
+            }
             return false;
         }
         

@@ -20,6 +20,8 @@
     drawingArea.controlPFillColor = "white";
     drawingArea.controlPBorderWidth = 1;
     
+    drawingArea.bezierCurveWidth = 3;
+    
     drawingArea.nodeIdCounter = 0;
     drawingArea.currentNodeId = 0;
     drawingArea.mouseoverNode = null;
@@ -53,7 +55,7 @@
         
     drawingArea.drawBezierCurve = function(start, goal, bezierCurve, alpha){
         var context = drawingArea.context;
-        context.lineWidth = 3;
+        context.lineWidth = drawingArea.bezierCurveWidth;
         context.strokeStyle = bezierCurve.color;
         context.globalAlpha = alpha;
             
