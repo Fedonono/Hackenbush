@@ -15,9 +15,9 @@
 				var bValid = true;
 				allFields.removeClass( "ui-state-error" );
 
-				bValid = bValid && checkLength( name, "Graph Name", 3, 16 );
+				bValid = bValid && controller.checkLength( name, "Graph Name", 3, 16 );
 
-				bValid = bValid && checkRegexp( name, /^([0-9a-zA-Z])+$/, "Graph Name only allow : a-z 0-9" );
+				bValid = bValid && controller.checkRegexp( name, /^([0-9a-zA-Z])+$/, "Graph Name only allow : a-z 0-9" );
 				if ( bValid ) {
 					var canvas = drawingArea.canvas[0];
 					var graphUi = drawingArea.graphUi;

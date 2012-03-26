@@ -1,9 +1,7 @@
-
 (function(){
     
     if(!window.controller) window.controller= new Object();
-    
-    
+
     controller.buildGraphGame = function(){
         
         modele.graphGame = new HackenbushGraph();
@@ -131,4 +129,4 @@
         var strData = oScaledCanvas.toDataURL("image/png");
         return strData;
     };
-})()
+})();
