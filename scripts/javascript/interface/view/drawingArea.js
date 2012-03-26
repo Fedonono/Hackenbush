@@ -52,7 +52,14 @@
         context.shadowBlur = 0;
     }
         
-    drawingArea.drawBezierCurve = function(start, goal, bezierCurve, alpha){
+    drawingArea.drawBezierCurve = function(bezierCurve, alpha){
+        
+        var start, goal;
+        if(drawingArea.dash.nodeExists(bezierCurve.startId)) start = drawingArea.dash.getNodeValue(bezierCurve.startId);
+        else start = drawingArea.graphUi.getNodeValue(bezierCurve.startId);
+        if(drawingArea.dash.nodeExists(bezierCurve.goalId)) goal = drawingArea.dash.getNodeValue(bezierCurve.goalId);
+        else goal = drawingArea.graphUi.getNodeValue(bezierCurve.goalId);
+        
         var context = drawingArea.context;
         context.lineWidth = drawingArea.bezierCurveWidth;
         context.strokeStyle = bezierCurve.color;
@@ -63,8 +70,10 @@
         context.bezierCurveTo(bezierCurve.controlP1.x, bezierCurve.controlP1.y, bezierCurve.controlP2.x, bezierCurve.controlP2.y, goal.x, goal.y);
         context.stroke();
         context.closePath();
-            
+        
         context.globalAlpha = 1;
+        drawingArea.drawNode(start);
+        drawingArea.drawNode(goal);
     }
     
  
@@ -109,13 +118,9 @@
                     var bezierCurve = edges[i].weight;
                     var alpha = 0.3;
                     if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
-                    drawingArea.drawBezierCurve(start, goal, bezierCurve, alpha);
+                    drawingArea.drawBezierCurve(bezierCurve, alpha);
                 }                   
             }
-        }
-        for (itemKey in drawingArea.dash.nodes){
-            point = drawingArea.dash.nodes[itemKey].weight;
-            drawingArea.drawNode(point);
         }
     }
         
@@ -138,21 +143,12 @@
                         var beizerCurve = edges[i].weight;
                         var alpha = 0.3;
                         if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
-                        drawingArea.drawBezierCurve(start, goal, beizerCurve, alpha);
+                        drawingArea.drawBezierCurve(beizerCurve, alpha);
                     }
                 }
             }
                     
-        }
-        
-        for(itemKey in drawingArea.graphUi.nodes){
-            var point = drawingArea.graphUi.nodes[itemKey].weight;
-            var id = itemKey.replace('#', '')*1;
-            if(id !== drawingArea.currentNodeId){
-                drawingArea.drawNode(point);
-            }
-        }
-            
+        }           
         drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);
     }
         

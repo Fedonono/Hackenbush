@@ -36,9 +36,9 @@
             var Y3 = goal.y;
             
             var t0, t1, Xstart, Ystart, Ygoal, direction, a, b, c, distance;
-            for(var i = 0; i < 100; i++) {
-                t0 = i/100;
-                t1 = (i+1)/100;
+            for(var i = 0; i < 20; i++) {
+                t0 = i/20;
+                t1 = (i+1)/20;
                 Xstart = X0*Math.pow(1 - t0, 3) + 3*X1*t0*Math.pow(1-t0, 2) + 3*X2*Math.pow(t0, 2)*(1-t0) + X3*Math.pow(t0, 3);
                 Ystart = Y0*Math.pow(1 - t0, 3) + 3*Y1*t0*Math.pow(1-t0, 2) + 3*Y2*Math.pow(t0, 2)*(1-t0) + Y3*Math.pow(t0, 3);
                 Xgoal = X0*Math.pow(1 - t1, 3) + 3*X1*t1*Math.pow(1-t1, 2) + 3*X2*Math.pow(t1, 2)*(1-t1) + X3*Math.pow(t1, 3);
@@ -48,7 +48,9 @@
                 b = -direction.x;
                 c = -1*(a*X0 + b*Y0);
                 distance = Math.sqrt(Math.pow(a*x + b*y + c, 2)/(Math.pow(a, 2) + Math.pow(b, 2)));
-                if(distance <= drawingArea.bezierCurveWidth){
+                var PstartP = new Point(x - Xstart, y - Ystart);
+                var PgoalP = new Point(x - Xstart, y -  Ystart);
+                if(distance <= drawingArea.bezierCurveWidth*4){
                     console.log("coucou");
                     return true;  
                 }                 
@@ -56,6 +58,7 @@
             return false;
         }
         var visitedEdges = new Object();
+        
         for (var nodeKey in drawingArea.graphUi.nodes) {
             var startId = nodeKey.replace('#','')*1;
             var startNode = drawingArea.graphUi.getNodeById(startId);
@@ -70,8 +73,8 @@
                     }
                 }
             }
-            return null;
         }
+        return null;
     }
     
     
@@ -178,7 +181,7 @@
         var averageY = (y + startPoint.y)/2;
         var orientationP1 = new Point(averageX, averageY);
         var orientationP2 = new Point(averageX, averageY);
-        var bezierCurve = new BezierCurve(orientationP1, orientationP2, color)
+        var bezierCurve = new BezierCurve(drawingArea.currentNodeId, orientationP1, orientationP2, id, color)
                 
         if(!drawingArea.dash.nodeExists(id)) {
             drawingArea.dash.addWeightedNode(id, goal);
@@ -214,7 +217,7 @@
             var goal = drawingArea.graphUi.getNodeValue(id);
             var averageX = (start.x + goal.x)/2;
             var averageY = (start.y + goal.y)/2;
-            var bezierCurve = new BezierCurve(new Point(averageX, averageY), new Point(averageX, averageY), color);
+            var bezierCurve = new BezierCurve(startId, new Point(averageX, averageY), new Point(averageX, averageY), id, color);
                 
             drawingArea.graphUi.addWeightedEdge(startId, id, bezierCurve); 
         }
@@ -234,6 +237,21 @@
             }
             return 0;
         }            
+        function mergeNodes(oldId, id){
+            var oldNode = drawingArea.graphUi.getNodeById(oldId);
+                
+            for(var neighborKey in oldNode.neighbors){
+                var neighborId = neighborKey.replace('#', '')*1;
+                var edges = oldNode.neighbors[neighborKey];
+                for(var i = 0; i < edges.length; i++){
+                    var weight = edges[i].weight;
+                    if(edges[i].weight.startId === oldId) edges[i].weight.startId = id;
+                    if(edges[i].weight.goalId === oldId) edges[i].weight.goalId = id;
+                    drawingArea.graphUi.addWeightedEdge(id, neighborId, weight);
+                }
+            }
+            drawingArea.graphUi.removeNode(oldId);
+        }
         //ALGORITHM
         var currentNodeId = drawingArea.currentNodeId;
         if(currentNodeId){
@@ -242,7 +260,7 @@
             drawingArea.graphUi.setNodeValue(currentNodeId, currentPoint);
             var id = searchDuplicate(currentNodeId);
             var point = drawingArea.graphUi.getNodeValue(currentNodeId);
-            if (id) drawingArea.graphUi.mergeNodes(currentNodeId, id);
+            if (id) mergeNodes(currentNodeId, id);
                 
             else if (drawingArea.isOnGrass(point.x, point.y) && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId)){
                 drawingArea.graphUi.groundNode(currentNodeId);
