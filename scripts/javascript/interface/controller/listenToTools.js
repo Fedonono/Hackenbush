@@ -7,7 +7,9 @@
 	
     controller.tool = "draw"; // default tool : draw
     
-    controller.playerColors = new Array();
+    //palyerColors[0] := player1 color;
+    //playerColors[1] := player2 color;
+    controller.playerColors = new Array(); 
     
     
     controller.listenToTools = function(){
@@ -21,7 +23,10 @@
             var toolSelected = event.currentTarget.id;
             if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") drawingArea.setCursor(toolSelected);
             if(toolSelected === "eraseAll") drawingArea.eraseAll();
-            if(toolSelected === "save") $('#save-form').dialog( "open" );
+            if(toolSelected === "save"){
+                controller.buildGraphGame();
+                $('#save-form').dialog( "open" );
+            }
             if(toolSelected === "load") {
                 var loadForm = $('#load-form');
                 loadForm.dialog( "open" );

@@ -16,6 +16,8 @@
     drawingArea.nodeIdCounter = 0;
     drawingArea.currentNodeId = 0;
     drawingArea.mouseoverNode = null;
+    drawingArea.mouseoverEdge = null;
+    drawingArea.selectedEdge = null;
     
     drawingArea.grassHeight = 30;
     
@@ -41,6 +43,32 @@
             if(x >= item.x - distance && x <= item.x + distance && y >= item.y - distance && y <= item.y + distance) return itemKey.replace('#', '')*1;
         }
         return 0;          
+    }
+    
+    drawingArea.getEdgeByCoord = function(x, y) {
+        
+        function match(start, bezierCurve, goal){
+            
+            var controlP1 = bezierCurve.controlP1;
+            var controlP2 = bezierCurve.controlP2;
+            
+            //if()
+            
+            return false;
+        }
+        
+        for (var nodeKey in drawingArea.graphUi.nodes) {
+            var startId = nodeKey.replace('#','')*1;
+            var startNode = drawingArea.graphUi.getNodeById(startId);
+            
+            for(var neighborKey in startNode.neighbors) {
+                var edges = startNode.neighbors[neighborKey];
+                for(var i = 0; i < edges.length; i++){
+                    if(match(drawingArea.graphUi.getNodeValue(startId), edges[i].weight, drawingArea.graphUi.getNodeValue(startId)))return edges[i].weight;
+                }
+            }
+            return null;
+        }
     }
     
     
@@ -80,6 +108,7 @@
             drawingArea.mouseoverNode = drawingArea.graphUi.getNodeById(id);
         }
         else drawingArea.mouseoverNode = null;
+        drawingArea.mouseoverEdge = drawingArea.getEdgeByCoord(x, y);
         drawingArea.refresh();
     }
     
@@ -272,7 +301,7 @@
             
         context.beginPath();
         context.moveTo(start.x, start.y);
-        context.bezierCurveTo(bezierCurve.beginOrientationPoint.x, bezierCurve.beginOrientationPoint.y, bezierCurve.endOrientationPoint.x, bezierCurve.endOrientationPoint.y, goal.x, goal.y);
+        context.bezierCurveTo(bezierCurve.controlP1.x, bezierCurve.controlP1.y, bezierCurve.controlP2.x, bezierCurve.controlP2.y, goal.x, goal.y);
         context.stroke();
         context.closePath();
             
