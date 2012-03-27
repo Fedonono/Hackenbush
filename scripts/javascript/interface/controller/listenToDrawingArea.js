@@ -107,7 +107,7 @@
             var edge = drawingArea.getEdgeByCoord(x, y); 
             if(edge)drawingArea.selectedEdge = edge;
         }
-        drawingArea.update();
+        drawingArea.update(false);
         drawingArea.refresh();
     }
     
@@ -286,13 +286,13 @@
         drawingArea.currentNodeId = 0;
         drawingArea.mouseoverNode = null;
         drawingArea.graphUi.removeLonelyNodes();
-        drawingArea.update();
+        drawingArea.update(true);
     }
         
     drawingArea.eraseAll = function() {
         drawingArea.graphUi = new HackenbushGraph();
         drawingArea.dash = new HackenbushGraph();
-        drawingArea.update();
+        drawingArea.update(true);
     }
     
     drawingArea.buildGraphGame = function(){

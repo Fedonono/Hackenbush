@@ -165,10 +165,10 @@
         }
     }
         
-    drawingArea.update = function(){            
+    drawingArea.update = function(showSelectedEdge){            
         drawingArea.reset();
         
-        if(drawingArea.selectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge, 1, true);
+        if(drawingArea.selectedEdge  && showSelectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge, 1, true);
         
         for (var itemKey in drawingArea.graphUi.nodes){
             var node = drawingArea.graphUi.nodes[itemKey];
