@@ -180,7 +180,9 @@
                 for(var i = 0; i < edges.length; i++){
                     var startId = itemKey.replace('#','')*1;
                     var goalId = neighborKey.replace('#','')*1;
-                    if(startId !== drawingArea.currentNodeId && goalId !==drawingArea.currentNodeId){
+                    var selectedEdgeId; 
+                    if(drawingArea.selectedEdge) selectedEdgeId = drawingArea.selectedEdge.id;
+                    if(edges[i].id !== selectedEdgeId && startId !== drawingArea.currentNodeId && goalId !==drawingArea.currentNodeId){
                         var beizerCurve = edges[i].weight;
                         var alpha = 0.3;
                         if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
