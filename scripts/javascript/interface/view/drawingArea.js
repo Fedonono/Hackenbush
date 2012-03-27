@@ -77,6 +77,7 @@
         context.closePath();
         context.globalAlpha = 1;
     }
+    
     drawingArea.drawBezierCurve = function(bezierCurve, alpha, showControlPoint){
         var start, goal;
         if(drawingArea.dash.nodeExists(bezierCurve.startId)) start = drawingArea.dash.getNodeValue(bezierCurve.startId);
@@ -91,7 +92,7 @@
             
         context.beginPath();
         context.moveTo(start.x, start.y);
-        context.bezierCurveTo(bezierCurve.controlP1.x, bezierCurve.controlP1.y, bezierCurve.controlP2.x, bezierCurve.controlP2.y, goal.x, goal.y);
+        context.bezierCurveTo(bezierCurve.controlP1.x, bezierCurve.controlP1.y, bezierCurve.controlP2.x + 0.1, bezierCurve.controlP2.y + 0.1, goal.x, goal.y);
         context.stroke();
         context.closePath();
         context.globalAlpha = 1;
