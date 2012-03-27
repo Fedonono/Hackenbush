@@ -143,8 +143,8 @@
         }
         else drawingArea.setCursor(controller.tool);
         
-        if(drawingArea.mouseoverEdge) drawingArea.drawShadowBezierCurve(drawingArea.mouseoverEdge, 1, false);
-        if(drawingArea.selectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge, 1, true);
+        if(drawingArea.mouseoverEdge) drawingArea.drawShadowBezierCurve(drawingArea.mouseoverEdge.weight, 1, false);
+        if(drawingArea.selectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge.weight, 1, true);
             
         for (var itemKey in drawingArea.dash.nodes){
             var node = drawingArea.dash.nodes[itemKey];
@@ -167,7 +167,7 @@
     drawingArea.update = function(showSelectedEdge){            
         drawingArea.reset();
         
-        if(drawingArea.selectedEdge  && showSelectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge, 1, true);
+        if(drawingArea.selectedEdge  && showSelectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge.weight, 1, true);
         
         for (var itemKey in drawingArea.graphUi.nodes){
             var node = drawingArea.graphUi.nodes[itemKey];

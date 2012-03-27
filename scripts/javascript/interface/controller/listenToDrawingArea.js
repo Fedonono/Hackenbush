@@ -49,7 +49,6 @@
                 var PstartP = new Point(x - Xstart, y - Ystart);
                 var PgoalP = new Point(x - Xstart, y -  Ystart);
                 if(distance <= drawingArea.bezierCurveWidth*4){
-                    //console.log("coucou");
                     return true;  
                 }                 
             }
@@ -67,7 +66,7 @@
                     if(!visitedEdges['#'+edges[i].id]){
                         visitedEdges['#'+edges[i].id] = true;
                         if(match(drawingArea.graphUi.getNodeValue(startId), edges[i].weight, drawingArea.graphUi.getNodeValue(startId)))
-                            return edges[i].weight;
+                            return edges[i];
                     }
                 }
             }
@@ -275,8 +274,14 @@
     }
         
     drawingArea.erase = function(x, y){
-        var id = drawingArea.getNodeByCoord(x, y);
-        if(id)drawingArea.graphUi.removeNode(id);
+        var edge = drawingArea.getEdgeByCoord(x, y);
+        if(edge) {
+            var startId = edge.weight.startId;
+            var goalId = edge.weight.goalId;
+            var edgeId = edge.id;
+            drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
+        }
+        drawingArea.update();
     }
         
     drawingArea.apply = function(){
@@ -377,4 +382,3 @@
     }     
     drawingArea.listenToDrawingArea(); 
 })();
-

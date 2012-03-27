@@ -97,6 +97,8 @@ var MultiGraph = function(directed){
 
         return this.nodes['#'+sourceId].neighbors['#'+destId][indexEdge];
     }
+    
+    
 
     /** 
 	 * Removes a node with the specified identifier
@@ -174,6 +176,18 @@ var MultiGraph = function(directed){
         }
     }
 	
+	this.removeEdgeByIds = function(sourceId, destId, edgeId) {
+		if (!this.nodeExists(sourceId))
+            throw new UnexistingNodeException(sourceId);
+        if (!this.nodeExists(destId))
+            throw new UnexistingNodeException(destId);
+		
+		var indexEdge = - 1;
+		for(var i = 0; i < this.nodes['#'+sourceId].neighbors['#'+destId].length; i++){
+			if(this.nodes['#'+sourceId].neighbors['#'+destId][i].id === edgeId) indexEdge = i;
+		}
+		this.removeEdge(sourceId, destId, indexEdge);
+	}
     /** 
 	 * Updates the value of the edge between nodes identified by sourceId and destId
 	 *
