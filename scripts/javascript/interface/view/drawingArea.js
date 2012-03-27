@@ -16,8 +16,8 @@
     drawingArea.nodeBorderColor = "black";
     drawingArea.nodeBorderWidth = 1;
         
-    drawingArea.controlPRadius = 5;
-    drawingArea.controlPFillColor = "white";
+    drawingArea.controlPRadius = 6;
+    drawingArea.controlPFillColor = "#FBF2F2";
     drawingArea.controlPBorderWidth = 1;
     
     drawingArea.bezierCurveWidth = 3;
@@ -51,6 +51,19 @@
         drawingArea.drawNode(point);
         context.shadowBlur = 0;
     }
+    
+    drawingArea.drawControlPoint = function(point, borderColor) {
+        var context = drawingArea.context;
+        context.lineWidth = drawingArea.controlPBorderWidth;
+        context.strokeStyle = borderColor;
+        context.fillStyle = drawingArea.controlPFillColor;
+            
+        context.beginPath();
+        context.arc(point.x, point.y, drawingArea.controlPRadius, 0, 2 * Math.PI);
+        context.stroke();
+        context.fill();
+        context.closePath();
+    }
         
     drawingArea.drawBezierCurve = function(bezierCurve, alpha){
         
@@ -74,6 +87,16 @@
         context.globalAlpha = 1;
         drawingArea.drawNode(start);
         drawingArea.drawNode(goal);
+        drawingArea.drawControlPoint(bezierCurve.controlP1, bezierCurve.color);
+        drawingArea.drawControlPoint(bezierCurve.controlP2, bezierCurve.color);
+    }
+    
+    drawingArea.drawShadowBezierCurve = function(bezierCurve, alpha){
+        var context = drawingArea.context;
+        context.shadowColor = bezierCurve.color;
+        context.shadowBlur = 20;
+        drawingArea.drawBezierCurve(bezierCurve, alpha);
+        context.shadowBlur = 0;
     }
     
  
@@ -105,6 +128,8 @@
             drawingArea.cursorIsOver();
         }
         else drawingArea.setCursor(controller.tool);
+        
+        if(drawingArea.mouseoverEdge) drawingArea.drawShadowBezierCurve(drawingArea.mouseoverEdge, 1);
             
         for (var itemKey in drawingArea.dash.nodes){
             var node = drawingArea.dash.nodes[itemKey];
