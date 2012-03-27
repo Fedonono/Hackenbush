@@ -41,10 +41,8 @@
                 helpModal.load("./views/help.html");
             }
             else controller.tool = toolSelected;
-        });
-        
+        });   
     }
-
     controller.initPlayerColors = function(){
         var player1 = $("#player1");
         var player2 = $("#player2");
@@ -81,8 +79,26 @@
         }
         preventFromSameColor();
     };
+    
+    drawingArea.listenToTools = function() {
+        
+        $(".colorChooser").mousedown(function(event){
+           if(drawingArea.selectedEdge)drawingArea.selectedEdge.color = event.currentTarget.id; 
+           drawingArea.update();
+        });
+        
+        
+         $(".toolChooser").click( function(event) {
+             var toolSelected = event.currentTarget.id;
+             if(toolSelected !== edit){
+                 drawingArea.selectedEdge = null;
+                 drawingArea.update();
+             }
+         });
+        
+    }
     controller.initPlayerColors();
-
     controller.listenToTools();
+    drawingArea.listenToTools();
 })()
 

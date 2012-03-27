@@ -56,8 +56,7 @@
         var context = drawingArea.context;
         context.lineWidth = drawingArea.controlPBorderWidth;
         context.strokeStyle = borderColor;
-        context.fillStyle = drawingArea.controlPFillColor;
-            
+        context.fillStyle = drawingArea.controlPFillColor;    
         context.beginPath();
         context.arc(point.x, point.y, drawingArea.controlPRadius, 0, 2 * Math.PI);
         context.stroke();

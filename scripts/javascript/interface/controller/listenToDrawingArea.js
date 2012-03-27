@@ -5,8 +5,6 @@
     var width = canvas[0].width;
     var height = canvas[0].height;
     
-    if(!window.drawingArea) window.drawingArea= new AbstractView();    
-    
     drawingArea.isOnGrass = function(x, y){
         if(y+drawingArea.nodeRadius >= height - drawingArea.grassHeight) return true;
         return false;
@@ -51,7 +49,7 @@
                 var PstartP = new Point(x - Xstart, y - Ystart);
                 var PgoalP = new Point(x - Xstart, y -  Ystart);
                 if(distance <= drawingArea.bezierCurveWidth*4){
-                    console.log("coucou");
+                    //console.log("coucou");
                     return true;  
                 }                 
             }
@@ -375,11 +373,6 @@
             if(controller.tool === "draw") drawingArea.addEdge();
             else if(controller.tool === "edit") drawingArea.saveChanges();
             drawingArea.apply(); 
-        });
-        
-        $(".colorChooser").mousedown(function(event){
-           if(drawingArea.selectedEdge)drawingArea.selectedEdge.color = event.currentTarget.id; 
-           drawingArea.update();
         });
     }     
     drawingArea.listenToDrawingArea(); 
