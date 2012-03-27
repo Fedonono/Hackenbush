@@ -4,3 +4,6 @@ NONO :
 - sauvegardez graphGame + 
 	controller.playerColors[] => modif select en fonction de ça
 - mode jeu : p1/p2 win todo in css
+
+L'alouette :
+- Regler les problèmes sur la detection des arcs
