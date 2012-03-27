@@ -79,7 +79,7 @@
     drawingArea.listenToTools = function() {
         
         $(".colorChooser").mousedown(function(event){
-            if(drawingArea.selectedEdge)drawingArea.selectedEdge.color = event.currentTarget.id; 
+            if(drawingArea.selectedEdge)drawingArea.selectedEdge.weight.color = event.currentTarget.id; 
             drawingArea.update();
         });
         
