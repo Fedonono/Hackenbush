@@ -48,7 +48,7 @@
     drawingArea.drawShadowNode = function(point){
         var context = drawingArea.context;
         context.shadowColor = "black";
-        context.shadowBlur = 20;
+        context.shadowBlur = 15;
         drawingArea.drawNode(point);
         context.shadowBlur = 0;
     }
@@ -112,7 +112,7 @@
     drawingArea.drawShadowBezierCurve = function(bezierCurve, alpha, showControlPoint){
         var context = drawingArea.context;
         context.shadowColor = bezierCurve.color;
-        context.shadowBlur = 20;
+        context.shadowBlur = 10;
         drawingArea.drawBezierCurve(bezierCurve, alpha, showControlPoint);
         context.shadowBlur = 0;
     }

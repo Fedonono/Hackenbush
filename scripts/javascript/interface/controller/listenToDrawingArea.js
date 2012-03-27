@@ -38,8 +38,9 @@
     
     drawingArea.getEdgeByCoord = function(x, y) {
         
-        function match(start, bezierCurve, goal){
-            
+        function match(bezierCurve){
+            var start = drawingArea.graphUi.getNodeValue(bezierCurve.startId);
+            var goal = drawingArea.graphUi.getNodeValue(bezierCurve.goalId);
             var X0 = start.x;
             var Y0 = start.y;
             var X1 = bezierCurve.controlP1.x;
@@ -64,7 +65,7 @@
                 distance = Math.sqrt(Math.pow(a*x + b*y + c, 2)/(Math.pow(a, 2) + Math.pow(b, 2)));
                 var PstartP = new Point(x - Xstart, y - Ystart);
                 var PgoalP = new Point(x - Xstart, y -  Ystart);
-                if(distance <= drawingArea.bezierCurveWidth*4){
+                if( (direction.x*PstartP.x + direction.y*PstartP.y)*(direction.x*PgoalP.x + direction.y*PgoalP.y) > 0 && distance <= drawingArea.bezierCurveWidth*4){
                     return true;  
                 }                 
             }
@@ -81,7 +82,7 @@
                 for(var i = 0; i < edges.length; i++){
                     if(!visitedEdges['#'+edges[i].id]){
                         visitedEdges['#'+edges[i].id] = true;
-                        if(match(drawingArea.graphUi.getNodeValue(startId), edges[i].weight, drawingArea.graphUi.getNodeValue(startId)))
+                        if(match(edges[i].weight))
                             return edges[i];
                     }
                 }
@@ -344,7 +345,7 @@
                 }
             }
         }
-        return graph;
+        controller.buildGraph(graph);
     }
     
     drawingArea.listenToDrawingArea = function() {

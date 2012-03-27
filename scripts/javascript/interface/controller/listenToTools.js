@@ -9,9 +9,7 @@
 		
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
-            if(toolSelected === "eraseAll") controller.eraseAll();
             if(toolSelected === "save"){
-                controller.buildGraphGame();
                 $('#save-form').dialog( "open" );
             }
             if(toolSelected === "load") {
@@ -76,12 +74,14 @@
         
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
+            if(toolSelected === "save") controller.buildGraphGame();
+            if(toolSelected === "eraseAll") drawingArea.eraseAll();
             if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") {
                 drawingArea.elementSelected(toolSelected);
                 drawingArea.setCursor(toolSelected);
                 drawingArea.tool = toolSelected;
             }
-            if(toolSelected !== edit){
+            if(toolSelected !== "edit"){
                 drawingArea.selectedEdge = null;
                 drawingArea.update();
             }

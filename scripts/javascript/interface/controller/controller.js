@@ -2,14 +2,9 @@
     
     if(!window.controller) window.controller= new Object();
 
-    controller.buildGraphGame = function(){
-        modele.graphGame = drawingArea.buildGraphGame();
+    controller.buildGraphGame = function(graph){
+        modele.graphGame = graph;
     };
-
-    controller.eraseAll = function(){
-        drawingArea.eraseAll();
-        modele.graphGame = new HackenbushGraph();
-    }
     
     controller.saveGame = function (name, graphGame, graphUi, imageData) {
         var graphUiObj = controller.arrayToObject(graphUi);
