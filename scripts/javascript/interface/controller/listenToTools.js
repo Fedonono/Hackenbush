@@ -2,22 +2,10 @@
 
     if(!window.controller) window.controller= new Object();
     
-    
-    controller.color = "green"; // default color : primary green
-	
-    controller.tool = "draw"; // default tool : draw
-    
-    //palyerColors[0] := player1 color;
-    //playerColors[1] := player2 color;
     controller.playerColors = new Array(); 
     
     
-    controller.listenToTools = function(){
-        
-        $(".colorChooser").click( function(event) {
-            controller.color = event.currentTarget.id;
-        });
-		
+    controller.listenToTools = function(){		
 		
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
@@ -36,7 +24,6 @@
                 helpModal.dialog( "open" );
                 helpModal.load("./views/help.html");
             }
-            else controller.tool = toolSelected;
         });   
     }
     controller.initPlayerColors = function(){
@@ -76,9 +63,12 @@
         preventFromSameColor();
     };
     
+    drawingArea.color = "green"; // default color : primary green
+    drawingArea.tool = "draw"; // default tool : draw
     drawingArea.listenToTools = function() {
         
         $(".colorChooser").mousedown(function(event){
+            drawingArea.color = event.currentTarget.id;
             if(drawingArea.selectedEdge)drawingArea.selectedEdge.weight.color = event.currentTarget.id; 
             drawingArea.update();
         });
@@ -89,6 +79,7 @@
             if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") {
                 drawingArea.elementSelected(toolSelected);
                 drawingArea.setCursor(toolSelected);
+                drawingArea.tool = toolSelected;
             }
             if(toolSelected !== edit){
                 drawingArea.selectedEdge = null;

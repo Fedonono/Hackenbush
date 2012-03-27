@@ -27,6 +27,7 @@
     drawingArea.mouseoverNode = null;
     drawingArea.mouseoverEdge = null;
     drawingArea.selectedEdge = null;
+    drawingArea.selectedControlPoint = null;
     
     drawingArea.grassHeight = 30;
     
@@ -66,7 +67,7 @@
     
     drawingArea.drawLine = function (start, goal) {
         var context = drawingArea.context;
-        context.lineWidth = 1;
+        context.lineWidth = 2;
         context.strokeStyle = "black";
         context.globalAlpha = 0.2;
         context.beginPath();
@@ -97,11 +98,13 @@
         if(showControlPoint){
             drawingArea.drawLine(start, bezierCurve.controlP1);
             drawingArea.drawLine(goal, bezierCurve.controlP2);
-            drawingArea.drawControlPoint(bezierCurve.controlP1, bezierCurve.color);
-            drawingArea.drawControlPoint(bezierCurve.controlP2, bezierCurve.color);
         }
         drawingArea.drawNode(start);
         drawingArea.drawNode(goal);
+        if(showControlPoint){
+            drawingArea.drawControlPoint(bezierCurve.controlP1, bezierCurve.color);
+            drawingArea.drawControlPoint(bezierCurve.controlP2, bezierCurve.color);
+        }
         
     }
     
@@ -134,18 +137,19 @@
         if(drawingArea.currentNodeId){
             point = drawingArea.dash.getNodeValue(drawingArea.currentNodeId);
             drawingArea.drawShadowNode(point);
-            drawingArea.cursorIsOver();
+            drawingArea.cursorIsOver(false);
         }
         else if(drawingArea.mouseoverNode){
             point = drawingArea.mouseoverNode.weight;
             drawingArea.drawShadowNode(point);
-            drawingArea.cursorIsOver();
+            drawingArea.cursorIsOver(false);
         }
-        else drawingArea.setCursor(controller.tool);
+        else drawingArea.setCursor(drawingArea.tool);
+        if(drawingArea.mouseoverEdge) {
+            drawingArea.drawShadowBezierCurve(drawingArea.mouseoverEdge.weight, 1, false);
+            drawingArea.cursorIsOver(true);
+        }
         
-        if(drawingArea.mouseoverEdge) drawingArea.drawShadowBezierCurve(drawingArea.mouseoverEdge.weight, 1, false);
-        if(drawingArea.selectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge.weight, 1, true);
-            
         for (var itemKey in drawingArea.dash.nodes){
             var node = drawingArea.dash.nodes[itemKey];
             var start = node.weight;
@@ -158,24 +162,19 @@
                     var bezierCurve = edges[i].weight;
                     var alpha = 0.3;
                     if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
-                    drawingArea.drawBezierCurve(bezierCurve, alpha);
+                    drawingArea.drawBezierCurve(bezierCurve, alpha, false);
                 }                   
             }
         }
+        if(drawingArea.selectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge.weight, 1, true);
     }
         
     drawingArea.update = function(showSelectedEdge){            
         drawingArea.reset();
-        
-        if(drawingArea.selectedEdge  && showSelectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge.weight, 1, true);
-        
         for (var itemKey in drawingArea.graphUi.nodes){
-            var node = drawingArea.graphUi.nodes[itemKey];
-            var start = node.weight;                
+            var node = drawingArea.graphUi.nodes[itemKey];              
                 
             for(var neighborKey in node.neighbors){
-                    
-                var goal = drawingArea.graphUi.nodes[neighborKey].weight;
                 var edges = node.neighbors[neighborKey];
                     
                 for(var i = 0; i < edges.length; i++){
@@ -185,12 +184,13 @@
                         var beizerCurve = edges[i].weight;
                         var alpha = 0.3;
                         if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
-                        drawingArea.drawBezierCurve(beizerCurve, alpha);
+                        drawingArea.drawBezierCurve(beizerCurve, alpha, false);
                     }
                 }
             }
                     
-        }           
+        }
+        if(drawingArea.selectedEdge  && showSelectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge.weight, 1, true);
         drawingArea.imageData = drawingArea.context.getImageData(0, 0, width, height);
     }
         
@@ -214,9 +214,9 @@
         elementTool.addClass('locked');
     }
         
-    drawingArea.cursorIsOver = function() {
-        if (controller.tool === "edit") drawingArea.setCursor('selected');
-        if (controller.tool === "erase") canvas.css("cursor", "url('./ressources/images/cursor-scissors-active.png'), not-allowed");
+    drawingArea.cursorIsOver = function(rocker) {
+        if (drawingArea.tool === "edit" && !rocker) drawingArea.setCursor('selected');
+        if (drawingArea.tool === "erase" && rocker) canvas.css("cursor", "url('./ressources/images/cursor-scissors-active.png'), not-allowed");
     }
         
     drawingArea.reset = function(){

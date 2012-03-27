@@ -10,6 +10,22 @@
         return false;
     }
     
+    drawingArea.getControlPointByCoord = function(x, y) {
+        function match(controlPoint){
+            if(x >= controlPoint.x - drawingArea.nodeRadius && x <= controlPoint.x + drawingArea.nodeRadius && y >= controlPoint.y - drawingArea.nodeRadius && y <= controlPoint.y + drawingArea.nodeRadius)
+                return true;
+            return false;
+        }
+        var point = null;
+        if(drawingArea.selectedEdge){
+            var controlP1 = drawingArea.selectedEdge.weight.controlP1;
+            if(match(controlP1)) point = controlP1;
+            var controlP2 = drawingArea.selectedEdge.weight.controlP2;
+            if(match(controlP2))  point = controlP2;
+        }
+        return point;
+    }
+    
     drawingArea.getNodeByCoord = function(x, y) {
         var radius = drawingArea.nodeRadius;
         var distance = 2*radius;
@@ -76,37 +92,40 @@
     
     
     drawingArea.setSelectedItem = function(x, y){
-                 
-        var id = drawingArea.getNodeByCoord(x, y);
-        if(id){
-            drawingArea.currentNodeId = id;
-            var node = drawingArea.graphUi.getNodeById(id);
-            drawingArea.dash.addWeightedNode(id, node.weight);
+        
+        drawingArea.selectedControlPoint = drawingArea.getControlPointByCoord(x, y);
+        if(!drawingArea.slectedControlPoint){ 
+            var id = drawingArea.getNodeByCoord(x, y);
+            if(id){
+                drawingArea.currentNodeId = id;
+                var node = drawingArea.graphUi.getNodeById(id);
+                drawingArea.dash.addWeightedNode(id, node.weight);
                 
-            for(var itemKey in node.neighbors) {
-                var neighborId = itemKey.replace("#", '')*1;
-                if(!drawingArea.dash.nodeExists(neighborId)) {
-                    var point = drawingArea.graphUi.getNodeValue(neighborId);
-                    drawingArea.dash.addWeightedNode(neighborId, point);  
+                for(var itemKey in node.neighbors) {
+                    var neighborId = itemKey.replace("#", '')*1;
+                    if(!drawingArea.dash.nodeExists(neighborId)) {
+                        var point = drawingArea.graphUi.getNodeValue(neighborId);
+                        drawingArea.dash.addWeightedNode(neighborId, point);  
+                    }
+                }
+                for(itemKey in node.neighbors) {
+                    neighborId = itemKey.replace("#", '')*1;
+                    var edges = node.neighbors[itemKey];
+                    for(var i = 0; i < edges.length; i++) {
+                        var bezierCurve = drawingArea.graphUi.getEdgeValue(id, neighborId, i);
+                        drawingArea.dash.addWeightedEdge(id, neighborId, bezierCurve);
+                    }
                 }
             }
-                
-            for(itemKey in node.neighbors) {
-                neighborId = itemKey.replace("#", '')*1;
-                var edges = node.neighbors[itemKey];
-                for(var i = 0; i < edges.length; i++) {
-                    var bezierCurve = drawingArea.graphUi.getEdgeValue(id, neighborId, i);
-                    drawingArea.dash.addWeightedEdge(id, neighborId, bezierCurve);
-                }
+            else{
+                var edge = drawingArea.getEdgeByCoord(x, y); 
+                if(edge)drawingArea.selectedEdge = edge;
             }
-        }
-        else{
-            var edge = drawingArea.getEdgeByCoord(x, y); 
-            if(edge)drawingArea.selectedEdge = edge;
         }
         drawingArea.update(false);
         drawingArea.refresh();
     }
+    
     
     drawingArea.mouseOverSomething = function(x, y){
         var id = drawingArea.getNodeByCoord(x, y);
@@ -145,7 +164,11 @@
     
     drawingArea.move = function(x, y){
         
-        if(drawingArea.currentNodeId){
+        if(drawingArea.selectedControlPoint){
+            drawingArea.selectedControlPoint.x = x;
+            drawingArea.selectedControlPoint.y = y;
+        }
+        else if(drawingArea.currentNodeId){
             var point;  
             if(drawingArea.isOnGrass(x,y)) y = height - drawingArea.grassHeight;
                 
@@ -352,9 +375,9 @@
             //taking care of the border width
             if(startCoords.x > canvas[0].width - Xtolerance || startCoords.x < Xtolerance || startCoords.y > canvas[0].height - Ytolerance || startCoords.y < Ytolerance) return
             
-            if(controller.tool === "draw") drawingArea.addNode(startCoords.x, startCoords.y);
-            else if(controller.tool === "erase") drawingArea.erase(startCoords.x, startCoords.y);
-            else if(controller.tool === "edit") drawingArea.setSelectedItem(startCoords.x, startCoords.y);
+            if(drawingArea.tool === "draw") drawingArea.addNode(startCoords.x, startCoords.y);
+            else if(drawingArea.tool === "erase") drawingArea.erase(startCoords.x, startCoords.y);
+            else if(drawingArea.tool === "edit") drawingArea.setSelectedItem(startCoords.x, startCoords.y);
             
             
         });
@@ -364,19 +387,19 @@
             
             if(mousedown){
                 if(canvasCoords.x > canvas[0].width - Xtolerance || canvasCoords.x < Xtolerance || canvasCoords.y > canvas[0].height - Ytolerance || canvasCoords.y < Ytolerance) return
-                if(controller.tool === "draw") drawingArea.draw(canvasCoords.x, canvasCoords.y, controller.color);
-                if(controller.tool === "edit") drawingArea.move(canvasCoords.x, canvasCoords.y);
+                if(drawingArea.tool === "draw") drawingArea.draw(canvasCoords.x, canvasCoords.y, drawingArea.color);
+                if(drawingArea.tool === "edit") drawingArea.move(canvasCoords.x, canvasCoords.y);
              
             }
-            else drawingArea.mouseOverSomething(canvasCoords.x, canvasCoords.y);
+            else  drawingArea.mouseOverSomething(canvasCoords.x, canvasCoords.y);
         });
         
         
         $('body').mouseup(function(event){
             mousedown = false;
             
-            if(controller.tool === "draw") drawingArea.addEdge();
-            else if(controller.tool === "edit") drawingArea.saveChanges();
+            if(drawingArea.tool === "draw") drawingArea.addEdge();
+            else if(drawingArea.tool === "edit") drawingArea.saveChanges();
             drawingArea.apply(); 
         });
     }     
