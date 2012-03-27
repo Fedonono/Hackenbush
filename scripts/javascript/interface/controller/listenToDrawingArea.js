@@ -376,6 +376,11 @@
             else if(controller.tool === "edit") drawingArea.saveChanges();
             drawingArea.apply(); 
         });
+        
+        $(".colorChooser").mousedown(function(event){
+           if(drawingArea.selectedEdge)drawingArea.selectedEdge.color = event.currentTarget.id; 
+           drawingArea.update();
+        });
     }     
     drawingArea.listenToDrawingArea(); 
 })();
