@@ -64,9 +64,20 @@
         context.fill();
         context.closePath();
     }
-        
-    drawingArea.drawBezierCurve = function(bezierCurve, alpha){
-        
+    
+    drawingArea.drawLine = function (start, goal) {
+        var context = drawingArea.context;
+        context.lineWidth = 1;
+        context.strokeStyle = "black";
+        context.globalAlpha = 0.2;
+        context.beginPath();
+        context.moveTo(start.x, start.y);
+        context.lineTo(goal.x, goal.y);
+        context.stroke();
+        context.closePath();
+        context.globalAlpha = 1;
+    }
+    drawingArea.drawBezierCurve = function(bezierCurve, alpha, showControlPoint){
         var start, goal;
         if(drawingArea.dash.nodeExists(bezierCurve.startId)) start = drawingArea.dash.getNodeValue(bezierCurve.startId);
         else start = drawingArea.graphUi.getNodeValue(bezierCurve.startId);
@@ -83,19 +94,23 @@
         context.bezierCurveTo(bezierCurve.controlP1.x, bezierCurve.controlP1.y, bezierCurve.controlP2.x, bezierCurve.controlP2.y, goal.x, goal.y);
         context.stroke();
         context.closePath();
-        
         context.globalAlpha = 1;
+        if(showControlPoint){
+            drawingArea.drawLine(start, bezierCurve.controlP1);
+            drawingArea.drawLine(goal, bezierCurve.controlP2);
+            drawingArea.drawControlPoint(bezierCurve.controlP1, bezierCurve.color);
+            drawingArea.drawControlPoint(bezierCurve.controlP2, bezierCurve.color);
+        }
         drawingArea.drawNode(start);
         drawingArea.drawNode(goal);
-        drawingArea.drawControlPoint(bezierCurve.controlP1, bezierCurve.color);
-        drawingArea.drawControlPoint(bezierCurve.controlP2, bezierCurve.color);
+        
     }
     
-    drawingArea.drawShadowBezierCurve = function(bezierCurve, alpha){
+    drawingArea.drawShadowBezierCurve = function(bezierCurve, alpha, showControlPoint){
         var context = drawingArea.context;
         context.shadowColor = bezierCurve.color;
         context.shadowBlur = 20;
-        drawingArea.drawBezierCurve(bezierCurve, alpha);
+        drawingArea.drawBezierCurve(bezierCurve, alpha, showControlPoint);
         context.shadowBlur = 0;
     }
     
@@ -129,7 +144,8 @@
         }
         else drawingArea.setCursor(controller.tool);
         
-        if(drawingArea.mouseoverEdge) drawingArea.drawShadowBezierCurve(drawingArea.mouseoverEdge, 1);
+        if(drawingArea.mouseoverEdge) drawingArea.drawShadowBezierCurve(drawingArea.mouseoverEdge, 1, false);
+        if(drawingArea.selectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge, 1, true);
             
         for (var itemKey in drawingArea.dash.nodes){
             var node = drawingArea.dash.nodes[itemKey];
@@ -151,7 +167,9 @@
         
     drawingArea.update = function(){            
         drawingArea.reset();
-            
+        
+        if(drawingArea.selectedEdge) drawingArea.drawShadowBezierCurve(drawingArea.selectedEdge, 1, true);
+        
         for (var itemKey in drawingArea.graphUi.nodes){
             var node = drawingArea.graphUi.nodes[itemKey];
             var start = node.weight;                
@@ -184,18 +202,18 @@
         else if (tool === "selected") canvas.css("cursor", "move");
     }
 
-	drawingArea.elementSelected = function(tool) {
-		var elementTool = $('#'+tool);
-		var prevElementTool = $('#main-left .locked');
-		if (prevElementTool.hasClass('locked')) {
-			prevElementTool.addClass('button');
-			prevElementTool.addClass('toolChooser');
-			prevElementTool.removeClass('locked');
-		}
-		elementTool.removeClass('button');
-		elementTool.removeClass('toolChooser');
-		elementTool.addClass('locked');
-	}
+    drawingArea.elementSelected = function(tool) {
+        var elementTool = $('#'+tool);
+        var prevElementTool = $('#main-left .locked');
+        if (prevElementTool.hasClass('locked')) {
+            prevElementTool.addClass('button');
+            prevElementTool.addClass('toolChooser');
+            prevElementTool.removeClass('locked');
+        }
+        elementTool.removeClass('button');
+        elementTool.removeClass('toolChooser');
+        elementTool.addClass('locked');
+    }
         
     drawingArea.cursorIsOver = function() {
         if (controller.tool === "edit") drawingArea.setCursor('selected');

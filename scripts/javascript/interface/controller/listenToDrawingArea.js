@@ -79,7 +79,7 @@
     
     
     drawingArea.setSelectedItem = function(x, y){
-          
+                 
         var id = drawingArea.getNodeByCoord(x, y);
         if(id){
             drawingArea.currentNodeId = id;
@@ -103,18 +103,23 @@
                 }
             }
         }
+        else{
+            var edge = drawingArea.getEdgeByCoord(x, y); 
+            if(edge)drawingArea.selectedEdge = edge;
+        }
         drawingArea.update();
         drawingArea.refresh();
     }
     
     drawingArea.mouseOverSomething = function(x, y){
-         
         var id = drawingArea.getNodeByCoord(x, y);
         if(id) {
             drawingArea.mouseoverNode = drawingArea.graphUi.getNodeById(id);
         }
-        else drawingArea.mouseoverNode = null;
-        drawingArea.mouseoverEdge = drawingArea.getEdgeByCoord(x, y);
+        else{
+            drawingArea.mouseoverNode = null;
+            drawingArea.mouseoverEdge = drawingArea.getEdgeByCoord(x, y);
+        }
         drawingArea.refresh();
     }
     
