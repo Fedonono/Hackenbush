@@ -92,7 +92,7 @@
             
         context.beginPath();
         context.moveTo(start.x, start.y);
-        context.bezierCurveTo(bezierCurve.controlP1.x, bezierCurve.controlP1.y, bezierCurve.controlP2.x + 0.1, bezierCurve.controlP2.y + 0.1, goal.x, goal.y);
+        context.bezierCurveTo(bezierCurve.controlP1.x, bezierCurve.controlP1.y, bezierCurve.controlP2.x , bezierCurve.controlP2.y, goal.x + 0.01, goal.y + 0.01);
         context.stroke();
         context.closePath();
         context.globalAlpha = 1;
@@ -134,7 +134,7 @@
     drawingArea.refresh = function() {
         drawingArea.context.putImageData(drawingArea.imageData, 0, 0);
             
-        var point;
+        var point, alpha;
         if(drawingArea.currentNodeId){
             point = drawingArea.dash.getNodeValue(drawingArea.currentNodeId);
             drawingArea.drawShadowNode(point);
@@ -146,6 +146,7 @@
             drawingArea.cursorIsOver(false);
         }
         else drawingArea.setCursor(drawingArea.tool);
+        
         if(drawingArea.mouseoverEdge) {
             drawingArea.drawShadowBezierCurve(drawingArea.mouseoverEdge.weight, 1, false);
             drawingArea.cursorIsOver(true);
@@ -161,7 +162,7 @@
                     
                 for(var i = 0; i < edges.length; i++){
                     var bezierCurve = edges[i].weight;
-                    var alpha = 0.3;
+                    alpha = 0.3;
                     if(drawingArea.graphUi.linkedToGround[itemKey]) alpha = 1;
                     drawingArea.drawBezierCurve(bezierCurve, alpha, false);
                 }                   

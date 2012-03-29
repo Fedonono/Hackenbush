@@ -39,6 +39,11 @@
     drawingArea.getEdgeByCoord = function(x, y) {
         
         function match(bezierCurve){
+            
+            var scalarProduct = function(v1, v2){
+                    return v1.x*v2.x + v1.y*v2.y;
+                }
+            
             var start = drawingArea.graphUi.getNodeValue(bezierCurve.startId);
             var goal = drawingArea.graphUi.getNodeValue(bezierCurve.goalId);
             var X0 = start.x;
@@ -65,7 +70,7 @@
                 distance = Math.sqrt(Math.pow(a*x + b*y + c, 2)/(Math.pow(a, 2) + Math.pow(b, 2)));
                 var PstartP = new Point(x - Xstart, y - Ystart);
                 var PgoalP = new Point(x - Xstart, y -  Ystart);
-                if( (direction.x*PstartP.x + direction.y*PstartP.y)*(direction.x*PgoalP.x + direction.y*PgoalP.y) > 0 && distance <= drawingArea.bezierCurveWidth*4){
+                if( scalarProduct(direction, PstartP) * scalarProduct(direction, PgoalP) > 0 && distance <= drawingArea.bezierCurveWidth*2){
                     return true;  
                 }                 
             }
@@ -362,8 +367,8 @@
             };	
         };
         
-        var Xtolerance = Math.ceil( (canvas[0].offsetWidth - canvas[0].width) /2 );
-        var Ytolerance = Math.ceil( (canvas[0].offsetHeight - canvas[0].height) /2 );
+        var Xtolerance = canvas.outerWidth();
+        var Ytolerance = canvas.outerHeight();
         
          
         
