@@ -20,7 +20,7 @@
             if(toolSelected === "help") {
                 var helpModal = $('#help-modal');
                 helpModal.dialog( "open" );
-                helpModal.load("./views/help.html");
+                helpModal.load("./views/help-"+controller.page+".html");
             }
             if(toolSelected === "mode") {
                 var modeModal = $('#mode-modal');
