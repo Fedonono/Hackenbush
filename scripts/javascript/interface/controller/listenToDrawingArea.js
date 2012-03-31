@@ -41,8 +41,8 @@
         function match(bezierCurve){
             
             var scalarProduct = function(v1, v2){
-                    return v1.x*v2.x + v1.y*v2.y;
-                }
+                return v1.x*v2.x + v1.y*v2.y;
+            }
             
             var start = drawingArea.graphUi.getNodeValue(bezierCurve.startId);
             var goal = drawingArea.graphUi.getNodeValue(bezierCurve.goalId);
@@ -318,11 +318,14 @@
         drawingArea.dash = new HackenbushGraph();
         drawingArea.currentNodeId = 0;
         drawingArea.mouseoverNode = null;
+        drawingArea.mouseoverEdge = null;
+        drawingArea.selectedControlPoint = null;
         drawingArea.graphUi.removeLonelyNodes();
         drawingArea.update(true);
     }
         
     drawingArea.eraseAll = function() {
+        drawingArea.selectedEdge = null;
         drawingArea.graphUi = new HackenbushGraph();
         drawingArea.dash = new HackenbushGraph();
         drawingArea.update(true);
