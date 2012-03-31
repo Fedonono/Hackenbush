@@ -39,11 +39,6 @@
     drawingArea.getEdgeByCoord = function(x, y) {
         
         function match(bezierCurve){
-            
-            var scalarProduct = function(v1, v2){
-                return v1.x*v2.x + v1.y*v2.y;
-            }
-            
             var start = drawingArea.graphUi.getNodeValue(bezierCurve.startId);
             var goal = drawingArea.graphUi.getNodeValue(bezierCurve.goalId);
             var X0 = start.x;
@@ -54,25 +49,20 @@
             var Y2 = bezierCurve.controlP2.y;
             var X3 = goal.x;
             var Y3 = goal.y;
-            
-            var t0, t1, Xstart, Ystart, Ygoal, direction, a, b, c, distance;
-            for(var i = 0; i < 20; i++) {
-                t0 = i/20;
-                t1 = (i+1)/20;
-                Xstart = X0*Math.pow(1 - t0, 3) + 3*X1*t0*Math.pow(1-t0, 2) + 3*X2*Math.pow(t0, 2)*(1-t0) + X3*Math.pow(t0, 3);
-                Ystart = Y0*Math.pow(1 - t0, 3) + 3*Y1*t0*Math.pow(1-t0, 2) + 3*Y2*Math.pow(t0, 2)*(1-t0) + Y3*Math.pow(t0, 3);
-                Xgoal = X0*Math.pow(1 - t1, 3) + 3*X1*t1*Math.pow(1-t1, 2) + 3*X2*Math.pow(t1, 2)*(1-t1) + X3*Math.pow(t1, 3);
-                Ygoal = Y0*Math.pow(1 - t1, 3) + 3*Y1*t1*Math.pow(1-t1, 2) + 3*Y2*Math.pow(t1, 2)*(1-t1) + Y3*Math.pow(t1, 3);
-                direction = new Point(Xgoal - Xstart, Ygoal - Ystart);
-                a = direction.y;
-                b = -direction.x;
-                c = -1*(a*X0 + b*Y0);
-                distance = Math.sqrt(Math.pow(a*x + b*y + c, 2)/(Math.pow(a, 2) + Math.pow(b, 2)));
-                var PstartP = new Point(x - Xstart, y - Ystart);
-                var PgoalP = new Point(x - Xstart, y -  Ystart);
-                if( scalarProduct(direction, PstartP) * scalarProduct(direction, PgoalP) > 0 && distance <= drawingArea.bezierCurveWidth*2){
-                    return true;  
-                }                 
+            var t, X, Y;
+            var radius = drawingArea.bezierCurveWidth*2;
+            var step = 100;
+            drawingArea.context.beginPath();
+                drawingArea.strokeStyle = "black";
+                drawingArea.context.fillStyle = "blue";
+                drawingArea.context.arc(x, y, radius, 0, 2 * Math.PI);
+                drawingArea.context.stroke();
+                drawingArea.context.fill();
+            for(var i = 0; i < step; i++) {
+                t = i/step;
+                X = X0*Math.pow(1 - t, 3) + 3*X1*t*Math.pow(1-t, 2) + 3*X2*Math.pow(t, 2)*(1-t) + X3*Math.pow(t, 3);
+                Y = Y0*Math.pow(1 - t, 3) + 3*Y1*t*Math.pow(1-t, 2) + 3*Y2*Math.pow(t, 2)*(1-t) + Y3*Math.pow(t, 3);
+                if(x >= X - radius && x <= X + radius && y <= Y + 3*radius && y >= Y - radius)return true;
             }
             return false;
         }

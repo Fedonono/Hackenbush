@@ -65,7 +65,7 @@
         context.closePath();
     }
     
-    drawingArea.drawLine = function (start, goal) {
+    drawingArea.drawLine = function (start, goal) { 
         var context = drawingArea.context;
         context.lineWidth = 2;
         context.strokeStyle = "black";
@@ -91,7 +91,7 @@
         context.globalAlpha = alpha;
             
         context.beginPath();
-        context.moveTo(start.x, start.y);
+        context.moveTo(start.x, start.y); 
         context.bezierCurveTo(bezierCurve.controlP1.x, bezierCurve.controlP1.y, bezierCurve.controlP2.x , bezierCurve.controlP2.y, goal.x + 0.01, goal.y + 0.01);
         context.stroke();
         context.closePath();
