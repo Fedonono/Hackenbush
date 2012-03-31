@@ -1,4 +1,16 @@
 (function() {
+	function modClass(element, visible) {
+		if (visible) {
+			element.addClass('toolChooser');
+			element.addClass('button');
+			element.removeClass('locked');
+		} else {
+			element.removeClass('toolChooser');
+			element.removeClass('button');
+			element.addClass('locked');
+		}
+	}
+
 	controller.selectedPage = function(page) {
 		var prevSelectedId = $('.selected');
 		prevSelectedId.addClass('button-bottom');
@@ -20,38 +32,33 @@
 			var toModif = false;
 
 			var colorChooser = $('.colorChooser');
+			var modeChooser = $('#modeChooser');
 			if (page === "edition" && mainContainer.hasClass('lock')) { // to switch between edition and play, we need just to modify the button (to unlock/lock them).
 				mainContainer.removeClass('lock');
 				mainContainer.addClass('no-lock');
-				var modClass = function(element) {
-					element.addClass('toolChooser');
-					element.addClass('button');
-					element.removeClass('locked');
-				}
 
 				colorChooser.addClass('button');
 				colorChooser.removeClass('locked');
 				toModif = true;
+				var visible = true;
 			}
 			else if (page === "play") {
 				mainContainer.addClass('lock');
 				mainContainer.removeClass('no-lock');
-				var modClass = function(element) {
-					element.removeClass('toolChooser');
-					element.removeClass('button');
-					element.addClass('locked');
-				}
 
 				colorChooser.removeClass('button');
 				colorChooser.addClass('locked');
+
 				toModif = true;
+				var visible = false;
 			}
 			if (toModif) {
-				modClass($('#draw'));
-				modClass($('#edit'));
-				modClass($('#erase'));
-				modClass($('#eraseAll'));
-				modClass($('#save'));
+				modClass($('#draw'), visible);
+				modClass($('#edit'), visible);
+				modClass($('#erase'), visible);
+				modClass($('#eraseAll'), visible);
+				modClass($('#save'), visible);
+				modClass($('#modeChooser'), !visible);
 			}
 		}
 		else {

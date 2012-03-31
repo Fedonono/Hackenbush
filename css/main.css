@@ -75,7 +75,7 @@ a {
 	display: inherit;
 }
 
-.hidden, .lock .locked {
+.hidden, .lock .locked, .hideInEdit.locked{
 	display: none;
 }
 

@@ -22,7 +22,7 @@
                 helpModal.dialog( "open" );
                 helpModal.load("./views/help-"+controller.page+".html");
             }
-            if(toolSelected === "mode") {
+            if(toolSelected === "modeChooser") {
                 var modeModal = $('#mode-modal');
                 modeModal.dialog( "open" );
                 modeModal.load("./views/mode.html");
