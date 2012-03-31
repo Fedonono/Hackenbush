@@ -79,7 +79,6 @@
         
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
-            if(toolSelected === "save") controller.buildGraphGame();
             if(toolSelected === "eraseAll") drawingArea.eraseAll();
             if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") {
                 drawingArea.elementSelected(toolSelected);

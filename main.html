@@ -1,99 +1,103 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html >
 <html>
-<head>
-    <link type="text/css" href="./css/main.css" rel="stylesheet">
-    <link type="text/css" href="./css/anaglyph_text.css" rel="stylesheet">
-    <link type="text/css" href="./css/canvas.css" rel="stylesheet">
-    <link type="text/css" href="./css/background.css" rel="stylesheet">
-    <link type="text/css" href="./css/button.css" rel="stylesheet">
-	<link type="text/css" href="./css/jquery-ui.css" rel="stylesheet">
-    <link type="text/css" href="./css/load.css" rel="stylesheet">
-    <link type="text/css" href="./css/mode.css" rel="stylesheet">
-</head>
-<body> 
-	<div id="head">
-		<h1>Hackenbush</h1>
-	</div>
-	<div class="vague_bg1" id="fixedbg1" style="left: 0px;"></div>
-	<div class="vague_bg2" id="fixedbg2" style="left: 0px;"></div>
-	<div id="main">
-		<div id="main-container">
-			<div id="main-container-canvas" class="hidden no-lock">
-				<div id="main-left">
-					<div class="button toolChooser" id="save">Save</div>
-					<div class="button toolChooser" id="draw">Draw</div>
-					<div class="button toolChooser" id="edit">Edit</div>
-					<div class="button toolChooser" id="erase">Eraser</div>
-					<div class="button toolChooser" id="eraseAll">Delete</div>
-					<div class="button toolChooser hideInEdit locked" id="modeChooser">Mode</div>
-					<div class="button toolChooser" id="load">load</div>
-					
-					<div class="options" id="options">Option(s)
-						<div  id="p1">
-							<label>P1 : </label>
-							<select  id="player1" onchange="controller.setPlayerColors(0)">
-								<option value="red" class="red">Red</option>
-								<option value="green" class="green">Green</option>
-								<option value="blue" class="blue">Blue</option>
-							</select>
-						</div>
-						<div id ="p2">
-							<label>P2 : </label>
-							<select id="player2" onchange="controller.setPlayerColors(1)">
-								<option value="blue" class="blue">Blue</option>
-								<option value="red" class="red">Red</option>
-								<option value="green" class="green">Green</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<div id="main-center">
-					<canvas id="canvasArea" width="800" height="600">Your browser does not support the canvas element.</canvas>
-				</div>
-				<div id="main-right">
-					<div class="button colorChooser red" id="red"> </div>
-					<div class="button colorChooser green" id="green"> </div>
-					<div class="button colorChooser blue" id="blue"> </div>
-					<div class="button toolChooser help" id="help">Help</div>
-				</div>	
-			</div>
-			<div id="main-container-tests" class="hidden"></div>
+    <head>
+        <title>hachenbush</title>
+        <link type="text/css" href="./css/main.css" rel="stylesheet">
+        <link type="text/css" href="./css/anaglyph_text.css" rel="stylesheet">
+        <link type="text/css" href="./css/canvas.css" rel="stylesheet">
+        <link type="text/css" href="./css/background.css" rel="stylesheet">
+        <link type="text/css" href="./css/button.css" rel="stylesheet">
+        <link type="text/css" href="./css/jquery-ui.css" rel="stylesheet">
+        <link type="text/css" href="./css/load.css" rel="stylesheet">
+        <link type="text/css" href="./css/mode.css" rel="stylesheet">
+    </head>
+    <body> 
+        <div id="head">
+            <h1>Hackenbush</h1>
+        </div>
+        <div class="vague_bg1" id="fixedbg1" style="left: 0px;"></div>
+        <div class="vague_bg2" id="fixedbg2" style="left: 0px;"></div>
+        <div id="main">
+            <audio>
+                <source src="song.ogg" type="audio/ogg" />
+                <source src="song.mp3" type="audio/mp3" />
+            </audio>
+            <div id="main-container">
+                <div id="main-container-canvas" class="hidden no-lock">
+                    <div id="main-left">
+                        <div class="button toolChooser" id="save">Save</div>
+                        <div class="button toolChooser" id="draw">Draw</div>
+                        <div class="button toolChooser" id="edit">Edit</div>
+                        <div class="button toolChooser" id="erase">Eraser</div>
+                        <div class="button toolChooser" id="eraseAll">Delete</div>
+                        <div class="button toolChooser hideInEdit locked" id="modeChooser">Mode</div>
+                        <div class="button toolChooser" id="load">load</div>
 
-			<div id="save-form" class="modal-dialog" title="Save a New Graph">
-				<font class="validateTips">If the graph with entered name already exist, there will be replaced by the new Graph.</font>
+                        <div class="options" id="options">Option(s)
+                            <div  id="p1">
+                                <label>P1 : </label>
+                                <select  id="player1" onchange="controller.setPlayerColors(0)">
+                                    <option value="red" class="red">Red</option>
+                                    <option value="green" class="green">Green</option>
+                                    <option value="blue" class="blue">Blue</option>
+                                </select>
+                            </div>
+                            <div id ="p2">
+                                <label>P2 : </label>
+                                <select id="player2" onchange="controller.setPlayerColors(1)">
+                                    <option value="blue" class="blue">Blue</option>
+                                    <option value="red" class="red">Red</option>
+                                    <option value="green" class="green">Green</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="main-center">
+                        <canvas id="canvasArea" width="800" height="600">Your browser does not support the canvas element.</canvas>
+                    </div>
+                    <div id="main-right">
+                        <div class="button colorChooser red" id="red"> </div>
+                        <div class="button colorChooser green" id="green"> </div>
+                        <div class="button colorChooser blue" id="blue"> </div>
+                        <div class="button toolChooser help" id="help">Help</div>
+                    </div>	
+                </div>
+                <div id="main-container-tests" class="hidden"></div>
 
-				<form>
-				<fieldset>
-					<label for="name">Name</label>
-					<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
-				</fieldset>
-				</form>
-			</div>
+                <div id="save-form" class="modal-dialog" title="Save a New Graph">
+                    <span class="validateTips">If the graph with entered name already exist, there will be replaced by the new Graph.</span>
 
-			<div id="load-form" class="modal-dialog" title="Load a Graph"></div>
-			<div id="help-modal" class="modal-dialog" title="Help - How to use HackenBush ?"></div>
-			<div id="mode-modal" class="modal-dialog" title="Choose your Mode !"></div>
-		</div>
-	</div>
-	<div id="main-bottom">
-		<div id="main-bottom-container">
-			<a href="#play"><div id="play" class="button-bottom">Play</div></a>
-			<a href="#edition"><div id="edition" class="button-bottom">Edition</div></a>
-			<a href="#tests"><div id="tests" class="button-bottom">Tests</div></a>
-		</div>
-	</div>
-	<div id="foot">
-		<p>
-			<b>3D Approved</b><br/>
-			<b>Hackenbush by BABOL Arnaud and SIMMONEAU Guillaume</b>
-			<div id="temps"></b>
-		</p>
-	</div>
-	<script type="text/javascript" src="./scripts/javascript/lib/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="./scripts/javascript/lib/jquery-ui-1.8.18.custom.min.js"></script>
-	
-	<script type ="text/javascript" src ="./scripts/javascript/Exception/Exception.js"></script>
+                    <form>
+                        <fieldset>
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div id="load-form" class="modal-dialog" title="Load a Graph"></div>
+                <div id="help-modal" class="modal-dialog" title="Help - How to use HackenBush ?"></div>
+                <div id="mode-modal" class="modal-dialog" title="Choose your Mode !"></div>
+            </div>
+        </div>
+        <div id="main-bottom">
+            <div id="main-bottom-container">
+                <a href="#play"><div id="play" class="button-bottom">Play</div></a>
+                <a href="#edition"><div id="edition" class="button-bottom">Edition</div></a>
+                <a href="#tests"><div id="tests" class="button-bottom">Tests</div></a>
+            </div>
+        </div>
+        <div id="foot">
+            <p>
+                <b>3D Approved</b><br/>
+                <b>Hackenbush by BABOL Arnaud and SIMMONEAU Guillaume</b>
+            </p>
+
+        </div>
+    <script type="text/javascript" src="./scripts/javascript/lib/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="./scripts/javascript/lib/jquery-ui-1.8.18.custom.min.js"></script>
+
+    <script type ="text/javascript" src ="./scripts/javascript/Exception/Exception.js"></script>
     <script type ="text/javascript" src ="./scripts/javascript//Exception/NodeException/NodeException.js"></script>
     <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/UnexistingNodeException.js"></script>
     <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/AlreadyExistingNodeException.js"></script>
@@ -104,7 +108,7 @@
     <script type ="text/javascript" src ="./scripts/javascript/Exception/EdgeException/AlreadyExistingEdgeException.js"></script>
     <script type ="text/javascript" src ="./scripts/javascript/Exception/EdgeException/UnexistingEdgeException.js"></script>
     <script type ="text/javascript" src ="./scripts/javascript/Exception/IndexException/InvalidIndexException.js"></script>
-    
+
     <script type ="text/javascript" src ="./scripts/javascript/Graph/Node.js"></script>
     <script type ="text/javascript" src ="./scripts/javascript/Graph/Edge.js"></script>
     <script type ="text/javascript" src ="./scripts/javascript/Graph/AbstractSimpleGraph.js"></script>
@@ -112,29 +116,29 @@
     <script type ="text/javascript" src ="./scripts/javascript/Graph/SimpleGraph.js"></script>
     <script type ="text/javascript" src ="./scripts/javascript/Graph/MultiGraph.js"></script>
     <script type ="text/javascript" src ="./scripts/javascript/Graph/HackenbushGraph.js"></script>
-    
-    
+
+
     <script type="text/javascript" src="./scripts/javascript/interface/controller/reloadPage.js"></script>
     <script type="text/javascript" src="./scripts/javascript/interface/controller/isPropertySupported.js"></script>
-    
+
     <script type="text/javascript" src="./scripts/javascript/interface/view/page.js"></script>
-    
+
     <script type="text/javascript" src="./scripts/javascript/interface/view/background.js"></script>
 
 
-        <script type ="text/javascript" src ="./scripts/javascript/interface/view/AbstractView.js"></script>    
-	<script type ="text/javascript" src ="./scripts/javascript/interface/view/drawingArea.js"></script>
-        <script type ="text/javascript" src ="./scripts/javascript/interface/view/Point.js"></script>
-	<script type ="text/javascript" src ="./scripts/javascript/interface/view/BezierCurve.js"></script>
+    <script type ="text/javascript" src ="./scripts/javascript/interface/view/AbstractView.js"></script>    
+    <script type ="text/javascript" src ="./scripts/javascript/interface/view/drawingArea.js"></script>
+    <script type ="text/javascript" src ="./scripts/javascript/interface/view/Point.js"></script>
+    <script type ="text/javascript" src ="./scripts/javascript/interface/view/BezierCurve.js"></script>
 
-	<script type ="text/javascript" src ="./scripts/javascript/interface/modele/modele.js"></script>
+    <script type ="text/javascript" src ="./scripts/javascript/interface/modele/modele.js"></script>
 
-        <script type="text/javascript" src="./scripts/javascript/interface/controller/controller.js"></script>
-	<script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToTools.js"></script>
-	<script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToDrawingArea.js"></script>
+    <script type="text/javascript" src="./scripts/javascript/interface/controller/controller.js"></script>
+    <script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToTools.js"></script>
+    <script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToDrawingArea.js"></script>
 
-	<script type ="text/javascript" src ="./scripts/javascript/interface/controller/formChecks.js"></script>
-	<script type ="text/javascript" src ="./scripts/javascript/interface/view/modalDialog.js"></script>
+    <script type ="text/javascript" src ="./scripts/javascript/interface/controller/formChecks.js"></script>
+    <script type ="text/javascript" src ="./scripts/javascript/interface/view/modalDialog.js"></script>
 
 </body>
 </html>
