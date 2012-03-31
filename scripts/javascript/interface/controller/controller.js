@@ -58,6 +58,7 @@
     controller.getObjProperties = function(graphUi, data, toObj) {
         graphUi.groundedNodes = data.groundedNodes;
         graphUi.nodes.length = data.nodes.length;
+		graphUi.edgeIdCounter = data.edgeIdCounter;
         var sourceId;
         for (sourceId in data.nodes) {
             if (sourceId !== "length") {
@@ -75,12 +76,14 @@
                 }
             }
         }
+		if (sourceId !== "length")
+			graphUi.nodeIdCounter = sourceId.replace('#', '')*1;
+		else
+			graphUi.nodeIdCounter = 0;
         if (toObj)
             graphUi.linkedToGround = new Object();
         else {
             graphUi.linkedToGround = new Array();
-            if (sourceId !== "length")
-                modele.nodeIdCounter = sourceId.replace('#', '')*1;
         }
         for (var id in data.linkedToGround) {
             graphUi.linkedToGround[id] = data.linkedToGround[id];
