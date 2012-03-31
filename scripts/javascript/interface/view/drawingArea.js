@@ -138,18 +138,18 @@
         if(drawingArea.currentNodeId){
             point = drawingArea.dash.getNodeValue(drawingArea.currentNodeId);
             drawingArea.drawShadowNode(point);
-            drawingArea.cursorIsOver(false);
+            drawingArea.cursorIsOver();
         }
         else if(drawingArea.mouseoverNode){
             point = drawingArea.mouseoverNode.weight;
             drawingArea.drawShadowNode(point);
-            drawingArea.cursorIsOver(false);
+            drawingArea.cursorIsOver();
         }
         else drawingArea.setCursor(drawingArea.tool);
         
         if(drawingArea.mouseoverEdge) {
             drawingArea.drawShadowBezierCurve(drawingArea.mouseoverEdge.weight, 1, false);
-            drawingArea.cursorIsOver(true);
+            drawingArea.cursorIsOver();
         }
         
         for (var itemKey in drawingArea.dash.nodes){
@@ -218,9 +218,9 @@
         elementTool.addClass('locked');
     }
         
-    drawingArea.cursorIsOver = function(rocker) {
-        if (drawingArea.tool === "edit" && !rocker) drawingArea.setCursor('selected');
-        if (drawingArea.tool === "erase" && rocker) canvas.css("cursor", "url('./ressources/images/cursor-scissors-active.png'), not-allowed");
+    drawingArea.cursorIsOver = function() {
+        if (drawingArea.tool === "edit" ) drawingArea.setCursor('selected');
+        if (drawingArea.tool === "erase") canvas.css("cursor", "url('./ressources/images/cursor-scissors-active.png'), not-allowed");
     }
         
     drawingArea.reset = function(){
