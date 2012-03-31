@@ -361,13 +361,9 @@
             };	
         };
         
-        var Xtolerance = canvas.outerWidth();
-        var Ytolerance = canvas.outerHeight();
-        
-         
-        
-        
-        
+        var Xtolerance = parseFloat(canvas.css("border-left-width"))+parseFloat(canvas.css("border-right-width")); // outerWidth isn't trustworthy
+        var Ytolerance = parseFloat(canvas.css("border-top-width"))+parseFloat(canvas.css("border-bottom-width"));
+
         canvas.mousedown( function(event) {
             
             mousedown = true;

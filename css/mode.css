@@ -1,0 +1,21 @@
+.mode {
+    background-image: url(../ressources/images/modeChooser.png);
+	width: 302px;
+	height: 250px;
+}
+
+#humanVsHuman {
+    background-position:0px 0px;
+}
+
+#humanVsIa {
+    background-position:0px 0px;
+}
+
+#IaVsHuman {
+    background-position:0px -7px;
+}
+
+#iaVsIa {
+    background-position:-300px 0px;
+}

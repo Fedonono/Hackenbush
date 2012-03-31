@@ -22,6 +22,11 @@
                 helpModal.dialog( "open" );
                 helpModal.load("./views/help.html");
             }
+            if(toolSelected === "mode") {
+                var modeModal = $('#mode-modal');
+                modeModal.dialog( "open" );
+                modeModal.load("./views/mode.html");
+            }
         });   
     }
     controller.initPlayerColors = function(){

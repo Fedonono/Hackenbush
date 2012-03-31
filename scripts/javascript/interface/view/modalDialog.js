@@ -23,7 +23,7 @@
 					var graphUi = drawingArea.graphUi;
 					var imageData = controller.saveAsPNG(canvas, true, 200, 150);
 					if (canvas !== undefined && graphUi !== undefined && imageData !== undefined)
-						controller.saveGame(name.val(), 0, graphUi, imageData);
+						controller.saveGame(name.val(), controller.playerColors, graphUi, imageData);
 					$( this ).dialog( "close" );
 				}
 			},
@@ -55,6 +55,21 @@
 		autoOpen: false,
 		height: 500,
 		width: 600,
+		modal: true,
+		buttons: {
+			Cancel: function() {
+				$( this ).dialog( "close" );
+			}
+		},
+		close: function() {
+			allFields.val( "" ).removeClass( "ui-state-error" );
+		}
+	});
+
+	$('#mode-modal').dialog({
+		autoOpen: false,
+		height: 500,
+		width: 800,
 		modal: true,
 		buttons: {
 			Cancel: function() {

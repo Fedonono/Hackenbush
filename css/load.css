@@ -1,8 +1,8 @@
-.load {
+.load, .modeChooser {
 	width: 750px;
 }
 
-.game {
+.game, .mode {
 	background-color: #e0e1e2;
 	width: 220px;
 	margin: 10px 13px 5px 13px;
@@ -11,7 +11,7 @@
 	clear: none;
 }
 
-.game:hover {
+.game:hover, .mode:hover {
 	background-color: white;
 	cursor: pointer;
 }

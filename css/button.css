@@ -47,7 +47,7 @@
     font-variant:small-caps;
 }
 
-.options, .button, .button-bottom, .locked, .selected , .game {
+.options, .button, .button-bottom, .locked, .selected , .game, .mode {
     color : #d3bebe;
 }
 

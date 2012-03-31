@@ -6,10 +6,10 @@
         modele.graphGame = graph;
     };
     
-    controller.saveGame = function (name, graphGame, graphUi, imageData) {
+    controller.saveGame = function (name, playerColors, graphUi, imageData) {
         var graphUiObj = controller.arrayToObject(graphUi);
         var game = {
-            graphGame : graphGame,
+            playerColors : playerColors,
             graphUi : graphUiObj
         }
         var gameJson = JSON.stringify(game);
@@ -45,6 +45,7 @@
     /* misc */
     controller.objectToArray = function(graphUi, data) {
         graphUi.nodes = new Array();
+		controller.playerColors = data.playerColors;
         controller.getObjProperties(graphUi, data.graphUi, false);
     };
 
@@ -76,7 +77,7 @@
                 }
             }
         }
-		if (sourceId !== "length")
+		if ((sourceId !== undefined) && (sourceId !== "length"))
 			graphUi.nodeIdCounter = sourceId.replace('#', '')*1;
 		else
 			graphUi.nodeIdCounter = 0;
