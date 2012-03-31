@@ -293,7 +293,7 @@
         }
     }
         
-    drawingArea.erase = function(x, y){
+    drawingArea.erase = function(x, y, userIsPlaying){
         var edge = drawingArea.getEdgeByCoord(x, y);
         if(edge) {
             var startId = edge.weight.startId;
