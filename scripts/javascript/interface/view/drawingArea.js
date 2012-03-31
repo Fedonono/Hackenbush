@@ -152,6 +152,8 @@
             drawingArea.cursorIsOver();
         }
         
+        if(drawingArea.selectedControlPoint) drawingArea.cursorIsOver();
+        
         for (var itemKey in drawingArea.dash.nodes){
             var node = drawingArea.dash.nodes[itemKey];
             var start = node.weight;

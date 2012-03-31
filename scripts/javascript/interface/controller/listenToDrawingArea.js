@@ -141,6 +141,7 @@
         else{
             drawingArea.mouseoverNode = null;
             drawingArea.mouseoverEdge = drawingArea.getEdgeByCoord(x, y);
+            drawingArea.selectedControlPoint = drawingArea.getControlPointByCoord(x, y);
         }
         drawingArea.refresh();
     }
