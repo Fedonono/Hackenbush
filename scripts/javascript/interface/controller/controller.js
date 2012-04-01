@@ -21,7 +21,7 @@
         modele.graphGame.removeFlyingNodes();
     }
     
-    controller.allPlayersCanStillWin = function(){
+    controller.playersCanStillWin = function(){
         var colorReference = null;
         for(var j= 0; j < modele.graphGame.groundedNodes.length; j++){
             var nodeId = modele.graphGame.groundedNodes[j];
@@ -30,18 +30,19 @@
                 var edges = neighbors[neighborKey];
                 for(var i = 0; i < edges.length; i++){
                     if(colorReference === null) colorReference = edges[i].weight;
-                    if(edges[i].weight === 2 || edges[i].weight !== colorReference) return true
+                    if(edges[i].weight === 2 || edges[i].weight !== colorReference) return 2;
                 }
             }
         }
-        return false
+        return colorReference;
     }
     
     controller.startGame = function() {
         controller.setTurns(controller.currentTurn++);
         controller.isPlaying = true;
-        if(!modele.graphGame.getOrder()) controller.invalidPlayField("The hackenbush game is empty");
-        else if (!controller.allPlayersCanStillWin())controller.invalidPlayField("One of the players haven't any chance");
+        var winner = controller.playersCanStillWin(); 
+        if(winner !== 2) controller.win(winner);
+        else if(!modele.graphGame.getOrder()) controller.invalidPlayField("The hackenbush game is empty");
     }
     
     controller.reset = function(){
@@ -62,8 +63,10 @@
     
     controller.applyRules = function(){
         
-        if(!controller.allPlayersCanStillWin() || !modele.graphGame.getOrder()) {
-            controller.loose(controller.currentPlayer);
+        var winner = controller.playersCanStillWin(); 
+        if(winner !== 2) controller.win(winner);
+        else if(!modele.graphGame.getOrder()) {
+            controller.win(controller.currentPlayer);
         }
         else{
             controller.setTurns(controller.currentTurn++);
@@ -88,8 +91,7 @@
         controller.turnCounter = 1;
     }
     
-    controller.loose = function(player) {
-        player = (player+1)%2;
+    controller.win = function(player) {
         player++;
         var winEl = $('#win');
         winEl.removeClass('hidden');
