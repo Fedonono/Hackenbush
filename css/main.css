@@ -81,6 +81,9 @@ a {
 
 .square {
 	list-style-type:square;
+}
+
+.modal-dialog .square {
 	font-size: 15px;
 	line-height: 25px;
 }

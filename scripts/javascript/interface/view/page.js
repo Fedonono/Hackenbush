@@ -1,5 +1,5 @@
 (function() {
-	function modClass(element, visible) {
+	function modClassButton(element, visible) {
 		if (visible) {
 			element.addClass('toolChooser');
 			element.addClass('button');
@@ -7,6 +7,15 @@
 		} else {
 			element.removeClass('toolChooser');
 			element.removeClass('button');
+			element.addClass('locked');
+		}
+	}
+
+	function modClassBlock(element, visible) {
+		if (visible) {
+			if (element.hasClass('locked'))
+				element.removeClass('locked');
+		} else {
 			element.addClass('locked');
 		}
 	}
@@ -53,12 +62,15 @@
 				var visible = false;
 			}
 			if (toModif) {
-				modClass($('#draw'), visible);
-				modClass($('#edit'), visible);
-				modClass($('#erase'), visible);
-				modClass($('#eraseAll'), visible);
-				modClass($('#save'), visible);
-				modClass($('#modeChooser'), !visible);
+				modClassButton($('#draw'), visible);
+				modClassButton($('#edit'), visible);
+				modClassButton($('#erase'), visible);
+				modClassButton($('#eraseAll'), visible);
+				modClassButton($('#save'), visible);
+				modClassButton($('#modeChooser'), !visible);
+				modClassBlock($('.informations'), !visible);
+				modClassBlock($('.options'), visible);
+				modClassBlock($('.startbg'), !visible);
 			}
 		}
 		else {

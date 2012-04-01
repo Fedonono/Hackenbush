@@ -1,8 +1,12 @@
 .button, .button-bottom, .locked, .selected {
-    width: 70px;
-    height: 70px;
     position: relative;
     text-align: center;
+    width: 70px;
+    height: 70px;
+}
+
+.mini-button {
+	padding: 0px 7px 0px 7px;
 }
 
 .options , .help{
@@ -16,8 +20,11 @@
     line-height: 10px;
     width: 150px;
     height: 80px;
-    margin: 0px;
     padding: 5px 0px 0px 5px;
+}
+
+.options, .informations  {
+    margin: 0px;
     float: left;
     clear: none;
     text-align: left;
@@ -27,7 +34,7 @@
     padding-top: 10px;
 }
 
-.options, .button, .locked {
+.options, .button, .locked, .informations, .mini-button {
     border-radius: 0.5em;
 }
 
@@ -35,11 +42,11 @@
     line-height: 107px;
 }
 
-.options, .help, .button.toolChooser, .locked {
+.options, .help, .button.toolChooser, .locked, .informations {
     background-color: #f0f1f4;
 }
 
-.options, .button, .button-bottom, .locked, .selected  {
+.options, .button, .button-bottom, .locked, .selected, .informations, .mini-button  {
     border: 4px solid rgba(201,201,201,0.5);
     box-shadow: 0 0 8px rgba(221,201,201,1);
     font-family: Helvetica, Arial;
@@ -47,7 +54,7 @@
     font-variant:small-caps;
 }
 
-.options, .button, .button-bottom, .locked, .selected , .game, .mode {
+.options, .button, .button-bottom, .locked, .selected, .informations, .mini-button {
     color : #d3bebe;
 }
 
@@ -109,6 +116,13 @@
 
 #help:hover {
     background-position:-422px 58px;
+}
+
+#modeChooser {
+    background-position:0px 0px;
+	position: relative;
+	top: -380px;
+	border-radius: 2em;
 }
 
 .button-bottom, .selected {

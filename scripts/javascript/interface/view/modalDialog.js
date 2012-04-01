@@ -68,8 +68,8 @@
 
 	$('#mode-modal').dialog({
 		autoOpen: false,
-		height: 500,
-		width: 800,
+		height: 670,
+		width: 705,
 		modal: true,
 		buttons: {
 			Cancel: function() {

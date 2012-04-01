@@ -1,4 +1,4 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html>
     <head>
         <title>hachenbush</title>
@@ -10,6 +10,7 @@
         <link type="text/css" href="./css/jquery-ui.css" rel="stylesheet">
         <link type="text/css" href="./css/load.css" rel="stylesheet">
         <link type="text/css" href="./css/mode.css" rel="stylesheet">
+		<link type="text/css" href="./css/play.css" rel="stylesheet">
     </head>
     <body> 
         <div id="head">
@@ -33,7 +34,7 @@
                         <div class="button toolChooser hideInEdit locked" id="modeChooser">Mode</div>
                         <div class="button toolChooser" id="load">load</div>
 
-                        <div class="options" id="options">Option(s)
+						<div class="options hideInEdit" id="options">Option(s)
                             <div  id="p1">
                                 <label>P1 : </label>
                                 <select  id="player1" onchange="controller.setPlayerColors(0)">
@@ -54,12 +55,23 @@
                     </div>
                     <div id="main-center">
                         <canvas id="canvasArea" width="800" height="600">Your browser does not support the canvas element.</canvas>
+						<div class="startbg hideInEdit locked">
+							<div class="start"></div>
+						</div>
                     </div>
                     <div id="main-right">
                         <div class="button colorChooser red" id="red"> </div>
                         <div class="button colorChooser green" id="green"> </div>
                         <div class="button colorChooser blue" id="blue"> </div>
                         <div class="button toolChooser help" id="help">Help</div>
+						<div class="informations hideInEdit locked"><center>Informations</center>
+							<ul class="square">
+								<li>Player 1 : <span id="p1Color" class="mini-button"></span></li>
+								<li>Player 2 : <span id="p2Color" class="mini-button"></span></li>
+								<li>Current Player : <font id="currentPlayer" class="info-text">P1</font></li>
+								<li>Turn(s) : <font id="currentTurn" class="info-text">00</font></li>
+							</ul>
+						</div>
                     </div>	
                 </div>
                 <div id="main-container-tests" class="hidden"></div>
