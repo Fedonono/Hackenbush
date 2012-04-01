@@ -19,6 +19,6 @@
 	cursor: pointer;
 }
 
-.game, .mode {
+.game, .mode, .winner {
 	color: #ff8585;
 }

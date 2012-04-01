@@ -48,6 +48,7 @@
 			containerToHide.addClass('hidden');
 			mainContainer.removeClass('hidden');
 			mainContainer.addClass('visible');
+			$('#win').html("");
 
 			var toModif = false;
 
@@ -59,6 +60,11 @@
 
 				colorChooser.addClass('button');
 				colorChooser.removeClass('locked');
+				var load = $('#load');
+				if (load.hasClass('locked'))
+					modClassButton(load, true);
+				if (load.hasClass('locked'))
+					modClassButton(load, true);
 				toModif = true;
 				var visible = true;
 			}
@@ -77,11 +83,7 @@
 				var visible = false;
 			}
 			if (toModif) {
-				modClassButton($('#draw'), visible);
-				modClassButton($('#edit'), visible);
-				modClassButton($('#erase'), visible);
-				modClassButton($('#eraseAll'), visible);
-				modClassButton($('#save'), visible);
+				modClassButton($('.hideInPlay'), visible);
 				modClassButton($('#modeChooser'), !visible);
 				modClassBlock($('.informations'), !visible);
 				modClassBlock($('.options'), visible);
