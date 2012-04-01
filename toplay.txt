@@ -7,4 +7,6 @@ mode.addClass("locked");
 mode.removeClass("button");
 
 // fin, nom vainqueur
-$('#win').html("THE PLAYER "+playerId"+" WINS !");
+var winEl = $('#win');
+winEl.removeClass('hidden');
+winEl.html("THE PLAYER "+playerId"+" WINS !");

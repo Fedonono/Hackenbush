@@ -49,7 +49,6 @@
 }
 
 .winner {
-	z-index: 1;
 	position: absolute;
 	top: 18px;
 	left: 200px;
@@ -58,4 +57,5 @@
 	line-height: 565px;
 	text-align: center;
 	font-size: 42px;
+	z-index: 2;
 }

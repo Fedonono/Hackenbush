@@ -48,7 +48,9 @@
 			containerToHide.addClass('hidden');
 			mainContainer.removeClass('hidden');
 			mainContainer.addClass('visible');
-			$('#win').html("");
+			var winEl = $('#win');
+			if (!winEl.hasClass('hidden'))
+				winEl.addClass('hidden');
 
 			var toModif = false;
 
