@@ -46,6 +46,8 @@
     controller.objectToArray = function(graphUi, data) {
         graphUi.nodes = new Array();
 		controller.playerColors = data.playerColors;
+		$('#player1').val(controller.playerColors[0]);
+		$('#player2').val(controller.playerColors[1]);
         controller.getObjProperties(graphUi, data.graphUi, false);
     };
 

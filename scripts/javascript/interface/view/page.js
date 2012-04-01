@@ -20,6 +20,17 @@
 		}
 	}
 
+	function modClassColor(element, color) {
+		if (element.hasClass('blue'))
+			element.removeClass('blue');
+		if (element.hasClass('red'))
+			element.removeClass('red');
+		if (element.hasClass('green'))
+			element.removeClass('green');
+
+		element.addClass(color);
+	}
+
 	controller.selectedPage = function(page) {
 		var prevSelectedId = $('.selected');
 		prevSelectedId.addClass('button-bottom');
@@ -57,6 +68,10 @@
 
 				colorChooser.removeClass('button');
 				colorChooser.addClass('locked');
+				if (controller.playerColors !== undefined) {
+					modClassColor($('#p1Color'), controller.playerColors[0]);
+					modClassColor($('#p2Color'), controller.playerColors[1]);
+				}
 
 				toModif = true;
 				var visible = false;

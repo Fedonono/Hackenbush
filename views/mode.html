@@ -8,7 +8,8 @@
 	(function() {
 		var mode = $('.modeChooser');
 		mode.delegate('div', 'click', function(ev) {
-			controller.loadMode(ev.currentTarget.id);
+			//controller.loadMode(ev.currentTarget.id); pour plus tard
+			$('#mode-modal').dialog("close");
 		});
 	})();
 </script>
