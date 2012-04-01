@@ -428,5 +428,13 @@
             drawingArea.apply(); 
         });
     }     
+    controller.listenToDrawingArea = function(){
+        $("#canvasArea").mousedown(function(event){
+            if(controller.isPlaying){
+                if(controller.turnPlayed)controller.applyRules(); 
+            }
+        });
+    }
     drawingArea.listenToDrawingArea(); 
+    controller.listenToDrawingArea();
 })();

@@ -7,6 +7,18 @@
     
     controller.listenToTools = function(){		
 		
+        $("#start").click( function(event) {
+            $('.startbg').addClass("locked");
+            var mode = $('#modeChooser');
+            mode.addClass("locked");
+            mode.removeClass("button");
+            controller.startGame();
+        });
+        
+        $("#edition").click(function(event) {
+            controller.stopGame();
+        });
+                
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
             if(toolSelected === "save"){
@@ -77,6 +89,12 @@
             drawingArea.update();
         });
         
+        $("#start").click( function(event) {
+            drawingArea.buildGraphGame();
+            drawingArea.selectedEdge = null;
+            drawingArea.update();
+            drawingArea.tool = "erase";
+        });
         
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
@@ -94,7 +112,7 @@
         
     }
     controller.initPlayerColors();
-    controller.listenToTools();
     drawingArea.listenToTools();
+    controller.listenToTools();
 })()
 

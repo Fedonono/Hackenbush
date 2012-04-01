@@ -41,8 +41,9 @@
         controller.setTurns(controller.currentTurn++);
         controller.isPlaying = true;
         var winner = controller.playersCanStillWin(); 
-        if(winner !== 2) controller.win(winner);
-        else if(!graphGame.getOrder()) controller.invalidPlayField("The hackenbush game is empty");
+        if(!graphGame.getOrder()) controller.invalidPlayField("The hackenbush game is empty");
+        else if(winner !== 2) controller.win(winner);
+        
     }
     
     controller.reset = function(){
