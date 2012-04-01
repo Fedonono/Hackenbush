@@ -37,6 +37,10 @@
         winEl.html("");
         drawingArea.tool = "erase";
         controller.isPlaying = false;
+        controller.currentPlayer = 0;
+        controller.currentTurn = 0;
+        controller.setTurns(controller.currentTurn);
+        controller.currentPlayerElem.html('P'+(controller.currentPlayer + 1));
     }
     
     controller.applyRules = function(){

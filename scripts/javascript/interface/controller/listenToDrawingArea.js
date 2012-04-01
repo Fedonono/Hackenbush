@@ -123,7 +123,7 @@
     }
     
     
-    drawingArea.mouseOverSomething = function(x, y){
+    drawingArea.mouseOverSomething = function(x, y, isPlaying){
         var id = drawingArea.getNodeByCoord(x, y);
         if(id) {
             drawingArea.mouseoverNode = drawingArea.graphUi.getNodeById(id);
@@ -131,6 +131,18 @@
         else{
             drawingArea.mouseoverNode = null;
             drawingArea.mouseoverEdge = drawingArea.getEdgeByCoord(x, y);
+            if(isPlaying && drawingArea.mouseoverEdge){
+                var start = drawingArea.mouseoverEdge.weight.startId;
+                var goal = drawingArea.mouseoverEdge.weight.goalId;
+                var edgeId = drawingArea.mouseoverEdge.id;
+                var edgeIndex = drawingArea.graphUi.getEdgeIndexByIds(start, goal, edgeId);
+                var color = controller.playerColors.indexOf(drawingArea.graphUi.getEdgeValue(start, goal, edgeIndex).color);
+                if(color !== -1 && color !== controller.currentPlayer){
+                    drawingArea.mouseoverEdge = null;
+                }
+            }
+            
+            
             drawingArea.selectedControlPoint = drawingArea.getControlPointByCoord(x, y);
         }
         drawingArea.refresh();
@@ -399,7 +411,7 @@
                 if(drawingArea.tool === "edit") drawingArea.move(canvasCoords.x, canvasCoords.y);
              
             }
-            else  drawingArea.mouseOverSomething(canvasCoords.x, canvasCoords.y);
+            else  drawingArea.mouseOverSomething(canvasCoords.x, canvasCoords.y, controller.isPlaying);
         });
         
         
