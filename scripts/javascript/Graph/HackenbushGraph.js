@@ -175,10 +175,6 @@ var HackenbushGraph = function(){
         this.groundedNodes.splice(index, 1);
     }
    
-    this.groundPathExists = function(id){
-        return true;
-    }
-   
     this.removeLonelyNodes = function(){
         for(var itemKey in this.nodes){
             var id = itemKey.replace("#", '')*1;
