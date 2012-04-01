@@ -6,7 +6,9 @@
 }
 
 .mini-button {
-	padding: 0px 7px 0px 7px;
+	width: 13px;
+	height: 13px;
+	display: inline-block;
 }
 
 .options , .help{
