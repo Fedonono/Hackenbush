@@ -39,7 +39,7 @@
     }
     
     controller.applyRules = function(){
-        console.log(modele.graphGame.getOrder());
+        //console.log(modele.graphGame.getOrder());
         if(!modele.graphGame.getOrder()) {
             controller.loose(controller.currentPlayer);
             console.log("end");
