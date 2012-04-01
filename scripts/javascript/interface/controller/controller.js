@@ -4,7 +4,11 @@
     
     controller.isPlaying = false;
     controller.playersNature = [true, true]; //human := true, computer :=false
-    controller.currentTurn = $("#currentTurn");
+    controller.currentTurnElem = $("#currentTurn");
+    controller.currentPlayerElem = $("#currentPlayer");
+    controller.currentTurn = 1;
+    controller.currentPlayer = 0;
+    controller.turnPlayed = false;
     
     controller.buildGraphGame = function(graph){
         modele.graphGame = graph;
@@ -13,57 +17,28 @@
     controller.erase = function(startId, goalId, edgeIndex){
         modele.graphGame.removeEdge(startId, goalId, edgeIndex);
         modele.graphGame.removeFlyingNodes();
+        controller.turnPlayed = true;
     }
     
     controller.startGame = function() {
+        controller.setTurns(controller.currentTurn++);
         controller.isPlaying = true;
         if(!modele.graphGame.getOrder()) controller.invalidPlayField();
-        else controller.play(0, controller.playersNature[0]);
     }
     
-    controller.play= function(player, isHuman) {
-        var gameIsEmpty = false;
-        var turns = 0;
-        
-        while(!gameIsEmpty){
-            turns++;
-            controller.setTurns(turns);
-            if(isHuman)controller.humanTurn(player);
-            else controller.computerTurn(player);
-            
-            if(!modele.graphGame.getOrder()) gameIsEmpty = true;
-            else player = (player + 1)%2;
-        }
-        controller.loose(player); //misery rules convention
+    controller.applyRules = function(){
+        controller.setTurns(controller.currentTurn++);
+        controller.switchPlayers();
+        controller.turnPlayed = false;
     }
     
-    controller.humanTurn = function(player) {
-        setTimeout(controller.playedBadly(player), 30000);
-        return;
-    }
-    controller.playedBadly = function(player){
-        for(var nodeKey in modele.graphGame.nodes){
-            var neighbors = modele.graphGame.nodes[nodeKey].neighbors;
-            var sourceId = nodeKey.replace('#','')*1;
-            
-            for(var neighborKey in neighbors){
-                var edges = neighbors[neighborKey];
-                var destId = neighborKey.replace('#','')*1;
-                
-                for(var i = 0; i< edges.length; i++){
-                    var color = edges[i].weight;
-                    if(color === 2 || color === player) modele.graphGame.removeEdge(sourceId, destId, i);
-                }
-            }
-        }
-    }
-    
-    controller.computerTurn = function(player) {
-        
+    controller.switchPlayers= function(){
+        controller.currentPlayer = (controller.currentPlayer + 1)%2;
+        controller.currentPlayerElem.html('P'+(controller.currentPlayer + 1));
     }
     
     controller.setTurns = function(turns) {
-        controller.currentTurn.html(turns);
+        controller.currentTurnElem.html(turns);
     }
     
     controller.invalidPlayField = function(){
@@ -71,6 +46,7 @@
         winEl.removeClass('hidden');
         winEl.html("The hackenbush game is empty");
         controller.isPlaying = false;
+        controller.turnCounter = 1;
     }
     
     controller.loose = function(player) {
@@ -80,10 +56,14 @@
         winEl.removeClass('hidden');
         winEl.html("Player "+player+" "+"wins");
         controller.isPlaying = false;
+        controller.turnCounter = 1;
+        controller.setTurns(0);
     }
     
     controller.stopGame = function() {
         controller.isPlaying = false;
+        controller.turnCounter = 1;
+        controller.setTurns(0);
     }
     
     controller.saveGame = function (name, playerColors, graphUi, imageData) {

@@ -2,7 +2,6 @@
 //drawingArea controller
 $("#start").click( function(event) {
     drawingArea.buildGraphGame();
-    console.log(modele.graphGame);
     drawingArea.tool = "erase";
 });
 
@@ -22,4 +21,10 @@ $("#start").click( function(event) {
 
 $("#edition").click(function(event) {
     controller.stopGame();
+});
+
+$("#canvasArea").mousedown(function(event){
+   if(controller.isPlaying){
+       if(controller.turnPlayed)controller.applyRules(); 
+   }
 });
