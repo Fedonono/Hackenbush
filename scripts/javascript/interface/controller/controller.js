@@ -130,6 +130,8 @@
         controller.playerColors = data.playerColors;
         $('#player1').val(controller.playerColors[0]);
         $('#player2').val(controller.playerColors[1]);
+		controller.modClassColor($('#p1Color'), controller.playerColors[0]);
+		controller.modClassColor($('#p2Color'), controller.playerColors[1]);
         controller.getObjProperties(graphUi, data.graphUi, false);
     };
 
