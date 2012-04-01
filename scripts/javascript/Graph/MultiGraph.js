@@ -13,7 +13,7 @@ var MultiGraph = function(directed){
     this.directed = directed;
     this.nodes = new Array();
     
-/* **************************
+    /* **************************
  * overloading functions:   *
  * **************************/
 
@@ -67,7 +67,7 @@ var MultiGraph = function(directed){
         if(this.nodes['#'+sourceId].neighbors['#'+destId]){ 
             
             if (!this.isInt(indexEdge) || indexEdge >= this.nodes['#'+sourceId].neighbors['#'+destId].length || indexEdge < 0)
-            	throw new InvalidIndexException(indexEdge);
+                throw new InvalidIndexException(indexEdge);
         
             if (this.nodes['#'+sourceId].neighbors['#'+destId][indexEdge])
                 return true;
@@ -115,28 +115,28 @@ var MultiGraph = function(directed){
 
         if (!this.directed) { // if the graph isn't directed, we can recup all node directly connected with the id.
             for (sourceId in this.nodes[idString].neighbors) { // doesn't call removeNode to avoid all checks and problems with #id != id, we could split but I prefer this solution.
-				var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
+                var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
                 sourceIdInt = this.splitId(sourceId);
                 this.modDegree(sourceIdInt, '-'+edgesNumber);
                 delete this.nodes[sourceId].neighbors[idString];
                 this.decrNeighborsSize(sourceIdInt);
             }
             delete this.nodes[idString];
-			this.decrNodesSize();
+            this.decrNodesSize();
         }
 		
         if (this.directed) { 
             for (sourceId in this.nodes) {
                 sourceIdInt = this.splitId(sourceId); 
                 if (this.edgeExists(sourceIdInt, id, 0)) {
-					var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
+                    var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
                     this.modDegree(sourceIdInt, '-'+edgesNumber);
                     delete this.nodes[sourceId].neighbors[idString];
                     this.decrNeighborsSize(sourceIdInt);
                 }
             }
             delete this.nodes[idString];
-			this.decrNodesSize();
+            this.decrNodesSize();
         }
     }
 
@@ -174,19 +174,30 @@ var MultiGraph = function(directed){
         }
     }
 	
-	this.removeEdgeByIds = function(sourceId, destId, edgeId) {
-		if (!this.nodeExists(sourceId))
+    this.removeEdgeByIds = function(sourceId, destId, edgeId) {
+        if (!this.nodeExists(sourceId))
             throw new UnexistingNodeException(sourceId);
         if (!this.nodeExists(destId))
             throw new UnexistingNodeException(destId);
 		
-		var indexEdge = - 1;
-		for(var i = 0; i < this.nodes['#'+sourceId].neighbors['#'+destId].length; i++){
-			if(this.nodes['#'+sourceId].neighbors['#'+destId][i].id === edgeId) indexEdge = i;
-		}
-		this.removeEdge(sourceId, destId, indexEdge);
-	}
+        var indexEdge = - 1;
+        for(var i = 0; i < this.nodes['#'+sourceId].neighbors['#'+destId].length; i++){
+            if(this.nodes['#'+sourceId].neighbors['#'+destId][i].id === edgeId) indexEdge = i;
+        }
+        this.removeEdge(sourceId, destId, indexEdge);
+    }
 	
+    this.getEdgeIndexByIds = function(sourceId, destId, edgeId) {
+        if (!this.nodeExists(sourceId))
+            throw new UnexistingNodeException(sourceId);
+        if (!this.nodeExists(destId))
+            throw new UnexistingNodeException(destId);
+        
+        for(var i = 0; i < this.nodes['#'+sourceId].neighbors['#'+destId].length; i++){
+            if(this.nodes['#'+sourceId].neighbors['#'+destId][i].id === edgeId) return i;
+        }
+        return -1;
+    }
     /** 
 	 * Updates the value of the edge between nodes identified by sourceId and destId
 	 *
@@ -201,7 +212,7 @@ var MultiGraph = function(directed){
 	 */	
     this.setEdgeValue = function(sourceId, destId, indexEdge, value) {
         this.getEdgeById(sourceId, destId, indexEdge).weight = value;
-		// doesn't have to do twice if !directed because this is the same edge between sourceId, destId and destId, sourceId
+    // doesn't have to do twice if !directed because this is the same edge between sourceId, destId and destId, sourceId
     }
 
 
@@ -246,8 +257,8 @@ var MultiGraph = function(directed){
 	 * @throws UnexistingNodeException if the id is valid the corresponding node does not exist	  
 	 */	
     this.modDegree = function(id, value) {
-		id = parseInt(id);
-		value = parseInt(value);
+        id = parseInt(id);
+        value = parseInt(value);
         this.getNodeById(id).degree+=value;
     }
 

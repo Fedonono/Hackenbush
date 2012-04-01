@@ -8,8 +8,8 @@
         modele.graphGame = graph;
     };
     
-    controller.erase = function(startId, goalId, edgeId){
-        modele.graphGame.removeEdgeByIds(startId, goalId, edgeId);
+    controller.erase = function(startId, goalId, edgeIndex){
+        modele.graphGame.removeEdge(startId, goalId, edgeIndex);
         modele.graphGame.removeFlyingNodes();
     }
     
