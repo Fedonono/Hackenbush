@@ -2,6 +2,7 @@
 //drawingArea controller
 $("#start").click( function(event) {
     drawingArea.buildGraphGame();
+    drawingArea.update();
     drawingArea.tool = "erase";
 });
 

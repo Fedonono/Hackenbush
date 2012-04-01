@@ -53,11 +53,11 @@
             var radius = drawingArea.bezierCurveWidth*2;
             var step = 100;
             drawingArea.context.beginPath();
-                drawingArea.strokeStyle = "black";
-                drawingArea.context.fillStyle = "blue";
-                drawingArea.context.arc(x, y, radius, 0, 2 * Math.PI);
-                drawingArea.context.stroke();
-                drawingArea.context.fill();
+            drawingArea.strokeStyle = "black";
+            drawingArea.context.fillStyle = "blue";
+            drawingArea.context.arc(x, y, radius, 0, 2 * Math.PI);
+            drawingArea.context.stroke();
+            drawingArea.context.fill();
             for(var i = 0; i < step; i++) {
                 t = i/step;
                 X = X0*Math.pow(1 - t, 3) + 3*X1*t*Math.pow(1-t, 2) + 3*X2*Math.pow(t, 2)*(1-t) + X3*Math.pow(t, 3);
@@ -299,11 +299,17 @@
             var startId = edge.weight.startId;
             var goalId = edge.weight.goalId;
             var edgeId = edge.id;
-            var edgeIndex = drawingArea.graphUi.getEdgeIndexByIds(startId, goalId, edgeId);
-            drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
             if(isPlaying){
-                drawingArea.graphUi.removeFlyingNodes();
-                controller.erase(startId, goalId, edgeIndex);
+                var edgeIndex = drawingArea.graphUi.getEdgeIndexByIds(startId, goalId, edgeId);
+                var color = modele.graphGame.getEdgeValue(startId, goalId, edgeIndex);
+                if(color === 2 || color === controller.currentPlayer){
+                    drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
+                    drawingArea.graphUi.removeFlyingNodes();
+                    controller.erase(startId, goalId, edgeIndex);
+                }
+            }
+            else{
+                drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
             }
         }
         drawingArea.update();
@@ -329,7 +335,7 @@
     drawingArea.buildGraphGame = function(){
         
         var graph = new HackenbushGraph();
-        
+        drawingArea.graphUi.removeFlyingNodes();
         for(var nodeKey in drawingArea.graphUi.nodes) {
             var id = nodeKey.replace('#','')*1;
             graph.addNode(id);
