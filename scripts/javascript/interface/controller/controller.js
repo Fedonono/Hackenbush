@@ -21,10 +21,26 @@
         modele.graphGame.removeFlyingNodes();
     }
     
+    controller.allPlayersCanStillWin = function(){
+        var colorReference = null;
+        for(var j= 0; j < modele.graphGame.groundedNodes.length; j++){
+            var nodeId = modele.graphGame.groundedNodes[j];
+            var neighbors = modele.graphGame.getNodeById(nodeId).neighbors;
+            for(var neighborKey in neighbors){
+                var edges = neighbors[neighborKey];
+                for(var i = 0; i < edges.length; i++){
+                    if(colorReference === null) colorReference = edges[i].weight;
+                    if(edges[i].weight === 2 || edges[i].weight !== colorReference) return true
+                }
+            }
+        }
+        return false
+    }
+    
     controller.startGame = function() {
         controller.setTurns(controller.currentTurn++);
         controller.isPlaying = true;
-        if(!modele.graphGame.getOrder()) controller.invalidPlayField();
+        if(!controller.allPlayersCanStillWin() || !modele.graphGame.getOrder()) controller.invalidPlayField();
     }
     
     controller.reset = function(){
@@ -45,7 +61,7 @@
     
     controller.applyRules = function(){
         
-        if(!modele.graphGame.getOrder()) {
+        if(!controller.allPlayersCanStillWin() || !modele.graphGame.getOrder()) {
             controller.loose(controller.currentPlayer);
         }
         else{
@@ -129,8 +145,8 @@
         controller.playerColors = data.playerColors;
         $('#player1').val(controller.playerColors[0]);
         $('#player2').val(controller.playerColors[1]);
-		controller.modClassColor($('#p1Color'), controller.playerColors[0]);
-		controller.modClassColor($('#p2Color'), controller.playerColors[1]);
+        controller.modClassColor($('#p1Color'), controller.playerColors[0]);
+        controller.modClassColor($('#p2Color'), controller.playerColors[1]);
         controller.getObjProperties(graphUi, data.graphUi, false);
     };
 
