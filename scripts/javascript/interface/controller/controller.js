@@ -4,6 +4,7 @@
     
     controller.isPlaying = false;
     controller.playersNature = [true, true]; //human := true, computer :=false
+    controller.currentTurn = $("#currentTurn");
     
     controller.buildGraphGame = function(graph){
         modele.graphGame = graph;
@@ -16,31 +17,69 @@
     
     controller.startGame = function() {
         controller.isPlaying = true;
-        controller.play(0, controller.playersNature[0]);
+        if(!modele.graphGame.getOrder()) controller.invalidPlayField();
+        else controller.play(0, controller.playersNature[0]);
     }
     
     controller.play= function(player, isHuman) {
+        var gameIsEmpty = false;
+        var turns = 0;
         
-        if(isHuman)controller.humanTurn(player);
-        else controller.computerTurn(player);
-        
-        if(!modele.graphGame.getOrder()) controller.loose(player); //misery rules convention
-        else{
-            player = (player + 1)%2;
-            controller.play(player, controller.playersNature[player]);
+        while(!gameIsEmpty){
+            turns++;
+            controller.setTurns(turns);
+            if(isHuman)controller.humanTurn(player);
+            else controller.computerTurn(player);
+            
+            if(!modele.graphGame.getOrder()) gameIsEmpty = true;
+            else player = (player + 1)%2;
         }
+        controller.loose(player); //misery rules convention
     }
     
     controller.humanTurn = function(player) {
-        
+        setTimeout(controller.playedBadly(player), 30000);
+        return;
+    }
+    controller.playedBadly = function(player){
+        for(var nodeKey in modele.graphGame.nodes){
+            var neighbors = modele.graphGame.nodes[nodeKey].neighbors;
+            var sourceId = nodeKey.replace('#','')*1;
+            
+            for(var neighborKey in neighbors){
+                var edges = neighbors[neighborKey];
+                var destId = neighborKey.replace('#','')*1;
+                
+                for(var i = 0; i< edges.length; i++){
+                    var color = edges[i].weight;
+                    if(color === 2 || color === player) modele.graphGame.removeEdge(sourceId, destId, i);
+                }
+            }
+        }
     }
     
     controller.computerTurn = function(player) {
         
     }
     
+    controller.setTurns = function(turns) {
+        controller.currentTurn.html(turns);
+    }
+    
+    controller.invalidPlayField = function(){
+        var winEl = $('#win');
+        winEl.removeClass('hidden');
+        winEl.html("The hackenbush game is empty");
+        controller.isPlaying = false;
+    }
+    
     controller.loose = function(player) {
-        
+        player = (player+1)%2;
+        player++;
+        var winEl = $('#win');
+        winEl.removeClass('hidden');
+        winEl.html("Player "+player+" "+"wins");
+        controller.isPlaying = false;
     }
     
     controller.stopGame = function() {
@@ -86,9 +125,9 @@
     /* misc */
     controller.objectToArray = function(graphUi, data) {
         graphUi.nodes = new Array();
-		controller.playerColors = data.playerColors;
-		$('#player1').val(controller.playerColors[0]);
-		$('#player2').val(controller.playerColors[1]);
+        controller.playerColors = data.playerColors;
+        $('#player1').val(controller.playerColors[0]);
+        $('#player2').val(controller.playerColors[1]);
         controller.getObjProperties(graphUi, data.graphUi, false);
     };
 
@@ -102,7 +141,7 @@
     controller.getObjProperties = function(graphUi, data, toObj) {
         graphUi.groundedNodes = data.groundedNodes;
         graphUi.nodes.length = data.nodes.length;
-		graphUi.edgeIdCounter = data.edgeIdCounter;
+        graphUi.edgeIdCounter = data.edgeIdCounter;
         var sourceId;
         for (sourceId in data.nodes) {
             if (sourceId !== "length") {
@@ -120,10 +159,10 @@
                 }
             }
         }
-		if ((sourceId !== undefined) && (sourceId !== "length"))
-			graphUi.nodeIdCounter = sourceId.replace('#', '')*1;
-		else
-			graphUi.nodeIdCounter = 0;
+        if ((sourceId !== undefined) && (sourceId !== "length"))
+            graphUi.nodeIdCounter = sourceId.replace('#', '')*1;
+        else
+            graphUi.nodeIdCounter = 0;
         if (toObj)
             graphUi.linkedToGround = new Object();
         else {
