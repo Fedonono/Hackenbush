@@ -2,7 +2,8 @@
     
     if(!window.controller) window.controller= new Object();
     
-    controller.playMode = false;
+    controller.isPlaying = false;
+    controller.playersNature = [true, true]; //human := true, computer :=false
     
     controller.buildGraphGame = function(graph){
         modele.graphGame = graph;
@@ -14,11 +15,36 @@
     }
     
     controller.startGame = function() {
-        controller.playMode = true;
+        controller.isPlaying = true;
+        controller.play(0, controller.playersNature[0]);
+    }
+    
+    controller.play= function(player, isHuman) {
+        
+        if(isHuman)controller.humanTurn(player);
+        else controller.computerTurn(player);
+        
+        if(!modele.graphGame.getOrder()) controller.loose(player); //misery rules convention
+        else{
+            player = (player + 1)%2;
+            controller.play(player, controller.playersNature[player]);
+        }
+    }
+    
+    controller.humanTurn = function(player) {
+        
+    }
+    
+    controller.computerTurn = function(player) {
+        
+    }
+    
+    controller.loose = function(player) {
+        
     }
     
     controller.stopGame = function() {
-        controller.playMode = false;
+        controller.isPlaying = false;
     }
     
     controller.saveGame = function (name, playerColors, graphUi, imageData) {
