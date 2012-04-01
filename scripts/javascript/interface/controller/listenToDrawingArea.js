@@ -302,6 +302,7 @@
             drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
             if(playMode){
                 drawingArea.graphUi.removeFlyingNodes();
+                controller.erase(startId, goalId, edgeId);
             }
         }
         drawingArea.update();
@@ -341,12 +342,17 @@
                 var edges = neighbors[neighborKey];
                 
                 for(var i = 0; i < edges.length; i++){
-                    var color = controller.playerColors.indexOf(edges[i].weight.color);
+                    var color = controller.playerColors.indexOf(edges[i].weight.color); 
                     if (color === -1) color = 2;
                     graph.addWeightedEdge(id, destId, color);
+                    var edgeId = edges[i].id;
+                    var edgeIndex = graph.nodes["#"+id].neighbors["#"+destId].length-1;
+                    graph.getEdgeById(id, destId, edgeIndex).id = edgeId;
+                    
                 }
             }
         }
+        graph.edgeIdCounter = drawingArea.graphUi.edgeIdCounter;
         controller.buildGraphGame(graph);
     }
     

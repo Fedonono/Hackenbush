@@ -97,8 +97,6 @@ var MultiGraph = function(directed){
 
         return this.nodes['#'+sourceId].neighbors['#'+destId][indexEdge];
     }
-    
-    
 
     /** 
 	 * Removes a node with the specified identifier
@@ -188,6 +186,7 @@ var MultiGraph = function(directed){
 		}
 		this.removeEdge(sourceId, destId, indexEdge);
 	}
+	
     /** 
 	 * Updates the value of the edge between nodes identified by sourceId and destId
 	 *

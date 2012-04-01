@@ -8,6 +8,19 @@
         modele.graphGame = graph;
     };
     
+    controller.erase = function(startId, goalId, edgeId){
+        modele.graphGame.removeEdgeByIds(startId, goalId, edgeId);
+        modele.graphGame.removeFlyingNodes();
+    }
+    
+    controller.startGame = function() {
+        controller.playMode = true;
+    }
+    
+    controller.stopGame = function() {
+        controller.playMode = false;
+    }
+    
     controller.saveGame = function (name, playerColors, graphUi, imageData) {
         var graphUiObj = controller.arrayToObject(graphUi);
         var game = {

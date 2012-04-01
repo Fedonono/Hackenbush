@@ -10,7 +10,7 @@
         <link type="text/css" href="./css/jquery-ui.css" rel="stylesheet">
         <link type="text/css" href="./css/load.css" rel="stylesheet">
         <link type="text/css" href="./css/mode.css" rel="stylesheet">
-		<link type="text/css" href="./css/play.css" rel="stylesheet">
+        <link type="text/css" href="./css/play.css" rel="stylesheet">
     </head>
     <body> 
         <div id="head">
@@ -30,7 +30,7 @@
                         <div class="button toolChooser hideInEdit locked" id="modeChooser">Mode</div>
                         <div class="button toolChooser" id="load">load</div>
 
-						<div class="options hideInEdit" id="options">Option(s)
+                        <div class="options hideInEdit" id="options">Option(s)
                             <div  id="p1">
                                 <label>P1 : </label>
                                 <select  id="player1" onchange="controller.setPlayerColors(0)">
@@ -51,24 +51,24 @@
                     </div>
                     <div id="main-center">
                         <canvas id="canvasArea" width="800" height="600">Your browser does not support the canvas element.</canvas>
-						<div class="winner hidden" id="win"></div>
-						<div class="startbg hideInEdit locked">
-							<div class="start" id="start"></div>
-						</div>
+                        <div class="winner hidden" id="win"></div>
+                        <div class="startbg hideInEdit locked">
+                            <div class="start" id="start"></div>
+                        </div>
                     </div>
                     <div id="main-right">
                         <div class="button colorChooser red" id="red"> </div>
                         <div class="button colorChooser green" id="green"> </div>
                         <div class="button colorChooser blue" id="blue"> </div>
                         <div class="button toolChooser help" id="help">Help</div>
-						<div class="informations hideInEdit locked"><center>Informations</center>
-							<ul class="square">
-								<li>Player 1 : <span id="p1Color" class="mini-button"></span></li>
-								<li>Player 2 : <span id="p2Color" class="mini-button"></span></li>
-								<li>Current Player : <font id="currentPlayer" class="info-text">P1</font></li>
-								<li>Turn(s) : <font id="currentTurn" class="info-text">00</font></li>
-							</ul>
-						</div>
+                        <div class="informations hideInEdit locked"><center>Informations</center>
+                            <ul class="square">
+                                <li>Player 1 : <span id="p1Color" class="mini-button"></span></li>
+                                <li>Player 2 : <span id="p2Color" class="mini-button"></span></li>
+                                <li>Current Player : <font id="currentPlayer" class="info-text">P1</font></li>
+                                <li>Turn(s) : <font id="currentTurn" class="info-text">00</font></li>
+                            </ul>
+                        </div>
                     </div>	
                 </div>
                 <div id="main-container-tests" class="hidden"></div>
@@ -103,52 +103,52 @@
             </p>
 
         </div>
-    <script type="text/javascript" src="./scripts/javascript/lib/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" src="./scripts/javascript/lib/jquery-ui-1.8.18.custom.min.js"></script>
+        <script type="text/javascript" src="./scripts/javascript/lib/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="./scripts/javascript/lib/jquery-ui-1.8.18.custom.min.js"></script>
 
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/Exception.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript//Exception/NodeException/NodeException.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/UnexistingNodeException.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/AlreadyExistingNodeException.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/InvalidIdException.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/AlreadyGroundedNodeException.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/NotConnectedToGroundException.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/EdgeException/EdgeException.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/EdgeException/AlreadyExistingEdgeException.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/EdgeException/UnexistingEdgeException.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Exception/IndexException/InvalidIndexException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/Exception.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript//Exception/NodeException/NodeException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/UnexistingNodeException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/AlreadyExistingNodeException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/InvalidIdException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/AlreadyGroundedNodeException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/NodeException/NotConnectedToGroundException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/EdgeException/EdgeException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/EdgeException/AlreadyExistingEdgeException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/EdgeException/UnexistingEdgeException.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Exception/IndexException/InvalidIndexException.js"></script>
 
-    <script type ="text/javascript" src ="./scripts/javascript/Graph/Node.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Graph/Edge.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Graph/AbstractSimpleGraph.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Graph/AbstractHackenbushGraph.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Graph/SimpleGraph.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Graph/MultiGraph.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/Graph/HackenbushGraph.js"></script>
-
-
-    <script type="text/javascript" src="./scripts/javascript/interface/controller/reloadPage.js"></script>
-    <script type="text/javascript" src="./scripts/javascript/interface/controller/isPropertySupported.js"></script>
-
-    <script type="text/javascript" src="./scripts/javascript/interface/view/page.js"></script>
-
-    <script type="text/javascript" src="./scripts/javascript/interface/view/background.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Graph/Node.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Graph/Edge.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Graph/AbstractSimpleGraph.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Graph/AbstractHackenbushGraph.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Graph/SimpleGraph.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Graph/MultiGraph.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/Graph/HackenbushGraph.js"></script>
 
 
-    <script type ="text/javascript" src ="./scripts/javascript/interface/view/AbstractView.js"></script>    
-    <script type ="text/javascript" src ="./scripts/javascript/interface/view/drawingArea.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/interface/view/Point.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/interface/view/BezierCurve.js"></script>
+        <script type="text/javascript" src="./scripts/javascript/interface/controller/reloadPage.js"></script>
+        <script type="text/javascript" src="./scripts/javascript/interface/controller/isPropertySupported.js"></script>
 
-    <script type ="text/javascript" src ="./scripts/javascript/interface/modele/modele.js"></script>
+        <script type="text/javascript" src="./scripts/javascript/interface/view/page.js"></script>
 
-    <script type="text/javascript" src="./scripts/javascript/interface/controller/controller.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToTools.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToDrawingArea.js"></script>
+        <script type="text/javascript" src="./scripts/javascript/interface/view/background.js"></script>
 
-    <script type ="text/javascript" src ="./scripts/javascript/interface/controller/formChecks.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/interface/controller/start.js"></script>
-    <script type ="text/javascript" src ="./scripts/javascript/interface/view/modalDialog.js"></script>
 
-</body>
+        <script type ="text/javascript" src ="./scripts/javascript/interface/view/AbstractView.js"></script>    
+        <script type ="text/javascript" src ="./scripts/javascript/interface/view/drawingArea.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/interface/view/Point.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/interface/view/BezierCurve.js"></script>
+
+        <script type ="text/javascript" src ="./scripts/javascript/interface/modele/modele.js"></script>
+
+        <script type="text/javascript" src="./scripts/javascript/interface/controller/controller.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToTools.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/interface/controller/listenToDrawingArea.js"></script>
+
+        <script type ="text/javascript" src ="./scripts/javascript/interface/controller/formChecks.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/interface/controller/start.js"></script>
+        <script type ="text/javascript" src ="./scripts/javascript/interface/view/modalDialog.js"></script>
+
+    </body>
 </html>
