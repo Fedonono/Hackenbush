@@ -15,9 +15,10 @@
     };
     
     controller.erase = function(startId, goalId, edgeIndex){
-        modele.graphGame.removeEdge(startId, goalId, edgeIndex);
-        modele.graphGame.removeFlyingNodes();
         controller.turnPlayed = true;
+        modele.graphGame.removeEdge(startId, goalId, edgeIndex);
+        modele.graphGame.removeLonelyNodes();
+        modele.graphGame.removeFlyingNodes();
     }
     
     controller.startGame = function() {
@@ -26,10 +27,28 @@
         if(!modele.graphGame.getOrder()) controller.invalidPlayField();
     }
     
+    controller.reset = function(){
+        $('.startbg').removeClass("locked");
+        var mode = $('#modeChooser');
+        mode.addClass("button");
+        mode.removeClass("locked");
+        var winEl = $('#win');
+        winEl.addClass('hidden');
+        winEl.html("");
+        drawingArea.tool = "erase";
+    }
+    
     controller.applyRules = function(){
-        controller.setTurns(controller.currentTurn++);
-        controller.switchPlayers();
-        controller.turnPlayed = false;
+        console.log(modele.graphGame.getOrder());
+        if(!modele.graphGame.getOrder()) {
+            controller.loose(controller.currentPlayer);
+            console.log("end");
+        }
+        else{
+            controller.setTurns(controller.currentTurn++);
+            controller.switchPlayers();
+            controller.turnPlayed = false;
+        }
     }
     
     controller.switchPlayers= function(){
