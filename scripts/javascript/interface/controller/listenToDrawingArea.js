@@ -50,7 +50,7 @@
             var X3 = goal.x;
             var Y3 = goal.y;
             var t, X, Y;
-            var radius = drawingArea.bezierCurveWidth*2;
+            var radius = drawingArea.bezierCurveWidth;
             var step = 100;
             drawingArea.context.beginPath();
                 drawingArea.strokeStyle = "black";
