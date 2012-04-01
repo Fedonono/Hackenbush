@@ -209,7 +209,7 @@
 
     drawingArea.elementSelected = function(tool) {
         var elementTool = $('#'+tool);
-        var prevElementTool = $('#main-left .locked');
+        var prevElementTool = $('#main-left .hideInPlay.locked');
         if (prevElementTool.hasClass('locked')) {
             prevElementTool.addClass('button');
             prevElementTool.addClass('toolChooser');
