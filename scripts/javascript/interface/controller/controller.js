@@ -36,6 +36,7 @@
         winEl.addClass('hidden');
         winEl.html("");
         drawingArea.tool = "erase";
+        controller.isPlaying = false;
     }
     
     controller.applyRules = function(){
@@ -64,7 +65,6 @@
         var winEl = $('#win');
         winEl.removeClass('hidden');
         winEl.html("The hackenbush game is empty");
-        controller.isPlaying = false;
         controller.turnCounter = 1;
     }
     
@@ -74,7 +74,6 @@
         var winEl = $('#win');
         winEl.removeClass('hidden');
         winEl.html("Player "+player+" "+"wins");
-        controller.isPlaying = false;
         controller.turnCounter = 1;
         controller.setTurns(0);
     }

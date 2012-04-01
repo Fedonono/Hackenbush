@@ -16,7 +16,7 @@
                 var loadForm = $('#load-form');
                 loadForm.dialog( "open" );
                 loadForm.load("./scripts/php/view/loadGame.php");
-                controller.reset();
+                if(controller.isPlaying)controller.reset();
             }
             if(toolSelected === "help") {
                 var helpModal = $('#help-modal');
