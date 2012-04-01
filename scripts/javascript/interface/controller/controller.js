@@ -2,6 +2,7 @@
     
     if(!window.controller) window.controller= new Object();
 
+    
     controller.buildGraphGame = function(graph){
         modele.graphGame = graph;
     };
