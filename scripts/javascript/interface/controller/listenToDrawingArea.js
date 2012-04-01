@@ -313,7 +313,7 @@
             var edgeId = edge.id;
             if(isPlaying){
                 var edgeIndex = drawingArea.graphUi.getEdgeIndexByIds(startId, goalId, edgeId);
-                var color = modele.graphGame.getEdgeValue(startId, goalId, edgeIndex);
+                var color = graphGame.getEdgeValue(startId, goalId, edgeIndex);
                 if(color === 2 || color === controller.currentPlayer){
                     drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
                     drawingArea.graphUi.removeFlyingNodes();

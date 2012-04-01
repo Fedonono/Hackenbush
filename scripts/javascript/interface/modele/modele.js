@@ -1,8 +1,8 @@
 (function() {
 
-    window.modele = {
+    
 
-        graphGame : null
+        window.graphGame = null
         
-    };
+    
 })();

@@ -11,21 +11,21 @@
     controller.turnPlayed = false;
     
     controller.buildGraphGame = function(graph){
-        modele.graphGame = graph;
+        graphGame = graph;
     };
     
     controller.erase = function(startId, goalId, edgeIndex){
         controller.turnPlayed = true;
-        modele.graphGame.removeEdge(startId, goalId, edgeIndex);
-        modele.graphGame.removeLonelyNodes();
-        modele.graphGame.removeFlyingNodes();
+        graphGame.removeEdge(startId, goalId, edgeIndex);
+        graphGame.removeLonelyNodes();
+        graphGame.removeFlyingNodes();
     }
     
     controller.playersCanStillWin = function(){
         var colorReference = null;
-        for(var j= 0; j < modele.graphGame.groundedNodes.length; j++){
-            var nodeId = modele.graphGame.groundedNodes[j];
-            var neighbors = modele.graphGame.getNodeById(nodeId).neighbors;
+        for(var j= 0; j < graphGame.groundedNodes.length; j++){
+            var nodeId = graphGame.groundedNodes[j];
+            var neighbors = graphGame.getNodeById(nodeId).neighbors;
             for(var neighborKey in neighbors){
                 var edges = neighbors[neighborKey];
                 for(var i = 0; i < edges.length; i++){
@@ -42,7 +42,7 @@
         controller.isPlaying = true;
         var winner = controller.playersCanStillWin(); 
         if(winner !== 2) controller.win(winner);
-        else if(!modele.graphGame.getOrder()) controller.invalidPlayField("The hackenbush game is empty");
+        else if(!graphGame.getOrder()) controller.invalidPlayField("The hackenbush game is empty");
     }
     
     controller.reset = function(){
@@ -65,7 +65,7 @@
         
         var winner = controller.playersCanStillWin(); 
         if(winner !== 2) controller.win(winner);
-        else if(!modele.graphGame.getOrder()) {
+        else if(!graphGame.getOrder()) {
             controller.win(controller.currentPlayer);
         }
         else{
