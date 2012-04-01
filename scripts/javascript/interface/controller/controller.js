@@ -40,7 +40,8 @@
     controller.startGame = function() {
         controller.setTurns(controller.currentTurn++);
         controller.isPlaying = true;
-        if(!controller.allPlayersCanStillWin() || !modele.graphGame.getOrder()) controller.invalidPlayField();
+        if(!modele.graphGame.getOrder()) controller.invalidPlayField("The hackenbush game is empty");
+        else if (!controller.allPlayersCanStillWin())controller.invalidPlayField("One of the players haven't any chance");
     }
     
     controller.reset = function(){
@@ -80,10 +81,10 @@
         controller.currentTurnElem.html(turns);
     }
     
-    controller.invalidPlayField = function(){
+    controller.invalidPlayField = function(message){
         var winEl = $('#win');
         winEl.removeClass('hidden');
-        winEl.html("The hackenbush game is empty");
+        winEl.html(message);
         controller.turnCounter = 1;
     }
     
