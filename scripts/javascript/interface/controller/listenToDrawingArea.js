@@ -293,13 +293,16 @@
         }
     }
         
-    drawingArea.erase = function(x, y, userIsPlaying){
+    drawingArea.erase = function(x, y, playMode){
         var edge = drawingArea.getEdgeByCoord(x, y);
         if(edge) {
             var startId = edge.weight.startId;
             var goalId = edge.weight.goalId;
             var edgeId = edge.id;
             drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
+            if(playMode){
+                drawingArea.graphUi.removeFlyingNodes();
+            }
         }
         drawingArea.update();
     }
@@ -344,7 +347,7 @@
                 }
             }
         }
-        controller.buildGraph(graph);
+        controller.buildGraphGame(graph);
     }
     
     drawingArea.listenToDrawingArea = function() {
@@ -372,7 +375,7 @@
             if(startCoords.x > canvas[0].width - Xtolerance || startCoords.x < Xtolerance || startCoords.y > canvas[0].height - Ytolerance || startCoords.y < Ytolerance) return
             
             if(drawingArea.tool === "draw") drawingArea.addNode(startCoords.x, startCoords.y);
-            else if(drawingArea.tool === "erase") drawingArea.erase(startCoords.x, startCoords.y);
+            else if(drawingArea.tool === "erase") drawingArea.erase(startCoords.x, startCoords.y, controller.playMode);
             else if(drawingArea.tool === "edit") drawingArea.setSelectedItem(startCoords.x, startCoords.y);
             
             

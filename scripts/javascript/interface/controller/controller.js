@@ -1,7 +1,8 @@
 (function(){
     
     if(!window.controller) window.controller= new Object();
-
+    
+    controller.playMode = false;
     
     controller.buildGraphGame = function(graph){
         modele.graphGame = graph;

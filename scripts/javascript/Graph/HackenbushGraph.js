@@ -314,4 +314,11 @@ var HackenbushGraph = function(){
         }
         this.removeNode(oldId);
     }
+    
+    this.removeFlyingNodes = function(){
+        for(var nodeKey in this.nodes){
+            var id = this.nodes[nodeKey].id;
+            if (!this.linkedToGround["#"+id])this.removeNode(id);
+        }
+    }
 }
