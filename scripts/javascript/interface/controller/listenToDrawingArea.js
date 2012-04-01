@@ -346,6 +346,7 @@
     
     drawingArea.buildGraphGame = function(){
         
+        var alreadyVisitedEdge = new Array(); 
         var graph = new HackenbushGraph();
         drawingArea.graphUi.removeFlyingNodes();
         for(var nodeKey in drawingArea.graphUi.nodes) {
@@ -361,9 +362,13 @@
                 var edges = neighbors[neighborKey];
                 
                 for(var i = 0; i < edges.length; i++){
-                    var color = controller.playerColors.indexOf(edges[i].weight.color); 
-                    if (color === -1) color = 2;
-                    graph.addWeightedEdge(id, destId, color);
+                    var edgeId = drawingArea.graphUi.nodes[nodeKey].neighbors[neighborKey][i].id;
+                    if(!alreadyVisitedEdge['#'+edgeId]){
+                        alreadyVisitedEdge['#'+edgeId] = true;
+                        var color = controller.playerColors.indexOf(edges[i].weight.color); 
+                        if (color === -1) color = 2;
+                        graph.addWeightedEdge(id, destId, color);
+                    }
                 }
             }
         }
