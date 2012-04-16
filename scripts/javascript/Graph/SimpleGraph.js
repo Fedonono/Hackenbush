@@ -76,7 +76,7 @@ var SimpleGraph = function(directed){
 	 * @throws AlreadyExistingNodeException if a node with the speficied id already exists
 	 */		
     this.addNode = function(id) {
-        this.addWeightedNode(id, null);
+        this.addWeightedNode(id, undefined);
     }
 
     /** 
@@ -91,6 +91,10 @@ var SimpleGraph = function(directed){
         if (this.nodeExists(id))
             throw new AlreadyExistingNodeException(id);
 
+        this.addWeightedNodeSimple(id, weight);
+    }
+
+	this.addWeightedNodeSimple = function(id, weight) {
         this.nodes['#'+id] = new Node(id, weight);
         this.nodes['#'+id].neighbors = new Array();
         this.incrNodesSize();

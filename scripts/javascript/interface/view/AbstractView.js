@@ -4,7 +4,7 @@ var AbstractView = function() {
     
     this.dash = new HackenbushGraph();
     
-    this.getNodeByCoord = function(x, y) {} 
+    this.getNodeByCoord = function(x, y) {}
     
     this.setCursor = function(tool) {}
     

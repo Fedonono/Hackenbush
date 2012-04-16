@@ -21,75 +21,46 @@ var HackenbushGraph = function(){
 	 * @param destid the identifier of the destination node (strictly positive integer)
 	 * @return the number of edges between nodes identified by sourceid and destid
 	 * @throws InvalidIdException if one the specified ids is not valid (wrong type, <= 0, ...)	
-	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
+	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist	
 	 */			
 	this.getEdgeCount = function(sourceid, destid) {
-	}	
+        if (!this.edgeExists(sourceId, destId, 0))
+            throw new UnexistingEdgeException(sourceId, destId);
 
-    /** 
-	 * Returns, as an integer, the color of the k th edge linked to the node identified by id.
+		return this.getEdgesCount(sourceid, destid);
+	}
+
+	/** 
+	 * Returns, as an integer, the color of the k th edge between nodes identified by sourceid and destid
 	 *
-	 * @param id the identifier of a node (strictly positive integer)
-	 * @param k the number of the edge to evaluate (between 1 and getDegree())
+	 * @param sourceid the identifier of the source node (strictly positive integer)
+	 * @param destid the identifier of the destination node (strictly positive integer)
+	 * @param k the number of the edge to evaluate (between 1 and getEdgeCount(sourceid))
 	 * @return an integer modeling the color of the specified edge
-	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
-	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
-	 * @throws InvalidIndexException if the node exists but k is outside the allowed range
-	 */	
-    this.getColorAsInteger = function(id, k) {
-        var node = this.getNodeById(id);
-        
-        var degree = this.getDegree(id);
-        
-        if(!this.isInt(k) || k <= 0 || k > degree)
-            throw new InvalidIndexException(k);
-
-        var actualDegree, previousDegree, destId, index;
-        actualDegree = 0;
-
-        for (destId in node.neighbors) {
-            previousDegree = actualDegree;
-            actualDegree+=node.neighbors[destId].length;
-            if ((k <= actualDegree) && (previousDegree < k)) {
-                index = k-previousDegree;
-                var colorHex = this.getEdgeValue(id, this.splitId(destId), index-1);
-                if (colorHex !== undefined)
-                    return parseInt("0x" + colorHex); // hex to RGBint
-                else
-                    return colorHex;
-            }
-        }
-    }
-
-    /** 
-	 * Removes the k th edge linked to the node identified by id.
-	 *
-	 * @param id the identifier of a node (strictly positive integer)
-	 * @param k the number of the edge to remove (between 1 and getDegree())
-	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
-	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
-	 * @throws InvalidIndexException if the node exists but k is outside the allowed range	 
+	 * @throws InvalidIdException if one the specified ids is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
+	 * @throws InvalidIndexException if the nodes exist but k is outside the allowed range
+	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist
 	 */			
-    this.remove = function(id, k) {
-        var node = this.getNodeById(id);
-        
-        var degree = this.getDegree(id);
-        
-        if(!this.isInt(k) || k <= 0 || k > degree)
-            throw new InvalidIndexException(k);
+	this.getColorAsInteger = function(sourceid, destid, k) {
+		return this.getEdgeValue(sourceid, destid, k-1);
+	}
 
-        var actualDegree, previousDegree, destId, index;
-        actualDegree = 0;
-
-        for (destId in node.neighbors) {
-            previousDegree = actualDegree;
-            actualDegree+=node.neighbors[destId].length;
-            if ((k <= actualDegree) && (previousDegree < k)) {
-                index = k-previousDegree;
-                this.removeEdge(id, this.splitId(destId), index-1);
-            }
-        }
-    }	
+	/** 
+	 * Removes the k th edge between nodes identified by sourceid and destid
+	 *
+	 * @param sourceid the identifier of the source node (strictly positive integer)
+	 * @param destid the identifier of the destination node (strictly positive integer)
+	 * @param k the number of the edge to evaluate (between 1 and getEdgeCount(sourceid))
+	 * @throws InvalidIdException if one the specified ids is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
+	 * @throws InvalidIndexException if the nodes exist but k is outside the allowed range
+	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist
+	 */			
+	this.remove = function(sourceid, destid, k) {
+		this.removeEdge(sourceid, destid, k-1);
+	}
 
     /** 
 	 * Returns the identifier of the k th grounded node.
@@ -104,6 +75,30 @@ var HackenbushGraph = function(){
         
         return this.groundedNodes[k-1];
     }
+
+	/** 
+	 * Clones the current AbstractHackenbushGraph instance.
+	 *
+	 * @return a clone of this
+	 */			
+	this.clone = function() {
+		hG = new HackenbushGraph();
+        var sourceId, sourceIdInt, destId, destIdInt, indexEdge, value;
+        for (sourceId in this.nodes) {
+			sourceIdInt = this.splitId(sourceId);
+			hG.addWeightedNodeSimple(sourceIdInt, undefined);
+            for (destId in this.nodes[sourceId].neighbors) {
+				destIdInt = this.splitId(destId);
+				hG.addWeightedNodeSimple(destIdInt, undefined);
+                edgesNumber = this.getEdgesCount(sourceIdInt, destIdInt);
+                for (indexEdge=0; indexEdge < edgesNumber; indexEdge++) {
+					value = this.getEdgeValueWithoutCheck(sourceIdInt, destIdInt, indexEdge);
+					hG.addWeightedEdgeMulti(sourceIdInt, destIdInt, value);
+                }
+            }
+		}
+		return hG;
+	}
     
     this.getGroundedNodeIndex = function(id) {         
         
@@ -197,43 +192,20 @@ var HackenbushGraph = function(){
         }
     }
     
-    
+    /** 
+	 * Removes a node with the specified identifier
+	 *
+	 * @param id the identifier of the node (strictly positive integer)
+	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)		 
+	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
+	 */	
     this.removeNode = function(id) {
-        
         if (!this.nodeExists(id))
             throw new UnexistingNodeException(id);
         
         if (this.isAlreadyGrounded(id))this.unGroundNode(id);
 
-        // Delete all nodes, edges in relation with argument id
-        var sourceId, destId, sourceIdInt;
-        var idString = '#'+id;
-
-        if (!this.directed) { // if the graph isn't directed, we can recup all node directly connected with the id.
-            for (sourceId in this.nodes[idString].neighbors) { // doesn't call removeNode to avoid all checks and problems with #id != id, we could split but I prefer this solution.
-                var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
-                sourceIdInt = this.splitId(sourceId);
-                this.modDegree(sourceIdInt, '-'+edgesNumber);
-                delete this.nodes[sourceId].neighbors[idString];
-                this.decrNeighborsSize(sourceIdInt);
-            }
-            delete this.nodes[idString];
-            this.decrNodesSize();
-        }
-		
-        if (this.directed) { 
-            for (sourceId in this.nodes) {
-                sourceIdInt = this.splitId(sourceId); 
-                if (this.edgeExists(sourceIdInt, id, 0)) {
-                    var edgesNumber = this.nodes[sourceId].neighbors[idString].length;
-                    this.modDegree(sourceIdInt, '-'+edgesNumber);
-                    delete this.nodes[sourceId].neighbors[idString];
-                    this.decrNeighborsSize(sourceIdInt);
-                }
-            }
-            delete this.nodes[idString];
-            this.decrNodesSize();
-        }
+        this.removeNodeMulti(id);
     }
     
     this.setLinkedToGround = function() {
@@ -262,54 +234,36 @@ var HackenbushGraph = function(){
         }
         this.linkedToGround = visited;
     }
-    
+    /** 
+	 * Adds an edge between nodes identified by sourceId and destId, with the specified weight  + setLinkedToGround
+	 *
+	 * @param sourceId the identifier of the source node (strictly positive integer)
+	 * @param destId the identifier of the destination node (strictly positive integer)
+	 * @param weight the weight of the edge
+	 * @throws InvalidIdException if one of the specified ids is not valid (wrong type, <= 0, ...)		 
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
+	 */	
     this.addWeightedEdge = function(sourceId, destId, weight){
-        if (!this.edgeExists(sourceId, destId, 0)) {
-            this.nodes['#'+sourceId].neighbors['#'+destId] = new Array();
-            this.incrNeighborsSize(sourceId);
-            if (!this.directed && sourceId !== destId) {
-                this.nodes['#'+destId].neighbors['#'+sourceId] = new Array();
-                this.incrNeighborsSize(destId);
-            }
-        }
-
-        var edge = new Edge(weight, ++this.edgeIdCounter);
-
-        this.nodes['#'+sourceId].neighbors['#'+destId].push(edge);
-        this.incrDegree(sourceId);
-
-        if (!this.directed && sourceId !== destId) {
-            this.nodes['#'+destId].neighbors['#'+sourceId].push(edge);
-            this.incrDegree(destId);
-        }
+        this.addWeightedEdgeMulti(sourceId, destId, weight);
         
         this.setLinkedToGround();
     }
-    
+    /** 
+	 * Removes an edge between nodes identified by sourceId, destId and indexEdge + setLinkedToGround
+	 *
+	 * @param sourceId the identifier of the source node (strictly positive integer)
+	 * @param destId the identifier of the destination node (strictly positive integer)
+     * @param indexEdge the index of the expected edge
+	 * @throws InvalidIdException if one of the specified ids is not valid (wrong type, <= 0, ...)		 
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
+	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist
+	 * @throws InvalidIndexException if the nodes exist but indexEdge is outside the allowed range
+	 */	 
     this.removeEdge = function(sourceId, destId, indexEdge) {
-        if (!this.edgeExists(sourceId, destId, indexEdge))
-            throw new UnexistingEdgeException(sourceId, destId);
+        this.removeEdgeMulti(sourceId, destId, indexEdge);
 
-        this.nodes['#'+sourceId].neighbors['#'+destId].splice(indexEdge, 1);
-        this.decrDegree(sourceId);
-
-        var edgeSize = this.nodes['#'+sourceId].neighbors['#'+destId].length;
-        if (edgeSize === 0){
-            delete this.nodes['#'+sourceId].neighbors['#'+destId];
-            this.decrNeighborsSize(sourceId);
-        }
-
-        if (!this.directed && sourceId !== destId) {
-            this.nodes['#'+destId].neighbors['#'+sourceId].splice(indexEdge, 1);
-            this.decrDegree(destId);
-            if (edgeSize === 0) {
-                delete this.nodes['#'+destId].neighbors['#'+sourceId];
-                this.decrNeighborsSize(destId);
-            }
-        }
         this.setLinkedToGround();
     }
-    
     
     this.mergeNodes = function (oldId, id) {
         var oldNode = this.getNodeById(oldId);
