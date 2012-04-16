@@ -4,20 +4,12 @@ var AbstractView = function() {
     
     this.dash = new HackenbushGraph();
     
-    this.getNodeByCoord = function(x, y) {
-        
-    } 
+    this.getNodeByCoord = function(x, y) {} 
     
-    this.setCursor = function(tool) {
-        
-    }
+    this.setCursor = function(tool) {}
     
-    this.update = function() {
-        
-    }
+    this.update = function() {}
     
-    this.refresh = function() {
-        
-    }
-    
+    this.refresh = function() {}
+
 }

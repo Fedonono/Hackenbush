@@ -1,8 +1,3 @@
 (function() {
-
-    
-
-        window.graphGame = null
-        
-    
+    window.graphGame = null;
 })();

@@ -11,6 +11,21 @@ var HackenbushGraph = function(){
     this.groundedNodes = new Array();
     this.linkedToGround = new Array();
 	
+	/**
+	* function getDegree(id) in Multigraph.js
+	*/
+	/**
+
+	 * Returns the number of edges between nodes identified by sourceid and destid
+	 * @param sourceid the identifier of the source node (strictly positive integer)
+	 * @param destid the identifier of the destination node (strictly positive integer)
+	 * @return the number of edges between nodes identified by sourceid and destid
+	 * @throws InvalidIdException if one the specified ids is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
+	 */			
+	this.getEdgeCount = function(sourceid, destid) {
+	}	
+
     /** 
 	 * Returns, as an integer, the color of the k th edge linked to the node identified by id.
 	 *

@@ -19,31 +19,43 @@ var AbstractHackenbushGraph = function(){
 	 * @throws UnexistingNodeException if the id is valid the corresponding node does not exist	  
 	 */			
 	this.getDegree = function(id) {}
+
+	/** 
+	 * Returns the number of edges between nodes identified by sourceid and destid
+	 * @param sourceid the identifier of the source node (strictly positive integer)
+	 * @param destid the identifier of the destination node (strictly positive integer)
+	 * @return the number of edges between nodes identified by sourceid and destid
+	 * @throws InvalidIdException if one the specified ids is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
+	 */			
+	this.getEdgeCount = function(sourceid, destid) {}	
+	
 	
 	/** 
-	 * Returns, as an integer, the color of the k th edge linked to the node identified by id.
+	 * Returns, as an integer, the color of the k th edge between nodes identified by sourceid and destid
 	 *
-	 * @param id the identifier of a node (strictly positive integer)
-	 * @param k the number of the edge to evaluate (between 1 and getDegree())
+	 * @param sourceid the identifier of the source node (strictly positive integer)
+	 * @param destid the identifier of the destination node (strictly positive integer)
+	 * @param k the number of the edge to evaluate (between 1 and getEdgeCount(sourceid))
 	 * @return an integer modeling the color of the specified edge
-	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
-	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
-	 * @throws InvalidIndexException if the node exists but k is outside the allowed range
+	 * @throws InvalidIdException if one the specified ids is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
+	 * @throws InvalidIndexException if the nodes exist but k is outside the allowed range
 	 */			
-	this.getColorAsInteger = function(id, k) {}	
+	this.getColorAsInteger = function(sourceid, destid, k) {}	
 	
 
 	/** 
-	 * Removes the k th edge linked to the node identified by id.
+	 * Removes the k th edge between nodes identified by sourceid and destid
 	 *
-	 * @param id the identifier of a node (strictly positive integer)
-	 * @param k the number of the edge to remove (between 1 and getDegree())
-	 * @return an integer modeling the color of the specified edge
-	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
-	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
-	 * @throws InvalidIndexException if the node exists but k is outside the allowed range	 
+	 * @param sourceid the identifier of the source node (strictly positive integer)
+	 * @param destid the identifier of the destination node (strictly positive integer)
+	 * @param k the number of the edge to evaluate (between 1 and getEdgeCount(sourceid))
+	 * @throws InvalidIdException if one the specified ids is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
+	 * @throws InvalidIndexException if the nodes exist but k is outside the allowed range
 	 */			
-	this.remove = function(id, k) {}		
+	this.remove = function(sourceid, destid, k) {}		
 	
 
 	/** 
@@ -56,10 +68,10 @@ var AbstractHackenbushGraph = function(){
 	this.getGroundedNode = function(k) {}	
 	
 	/** 
-	 * Returns the number of grounded nodes (i.e. linked to the ground).
+	 * Clones the current AbstractHackenbushGraph instance.
 	 *
-	 * @return the number of grounded nodes
+	 * @return a clone of this
 	 */			
-	this.getGroundedNodesCount = function() {}	
+	this.clone = function() {}	
 
 }
