@@ -45,7 +45,7 @@
         else if(winner !== 2) controller.win(winner);
         
     }
-    
+
     controller.reset = function(){
         $('.startbg').removeClass("locked");
         var mode = $('#modeChooser');
@@ -106,9 +106,17 @@
         controller.turnCounter = 1;
         controller.setTurns(0);
     }
-    
+
+	/** 
+	 * Save a Game
+	 *
+	 * @param name, a string
+	 * @param playerColors, an array
+	 * @param graphUi an hashes array
+	 * @param imageData, data img of canvas
+	 */	
     controller.saveGame = function (name, playerColors, graphUi, imageData) {
-        var graphUiObj = controller.arrayToObject(graphUi);
+        var graphUiObj = controller.arrayToObject(graphUi); // have to convert the hash array in object to pass with no data loss the function JSON.stringify().
         var game = {
             playerColors : playerColors,
             graphUi : graphUiObj
@@ -119,6 +127,13 @@
         controller.saveToFile(name, gameJson, imgData);
     };
 
+	/** 
+	 * Save the game to a file (need php to do this => so we use ajax for js=>php transmission)
+	 *
+	 * @param name, a string
+	 * @param gameJson, game converted in Json (playerColors+graphUi)
+	 * @param imageData, data img of canvas
+	 */	
     controller.saveToFile = function(name, gameJson, imageData) {
         $.ajax({
             type: 'POST',
@@ -133,7 +148,11 @@
         });
     };
 
-    /* load Game */
+	/** 
+	 * Load a saved Game
+	 *
+	 * @param name, a string
+	 */	
     controller.loadGame = function(name) {
         $.getJSON('./ressources/savedGames/'+name+'.json', function(data) {
             controller.objectToArray(drawingArea.graphUi, data);
@@ -144,6 +163,12 @@
     };
 
     /* misc */
+	/** 
+	 * Convert an object to Array (json object to hash array in this case)
+	 *
+	 * @param graphUi, where we stock the new hash Array
+	 * @param data, the data of the graph obtained in a file *.json
+	 */	
     controller.objectToArray = function(graphUi, data) {
         graphUi.nodes = new Array();
         controller.playerColors = data.playerColors;
@@ -154,13 +179,25 @@
         controller.getObjProperties(graphUi, data.graphUi, false);
     };
 
+	/** 
+	 * Convert array to create new Object
+	 *
+	 * @param graphUi, a hash table, where the data will be stocked
+	 * @return a object with the data in graphUi
+	 */	
     controller.arrayToObject = function(graphUi) {
         var graphUiObj = new Object();
         graphUiObj.nodes = new Object();
         controller.getObjProperties(graphUiObj, graphUi, true);
         return graphUiObj;
     };
-    
+
+	/** 
+	 * Get the properties of an element to convert it into a hash table or an object
+	 *
+	 * @param graphUi, a hash table or an object, where the data will be stocked
+	 * @param data, where the data are stocked
+	 */	
     controller.getObjProperties = function(graphUi, data, toObj) {
         graphUi.groundedNodes = data.groundedNodes;
         graphUi.nodes.length = data.nodes.length;
@@ -195,7 +232,14 @@
             graphUi.linkedToGround[id] = data.linkedToGround[id];
         }
     };
-    
+
+	/** 
+	 * Rescale/resize a canvas
+	 *
+	 * @param oCanvas, the canvas you want to resize
+	 * @param iWidth, the integer new width size
+	 * @param iWidth, the integer new height size
+	 */
     controller.scaleCanvas = function(oCanvas, iWidth, iHeight) {
         if (iWidth && iHeight) {
             var oSaveCanvas = document.createElement("canvas");
@@ -212,7 +256,14 @@
         return oCanvas;
     };
 
-    controller.saveAsPNG = function(oCanvas, bReturnImg, iWidth, iHeight) {
+	/** 
+	 * Return the image data of a resized canvas
+	 *
+	 * @param oCanvas, the canvas you want to resize
+	 * @param iWidth, the integer new width size
+	 * @param iWidth, the integer new height size
+	 */
+    controller.saveAsPNG = function(oCanvas, iWidth, iHeight) {
         var oScaledCanvas = controller.scaleCanvas(oCanvas, iWidth, iHeight);
         var strData = oScaledCanvas.toDataURL("image/png");
         return strData;

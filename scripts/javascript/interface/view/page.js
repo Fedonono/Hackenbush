@@ -1,4 +1,10 @@
 (function() {
+    /** 
+	 * Make an element visible or not. 
+	 *
+	 * @param element a DOM element
+	 * @param visible the boolean to make the element visible or not.
+	 */			
 	function modClassButton(element, visible) {
 		if (visible) {
 			element.addClass('toolChooser');
@@ -11,6 +17,12 @@
 		}
 	}
 
+    /** 
+	 * Lock an element or dislocked the element.
+	 *
+	 * @param element a DOM element
+	 * @param visible the boolean to make the element visible or not.
+	 */		
 	function modClassBlock(element, visible) {
 		if (visible) {
 			if (element.hasClass('locked'))
@@ -20,6 +32,12 @@
 		}
 	}
 
+    /** 
+	 * Add Class a specified colored class to an element (blue, green or red)
+	 *
+	 * @param element a DOM element
+	 * @param color string of color needed (blue, green or red)
+	 */	
 	controller.modClassColor = function(element, color) {
 		if (element.hasClass('blue'))
 			element.removeClass('blue');
@@ -31,6 +49,11 @@
 		element.addClass(color);
 	}
 
+    /** 
+	 * Make the button at the bottom selected (the circle button are surrounded of green border), the previous selected button are unselected
+	 *
+	 * @param page the string name of current page (recup by the hash and M. Sabloniere's function
+	 */	
 	controller.selectedPage = function(page) {
 		var prevSelectedId = $('.selected');
 		prevSelectedId.addClass('button-bottom');
@@ -40,6 +63,11 @@
 		selectedId.addClass('selected');
 	};
 
+    /** 
+	 * Load page, depend of the argument "page", make the element or page visible or hidden. And in some case, launch the ajax load to recup informations of a specified page and implement those in the current page.
+	 *
+	 * @param page the string name of current page (recup by the hash and M. Sabloniere's function
+	 */	
 	controller.loadPage = function(page) {
 		var mainContainer = $('#main-container-canvas');
 		if (page === "edition" || page === "play") {
@@ -98,6 +126,11 @@
 		}
 	};
 
+    /** 
+	 * Recup the data of a specified page to inject it in the current page.
+	 *
+	 * @param page the string name of current page (recup by the hash and M. Sabloniere's function
+	 */	
 	controller.loadAjax = function(page) {
 		$.ajax({
 			type: 'POST',

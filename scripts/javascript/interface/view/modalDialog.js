@@ -21,7 +21,7 @@
 				if ( bValid ) {
 					var canvas = drawingArea.canvas[0];
 					var graphUi = drawingArea.graphUi;
-					var imageData = controller.saveAsPNG(canvas, true, 200, 150);
+					var imageData = controller.saveAsPNG(canvas, 200, 150);
 					if (canvas !== undefined && graphUi !== undefined && imageData !== undefined)
 						controller.saveGame(name.val(), controller.playerColors, graphUi, imageData);
 					$( this ).dialog( "close" );

@@ -12,7 +12,14 @@
 			echo "</div>";
 		}
 		echo "</div>";
-		include('../controller/loadGame-controller.php');
+		echo "<script type='text/javascript'>
+				(function() {
+					var load = $('.load');
+					load.delegate('div', 'click', function(ev) {
+						controller.loadGame(ev.currentTarget.id);
+					});
+				})();
+			</script>";
 	} else
 		echo "There isn't game saved.";
 ?>

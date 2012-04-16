@@ -1,6 +1,9 @@
 <?php
 
 class GameData {
+  /**
+   * Constructor function of GameData (stock a string name and image data)
+   */
 	function GameData($name, $imageData) {
 		$this->name = $name;
 		$this->imageData = $imageData;
@@ -29,7 +32,6 @@ class HackenBush {
   /**
    * Create the instance if it doesn't exist yet and return it
    *
-   * @param void
    * @return HackenBush
    */
   public static function getInstance() {
@@ -44,10 +46,10 @@ class HackenBush {
   /**
    * Save a new game
    *
-   * @param void
-   * @return void
+   * @param name, the string name of the game
+   * @param data, the json code of the graph
+   * @param data, the image data of the graph's canvas
    */
-  //public function saveGame($name, $data) {
   public function saveGame($name, $data, $imageData) {
     $savedGames = fopen("../../../ressources/savedGames/".$name.".json", "wb");
     $savedGamesImg = fopen("../../../ressources/savedGames/".$name.".txt", "wb");
@@ -58,12 +60,10 @@ class HackenBush {
   }
 
   /**
-   * getGames
+   * getGames get the games
    *
-   * @param void
-   * @return void
+   * @return ann array of GameData, returns the info about game's name and game's image.
    */
-  //public function getGames() {
   public function getGames() {
     $dirGames = "../../../ressources/savedGames/";
 	$gamesData = array();

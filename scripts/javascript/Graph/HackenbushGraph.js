@@ -11,7 +11,6 @@ var HackenbushGraph = function(){
     this.groundedNodes = new Array();
     this.linkedToGround = new Array();
 	
-	
     /** 
 	 * Returns, as an integer, the color of the k th edge linked to the node identified by id.
 	 *
@@ -21,7 +20,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
 	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
 	 * @throws InvalidIndexException if the node exists but k is outside the allowed range
-	 */			
+	 */	
     this.getColorAsInteger = function(id, k) {
         var node = this.getNodeById(id);
         
