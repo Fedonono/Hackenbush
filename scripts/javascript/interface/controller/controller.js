@@ -48,9 +48,6 @@
 
     controller.reset = function(){
         $('.startbg').removeClass("locked");
-        var mode = $('#modeChooser');
-        mode.addClass("button");
-        mode.removeClass("locked");
         var winEl = $('#win');
         winEl.addClass('hidden');
         winEl.html("");
@@ -154,10 +151,20 @@
 	 * @param name, a string
 	 */	
     controller.loadGame = function(name) {
-        $.getJSON('./ressources/savedGames/'+name+'.json', function(data) {
-            controller.objectToArray(drawingArea.graphUi, data);
-            $('#load-form').dialog("close");
-            $('input').val(name);
+		var path, random;
+		$('#load-form').dialog("close");
+		if (name === "M.Soulignac_random_graph") {
+			path = './scripts/php/view/randomGraph.php';
+			random = true;
+		}
+		else {
+			path = './ressources/savedGames/'+name+'.json';
+			random = false;
+		}
+        $.getJSON(path, function(data) {
+            controller.objectToArray(drawingArea.graphUi, data, random);
+			if (!random)
+				$('input').val(name);
             drawingArea.update();
         });
     };
@@ -168,15 +175,19 @@
 	 *
 	 * @param graphUi, where we stock the new hash Array
 	 * @param data, the data of the graph obtained in a file *.json
+	 * @param random, a boolean, if the graph is taken from M. Soulignac's website or not.
 	 */	
-    controller.objectToArray = function(graphUi, data) {
+    controller.objectToArray = function(graphUi, data, random) {
         graphUi.nodes = new Array();
         controller.playerColors = data.playerColors;
-        $('#player1').val(controller.playerColors[0]);
-        $('#player2').val(controller.playerColors[1]);
-        controller.modClassColor($('#p1Color'), controller.playerColors[0]);
-        controller.modClassColor($('#p2Color'), controller.playerColors[1]);
-        controller.getObjProperties(graphUi, data.graphUi, false);
+		if (!random) {
+			data = data.graphUi;
+			$('#player1').val(controller.playerColors[0]);
+			$('#player2').val(controller.playerColors[1]);
+			controller.modClassColor($('#p1Color'), controller.playerColors[0]);
+			controller.modClassColor($('#p2Color'), controller.playerColors[1]);
+		}
+        controller.getObjProperties(graphUi, data, false, random);
     };
 
 	/** 
@@ -188,7 +199,7 @@
     controller.arrayToObject = function(graphUi) {
         var graphUiObj = new Object();
         graphUiObj.nodes = new Object();
-        controller.getObjProperties(graphUiObj, graphUi, true);
+        controller.getObjProperties(graphUiObj, graphUi, true, false);
         return graphUiObj;
     };
 
@@ -197,24 +208,42 @@
 	 *
 	 * @param graphUi, a hash table or an object, where the data will be stocked
 	 * @param data, where the data are stocked
+	 * @param toObj, a boolean, if you need an object->hash table translation or hash table->object translation
+	 * @param random, a boolean, if the graph is taken from M. Soulignac's website or not.
 	 */	
-    controller.getObjProperties = function(graphUi, data, toObj) {
+    controller.getObjProperties = function(graphUi, data, toObj, random) {
+		if (random)
+			controller.getObjPropertiesRandom(graphUi, data);
+		else
+			controller.getObjPropertiesNoRandom(graphUi, data, toObj);
+    };
+	/** 
+	 * Get the properties of an element to convert it into a hash table or an object
+	 *
+	 * @param graphUi, a hash table or an object, where the data will be stocked
+	 * @param data, where the data are stocked
+	 * @param toObj, a boolean, if you need an object->hash table translation or hash table->object translation
+	 */	
+	controller.getObjPropertiesNoRandom = function(graphUi, data, toObj) {
+        var sourceId, destId, id;
         graphUi.groundedNodes = data.groundedNodes;
         graphUi.nodes.length = data.nodes.length;
         graphUi.edgeIdCounter = data.edgeIdCounter;
-        var sourceId;
         for (sourceId in data.nodes) {
             if (sourceId !== "length") {
-                graphUi.nodes[sourceId] = new Object();
-                if (toObj)
+                if (toObj) {
+					graphUi.nodes[sourceId] = new Object();
                     graphUi.nodes[sourceId].neighbors = new Object();
-                else
+				}
+                else {
+					graphUi.nodes[sourceId] = new Array();
                     graphUi.nodes[sourceId].neighbors = new Array();
+				}
                 graphUi.nodes[sourceId].degree = data.nodes[sourceId].degree;
                 graphUi.nodes[sourceId].id = data.nodes[sourceId].id;
                 graphUi.nodes[sourceId].neighbors.length = data.nodes[sourceId].neighbors.length;
                 graphUi.nodes[sourceId].weight = data.nodes[sourceId].weight;
-                for (var destId in data.nodes[sourceId].neighbors ) {
+                for (destId in data.nodes[sourceId].neighbors ) {
                     graphUi.nodes[sourceId].neighbors[destId] = data.nodes[sourceId].neighbors[destId];
                 }
             }
@@ -228,10 +257,66 @@
         else {
             graphUi.linkedToGround = new Array();
         }
-        for (var id in data.linkedToGround) {
+        for (id in data.linkedToGround) {
             graphUi.linkedToGround[id] = data.linkedToGround[id];
         }
     };
+
+	/** 
+	 * Get the properties of an element to convert it into a hash table or an object
+	 *
+	 * @param graphUi, a hash table or an object, where the data will be stocked
+	 * @param data, where the data are stocked
+	 */	
+	/*controller.getObjPropertiesRandom = function(graphUi, data) { POUR GUIOME
+        var nodeId, edgeId, id, nId, hashKeyNId, nX, nY, sId, dId, hKeySId, hKeyDId, p1X, p1Y, p2X, p2Y, edge, weight;*/
+       /* graphUi.groundedNodes = data.groundedNodes;
+        graphUi.nodes.length = data.nodes.length;
+        graphUi.edgeIdCounter = data.edgeIdCounter;*/
+		/*console.log(data);
+		graphUi.nodes = new Array();
+        for (nodeId in data.nodes) {
+			nId = data.nodes[nodeId][0];
+			nX = data.nodes[nodeId][1];
+			nY = data.nodes[nodeId][2];
+			hashKeyNId = '#'+nId;
+			graphUi.nodes[hashKeyNId] = new Array();
+			graphUi.nodes[hashKeyNId].neighbors = new Array();
+			graphUi.nodes[hashKeyNId].degree = 0;
+			graphUi.nodes[hashKeyNId].id = nId;
+			graphUi.nodes[hashKeyNId].weight = new Point(nX, nY);
+			graphUi.nodes.length++;
+        }
+		graphUi.nodeIdCounter = nId+1;
+		for (edgeId in data.edges) {
+			sId = data.edges[edgeId][0];
+			hKeySId = '#'+sId;
+			dId = data.edges[edgeId][1];
+			hKeyDId = '#'+dId;
+			p1X = data.edges[edgeId][3][0];
+			p1Y = data.edges[edgeId][3][1];
+			p2X = data.edges[edgeId][4][0];
+			p2Y = data.edges[edgeId][4][1];
+
+			edge = new Object();
+			edge.weight = new Object();
+			edge.weight.color = "red";
+			edge.weight.controlP1 = new Point(p1X, p1Y);
+			edge.weight.controlP2 = new Point(p2X, p2Y);
+			
+			graphUi.nodes[hKeySId].neighbors[hKeyDId] = new Array();
+			graphUi.nodes[hKeySId].neighbors[hKeyDId].push(edge, 1);
+			graphUi.nodes[hKeySId].neighbors.length++;
+
+			graphUi.nodes[hKeyDId].neighbors[hKeySId] = new Array();
+			graphUi.nodes[hKeyDId].neighbors[hKeySId].push(edge, 1);
+			graphUi.nodes[hKeyDId].neighbors.length++;
+		}
+		graphUi.linkedToGround = new Array();
+        /*for (id in data.linkedToGround) {
+            graphUi.linkedToGround[id] = data.linkedToGround[id];
+        }*/
+    //};
 
 	/** 
 	 * Rescale/resize a canvas

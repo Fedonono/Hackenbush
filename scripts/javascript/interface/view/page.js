@@ -5,7 +5,7 @@
 	 * @param element a DOM element
 	 * @param visible the boolean to make the element visible or not.
 	 */			
-	function modClassButton(element, visible) {
+	controller.modClassButton = function(element, visible) {
 		if (visible) {
 			element.addClass('toolChooser');
 			element.addClass('button');
@@ -90,11 +90,7 @@
 
 				colorChooser.addClass('button');
 				colorChooser.removeClass('locked');
-				var load = $('#load');
-				if (load.hasClass('locked'))
-					modClassButton(load, true);
-				if (load.hasClass('locked'))
-					modClassButton(load, true);
+
 				toModif = true;
 				var visible = true;
 			}
@@ -113,8 +109,8 @@
 				var visible = false;
 			}
 			if (toModif) {
-				modClassButton($('.hideInPlay'), visible);
-				modClassButton($('#modeChooser'), !visible);
+				this.modClassButton($('.hideInPlay'), visible);
+				this.modClassButton(modeChooser, !visible);
 				modClassBlock($('.informations'), !visible);
 				modClassBlock($('.options'), visible);
 				modClassBlock($('.startbg'), !visible);

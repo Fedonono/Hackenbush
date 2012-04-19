@@ -3,8 +3,10 @@
 
 	$gamesData = HackenBush::getInstance()->getGames();
 
+	echo "<div class='load'><div class='game' id='M.Soulignac_random_graph'>";
+	echo '<img alt="M.Soulignac graph"/>';
+	echo "M.Soulignac's graph</div>";
 	if (isset($gamesData)) {
-		echo "<div class='load'>";
 		$gamesNumber = count($gamesData);
 		for ($i = 0; $i < $gamesNumber; $i++) {
 			echo "<div class='game' id='".$gamesData[$i]->name."'>";

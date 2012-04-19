@@ -75,7 +75,7 @@ a {
 	display: inherit;
 }
 
-.hidden, .lock .hideInPlay.locked, .lock .colorChooser.locked, .hideInEdit.locked{
+.hidden, .lock .hideInPlay.locked, .lock .colorChooser.locked, .no-lock .hideInEdit.locked, .informations.hideInEdit.locked, .startbg.hideInEdit.locked, .options.hideInEdit.locked{
 	display: none;
 }
 

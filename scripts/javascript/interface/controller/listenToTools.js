@@ -9,9 +9,8 @@
 		
         $("#start").click( function(event) {
             $('.startbg').addClass("locked");
-            var mode = $('#modeChooser');
-            mode.addClass("locked");
-            mode.removeClass("button");
+			controller.modClassButton($('#modeChooser'), false);
+			controller.modClassButton($('#load'), false);
             controller.startGame();
         });
         
