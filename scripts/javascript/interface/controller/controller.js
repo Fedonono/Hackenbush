@@ -49,7 +49,7 @@
         var winEl = $('#win');
         winEl.addClass('hidden');
         winEl.html("");
-        hackenbush.view.drawingArea.tool = "erase";
+        hackenbush.views.drawingArea.tool = "erase";
         hackenbush.controller.isPlaying = false;
         hackenbush.controller.currentPlayer = 0;
         hackenbush.controller.currentTurn = 0;
@@ -160,10 +160,10 @@
 			random = false;
 		}
         $.getJSON(path, function(data) {
-            hackenbush.controller.objectToArray(hackenbush.view.drawingArea.graphUi, data, random);
+            hackenbush.controller.objectToArray(hackenbush.views.drawingArea.graphUi, data, random);
 			if (!random)
 				$('input').val(name);
-            hackenbush.view.drawingArea.update();
+            hackenbush.views.drawingArea.update();
         });
     };
 

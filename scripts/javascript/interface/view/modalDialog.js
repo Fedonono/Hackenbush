@@ -19,8 +19,8 @@
 
 				bValid = bValid && hackenbush.controller.checkRegexp( name, /^([0-9a-zA-Z])+$/, "Graph Name only allow : a-z 0-9" );
 				if ( bValid ) {
-					var canvas = hackenbush.view.drawingArea.canvas[0];
-					var graphUi = hackenbush.view.drawingArea.graphUi;
+					var canvas = hackenbush.views.drawingArea.canvas[0];
+					var graphUi = hackenbush.views.drawingArea.graphUi;
 					var imageData = hackenbush.controller.saveAsPNG(canvas, 200, 150);
 					if (canvas !== undefined && graphUi !== undefined && imageData !== undefined)
 						hackenbush.controller.saveGame(name.val(), hackenbush.controller.playerColors, graphUi, imageData);
