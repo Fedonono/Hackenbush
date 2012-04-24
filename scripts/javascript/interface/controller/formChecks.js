@@ -1,13 +1,13 @@
 (function(){
     
-    if(!window.controller) window.controller= new Object();
+    if(!window.hackenbush.controller) window.hackenbush.controller= new Object();
 
     /** 
 	 * Update the tips on a modal-dialog page.
 	 *
 	 * @param t a string text
 	 */	
-	controller.updateTips = function(t) {
+	hackenbush.controller.updateTips = function(t) {
 		var tips = $( ".validateTips" );
 		tips
 			.text( t )
@@ -25,10 +25,10 @@
 	 * @param min the integer which indicate the minimum length authorized
 	 * @param max the integer which indicate the maximum length authorized
 	 */	
-	controller.checkLength = function(o,n,min,max) {
+	hackenbush.controller.checkLength = function(o,n,min,max) {
 		if ( o.val().length > max || o.val().length < min ) {
 			o.addClass( "ui-state-error" );
-			controller.updateTips( "Length of " + n + " must be between " +
+			hackenbush.controller.updateTips( "Length of " + n + " must be between " +
 				min + " and " + max + "." );
 			return false;
 		} else {
@@ -43,10 +43,10 @@
 	 * @param regexp which caracters are authorized
 	 * @param n a string text which describe the type of "o" and authorized string in the function (for the users)
 	 */	
-	controller.checkRegexp =function(o,regexp,n) {
+	hackenbush.controller.checkRegexp =function(o,regexp,n) {
 		if ( !( regexp.test( o.val() ) ) ) {
 			o.addClass( "ui-state-error" );
-			controller.updateTips( n );
+			hackenbush.controller.updateTips( n );
 			return false;
 		} else {
 			return true;

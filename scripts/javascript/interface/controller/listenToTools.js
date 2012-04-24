@@ -1,21 +1,19 @@
 (function(){
-
-    if(!window.controller) window.controller= new Object();
     
-    controller.playerColors = new Array(); 
+    hackenbush.controller.playerColors = new Array(); 
     
     
-    controller.listenToTools = function(){		
+    hackenbush.controller.listenToTools = function(){		
 		
         $("#start").click( function(event) {
             $('.startbg').addClass("locked");
-			controller.modClassButton($('#modeChooser'), false);
-			controller.modClassButton($('#load'), false);
-            controller.startGame();
+			hackenbush.controller.modClassButton($('#modeChooser'), false);
+			hackenbush.controller.modClassButton($('#load'), false);
+            hackenbush.controller.startGame();
         });
         
         $("#edition").click(function(event) {
-            controller.stopGame();
+            hackenbush.controller.stopGame();
         });
                 
         $(".toolChooser").click( function(event) {
@@ -27,12 +25,12 @@
                 var loadForm = $('#load-form');
                 loadForm.dialog( "open" );
                 loadForm.load("./scripts/php/view/loadGame.php");
-                if(controller.isPlaying)controller.reset();
+                if(hackenbush.controller.isPlaying)hackenbush.controller.reset();
             }
             if(toolSelected === "help") {
                 var helpModal = $('#help-modal');
                 helpModal.dialog( "open" );
-                helpModal.load("./views/help-"+controller.page+".html");
+                helpModal.load("./views/help-"+hackenbush.controller.page+".html");
             }
             if(toolSelected === "modeChooser") {
                 var modeModal = $('#mode-modal');
@@ -41,18 +39,18 @@
             }
         });   
     }
-    controller.initPlayerColors = function(){
+    hackenbush.controller.initPlayerColors = function(){
         var player1 = $("#player1");
         var player2 = $("#player2");
-        controller.playerColors[0] = player1[0].value;
-        controller.playerColors[1] = player2[0].value;
+        hackenbush.controller.playerColors[0] = player1[0].value;
+        hackenbush.controller.playerColors[1] = player2[0].value;
     }
         
-    controller.setPlayerColors = function(playerInt) {
+    hackenbush.controller.setPlayerColors = function(playerInt) {
         // VAR
         var player1 = $("#player1");
         var player2 = $("#player2");
-        var playerColors = controller.playerColors;
+        var playerColors = hackenbush.controller.playerColors;
         var player;
             
         
@@ -78,40 +76,40 @@
         preventFromSameColor();
     };
     
-    drawingArea.color = "green"; // default color : primary green
-    drawingArea.tool = "draw"; // default tool : draw
-    drawingArea.listenToTools = function() {
+    hackenbush.view.drawingArea.color = "green"; // default color : primary green
+    hackenbush.view.drawingArea.tool = "draw"; // default tool : draw
+    hackenbush.view.drawingArea.listenToTools = function() {
         
         $(".colorChooser").mousedown(function(event){
-            drawingArea.color = event.currentTarget.id;
-            if(drawingArea.selectedEdge)drawingArea.selectedEdge.weight.color = event.currentTarget.id; 
-            drawingArea.update();
+            hackenbush.view.drawingArea.color = event.currentTarget.id;
+            if(hackenbush.view.drawingArea.selectedEdge)hackenbush.view.drawingArea.selectedEdge.weight.color = event.currentTarget.id; 
+            hackenbush.view.drawingArea.update();
         });
         
         $("#start").click( function(event) {
-            drawingArea.buildGraphGame();
-            drawingArea.selectedEdge = null;
-            drawingArea.update();
-            drawingArea.tool = "erase";
+            hackenbush.view.drawingArea.buildGraphGame();
+            hackenbush.view.drawingArea.selectedEdge = null;
+            hackenbush.view.drawingArea.update();
+            hackenbush.view.drawingArea.tool = "erase";
         });
         
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
-            if(toolSelected === "eraseAll") drawingArea.eraseAll();
+            if(toolSelected === "eraseAll") hackenbush.view.drawingArea.eraseAll();
             if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") {
-                drawingArea.elementSelected(toolSelected);
-                drawingArea.setCursor(toolSelected);
-                drawingArea.tool = toolSelected;
+                hackenbush.view.drawingArea.elementSelected(toolSelected);
+                hackenbush.view.drawingArea.setCursor(toolSelected);
+                hackenbush.view.drawingArea.tool = toolSelected;
             }
             if(toolSelected !== "edit"){
-                drawingArea.selectedEdge = null;
-                drawingArea.update();
+                hackenbush.view.drawingArea.selectedEdge = null;
+                hackenbush.view.drawingArea.update();
             }
         });
         
     }
-    controller.initPlayerColors();
-    drawingArea.listenToTools();
-    controller.listenToTools();
+    hackenbush.controller.initPlayerColors();
+    hackenbush.view.drawingArea.listenToTools();
+    hackenbush.controller.listenToTools();
 })()
 

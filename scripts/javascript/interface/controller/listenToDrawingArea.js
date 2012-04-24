@@ -5,42 +5,42 @@
     var width = canvas[0].width;
     var height = canvas[0].height;
     
-    drawingArea.isOnGrass = function(x, y){
-        if(y+drawingArea.nodeRadius >= height - drawingArea.grassHeight) return true;
+    hackenbush.view.drawingArea.isOnGrass = function(x, y){
+        if(y+hackenbush.view.drawingArea.nodeRadius >= height - hackenbush.view.drawingArea.grassHeight) return true;
         return false;
     }
     
-    drawingArea.getControlPointByCoord = function(x, y) {
+    hackenbush.view.drawingArea.getControlPointByCoord = function(x, y) {
         function match(controlPoint){
-            if(x >= controlPoint.x - drawingArea.nodeRadius && x <= controlPoint.x + drawingArea.nodeRadius && y >= controlPoint.y - drawingArea.nodeRadius && y <= controlPoint.y + drawingArea.nodeRadius)
+            if(x >= controlPoint.x - hackenbush.view.drawingArea.nodeRadius && x <= controlPoint.x + hackenbush.view.drawingArea.nodeRadius && y >= controlPoint.y - hackenbush.view.drawingArea.nodeRadius && y <= controlPoint.y + hackenbush.view.drawingArea.nodeRadius)
                 return true;
             return false;
         }
         var point = null;
-        if(drawingArea.selectedEdge){
-            var controlP1 = drawingArea.selectedEdge.weight.controlP1;
+        if(hackenbush.view.drawingArea.selectedEdge){
+            var controlP1 = hackenbush.view.drawingArea.selectedEdge.weight.controlP1;
             if(match(controlP1)) point = controlP1;
-            var controlP2 = drawingArea.selectedEdge.weight.controlP2;
+            var controlP2 = hackenbush.view.drawingArea.selectedEdge.weight.controlP2;
             if(match(controlP2))  point = controlP2;
         }
         return point;
     }
     
-    drawingArea.getNodeByCoord = function(x, y) {
-        var radius = drawingArea.nodeRadius;
+    hackenbush.view.drawingArea.getNodeByCoord = function(x, y) {
+        var radius = hackenbush.view.drawingArea.nodeRadius;
         var distance = 2*radius;
-        for(var itemKey in drawingArea.graphUi.nodes){
-            var item = drawingArea.graphUi.nodes[itemKey].weight;
+        for(var itemKey in hackenbush.view.drawingArea.graphUi.nodes){
+            var item = hackenbush.view.drawingArea.graphUi.nodes[itemKey].weight;
             if(x >= item.x - distance && x <= item.x + distance && y >= item.y - distance && y <= item.y + distance) return itemKey.replace('#', '')*1;
         }
         return 0;          
     }
     
-    drawingArea.getEdgeByCoord = function(x, y) {
+    hackenbush.view.drawingArea.getEdgeByCoord = function(x, y) {
         
         function match(bezierCurve){
-            var start = drawingArea.graphUi.getNodeValue(bezierCurve.startId);
-            var goal = drawingArea.graphUi.getNodeValue(bezierCurve.goalId);
+            var start = hackenbush.view.drawingArea.graphUi.getNodeValue(bezierCurve.startId);
+            var goal = hackenbush.view.drawingArea.graphUi.getNodeValue(bezierCurve.goalId);
             var X0 = start.x;
             var Y0 = start.y;
             var X1 = bezierCurve.controlP1.x;
@@ -50,14 +50,14 @@
             var X3 = goal.x;
             var Y3 = goal.y;
             var t, X, Y;
-            var radius = drawingArea.bezierCurveWidth*2;
+            var radius = hackenbush.view.drawingArea.bezierCurveWidth*2;
             var step = 100;
-            drawingArea.context.beginPath();
-            drawingArea.strokeStyle = "black";
-            drawingArea.context.fillStyle = "blue";
-            drawingArea.context.arc(x, y, radius, 0, 2 * Math.PI);
-            drawingArea.context.stroke();
-            drawingArea.context.fill();
+            hackenbush.view.drawingArea.context.beginPath();
+            hackenbush.view.drawingArea.strokeStyle = "black";
+            hackenbush.view.drawingArea.context.fillStyle = "blue";
+            hackenbush.view.drawingArea.context.arc(x, y, radius, 0, 2 * Math.PI);
+            hackenbush.view.drawingArea.context.stroke();
+            hackenbush.view.drawingArea.context.fill();
             for(var i = 0; i < step; i++) {
                 t = i/step;
                 X = X0*Math.pow(1 - t, 3) + 3*X1*t*Math.pow(1-t, 2) + 3*X2*Math.pow(t, 2)*(1-t) + X3*Math.pow(t, 3);
@@ -68,9 +68,9 @@
         }
         var visitedEdges = new Object();
         
-        for (var nodeKey in drawingArea.graphUi.nodes) {
+        for (var nodeKey in hackenbush.view.drawingArea.graphUi.nodes) {
             var startId = nodeKey.replace('#','')*1;
-            var startNode = drawingArea.graphUi.getNodeById(startId);
+            var startNode = hackenbush.view.drawingArea.graphUi.getNodeById(startId);
             
             for(var neighborKey in startNode.neighbors) {
                 var edges = startNode.neighbors[neighborKey];
@@ -87,192 +87,192 @@
     }
     
     
-    drawingArea.setSelectedItem = function(x, y){
+    hackenbush.view.drawingArea.setSelectedItem = function(x, y){
         
-        drawingArea.selectedControlPoint = drawingArea.getControlPointByCoord(x, y);
-        if(!drawingArea.slectedControlPoint){ 
-            var id = drawingArea.getNodeByCoord(x, y);
+        hackenbush.view.drawingArea.selectedControlPoint = hackenbush.view.drawingArea.getControlPointByCoord(x, y);
+        if(!hackenbush.view.drawingArea.slectedControlPoint){ 
+            var id = hackenbush.view.drawingArea.getNodeByCoord(x, y);
             if(id){
-                drawingArea.currentNodeId = id;
-                var node = drawingArea.graphUi.getNodeById(id);
-                drawingArea.dash.addWeightedNode(id, node.weight);
+                hackenbush.view.drawingArea.currentNodeId = id;
+                var node = hackenbush.view.drawingArea.graphUi.getNodeById(id);
+                hackenbush.view.drawingArea.dash.addWeightedNode(id, node.weight);
                 
                 for(var itemKey in node.neighbors) {
                     var neighborId = itemKey.replace("#", '')*1;
-                    if(!drawingArea.dash.nodeExists(neighborId)) {
-                        var point = drawingArea.graphUi.getNodeValue(neighborId);
-                        drawingArea.dash.addWeightedNode(neighborId, point);  
+                    if(!hackenbush.view.drawingArea.dash.nodeExists(neighborId)) {
+                        var point = hackenbush.view.drawingArea.graphUi.getNodeValue(neighborId);
+                        hackenbush.view.drawingArea.dash.addWeightedNode(neighborId, point);  
                     }
                 }
                 for(itemKey in node.neighbors) {
                     neighborId = itemKey.replace("#", '')*1;
                     var edges = node.neighbors[itemKey];
                     for(var i = 0; i < edges.length; i++) {
-                        var bezierCurve = drawingArea.graphUi.getEdgeValue(id, neighborId, i);
-                        drawingArea.dash.addWeightedEdge(id, neighborId, bezierCurve);
+                        var bezierCurve = hackenbush.view.drawingArea.graphUi.getEdgeValue(id, neighborId, i);
+                        hackenbush.view.drawingArea.dash.addWeightedEdge(id, neighborId, bezierCurve);
                     }
                 }
             }
             else{
-                var edge = drawingArea.getEdgeByCoord(x, y); 
-                if(edge)drawingArea.selectedEdge = edge;
+                var edge = hackenbush.view.drawingArea.getEdgeByCoord(x, y); 
+                if(edge)hackenbush.view.drawingArea.selectedEdge = edge;
             }
         }
-        drawingArea.update(false);
-        drawingArea.refresh();
+        hackenbush.view.drawingArea.update(false);
+        hackenbush.view.drawingArea.refresh();
     }
     
     
-    drawingArea.mouseOverSomething = function(x, y, isPlaying){
-        var id = drawingArea.getNodeByCoord(x, y);
+    hackenbush.view.drawingArea.mouseOverSomething = function(x, y, isPlaying){
+        var id = hackenbush.view.drawingArea.getNodeByCoord(x, y);
         if(id) {
-            drawingArea.mouseoverNode = drawingArea.graphUi.getNodeById(id);
+            hackenbush.view.drawingArea.mouseoverNode = hackenbush.view.drawingArea.graphUi.getNodeById(id);
         }
         else{
-            drawingArea.mouseoverNode = null;
-            drawingArea.mouseoverEdge = drawingArea.getEdgeByCoord(x, y);
-            if(isPlaying && drawingArea.mouseoverEdge){
-                var start = drawingArea.mouseoverEdge.weight.startId;
-                var goal = drawingArea.mouseoverEdge.weight.goalId;
-                var edgeId = drawingArea.mouseoverEdge.id;
-                var edgeIndex = drawingArea.graphUi.getEdgeIndexByIds(start, goal, edgeId);
-                var color = controller.playerColors.indexOf(drawingArea.graphUi.getEdgeValue(start, goal, edgeIndex).color);
-                if(color !== -1 && color !== controller.currentPlayer){
-                    drawingArea.mouseoverEdge = null;
+            hackenbush.view.drawingArea.mouseoverNode = null;
+            hackenbush.view.drawingArea.mouseoverEdge = hackenbush.view.drawingArea.getEdgeByCoord(x, y);
+            if(isPlaying && hackenbush.view.drawingArea.mouseoverEdge){
+                var start = hackenbush.view.drawingArea.mouseoverEdge.weight.startId;
+                var goal = hackenbush.view.drawingArea.mouseoverEdge.weight.goalId;
+                var edgeId = hackenbush.view.drawingArea.mouseoverEdge.id;
+                var edgeIndex = hackenbush.view.drawingArea.graphUi.getEdgeIndexByIds(start, goal, edgeId);
+                var color = hackenbush.controller.playerColors.indexOf(hackenbush.view.drawingArea.graphUi.getEdgeValue(start, goal, edgeIndex).color);
+                if(color !== -1 && color !== hackenbush.controller.currentPlayer){
+                    hackenbush.view.drawingArea.mouseoverEdge = null;
                 }
             }
             
             
-            drawingArea.selectedControlPoint = drawingArea.getControlPointByCoord(x, y);
+            hackenbush.view.drawingArea.selectedControlPoint = hackenbush.view.drawingArea.getControlPointByCoord(x, y);
         }
-        drawingArea.refresh();
+        hackenbush.view.drawingArea.refresh();
     }
     
     
-    drawingArea.addNode = function(x, y) {
+    hackenbush.view.drawingArea.addNode = function(x, y) {
             
-        if(drawingArea.isOnGrass(x,y)) y = height-drawingArea.grassHeight;
+        if(hackenbush.view.drawingArea.isOnGrass(x,y)) y = height-hackenbush.view.drawingArea.grassHeight;
             
         var point;
-        var id = drawingArea.getNodeByCoord(x, y);
+        var id = hackenbush.view.drawingArea.getNodeByCoord(x, y);
             
-        if(id) point = drawingArea.graphUi.getNodeValue(id);
+        if(id) point = hackenbush.view.drawingArea.graphUi.getNodeValue(id);
             
         else{
-            id = ++drawingArea.nodeIdCounter;                
+            id = ++hackenbush.view.drawingArea.nodeIdCounter;                
             point = new Point( x, y);
-            drawingArea.graphUi.addWeightedNode(id, point);
-            if(drawingArea.isOnGrass(x,y)) drawingArea.graphUi.groundNode(id);
+            hackenbush.view.drawingArea.graphUi.addWeightedNode(id, point);
+            if(hackenbush.view.drawingArea.isOnGrass(x,y)) hackenbush.view.drawingArea.graphUi.groundNode(id);
         }
-        drawingArea.dash.addWeightedNode(id, point);
-        drawingArea.currentNodeId = id;
+        hackenbush.view.drawingArea.dash.addWeightedNode(id, point);
+        hackenbush.view.drawingArea.currentNodeId = id;
             
-        drawingArea.refresh();
+        hackenbush.view.drawingArea.refresh();
     }
     
     
-    drawingArea.move = function(x, y){
+    hackenbush.view.drawingArea.move = function(x, y){
         
-        if(drawingArea.selectedControlPoint){
-            drawingArea.selectedControlPoint.x = x;
-            drawingArea.selectedControlPoint.y = y;
+        if(hackenbush.view.drawingArea.selectedControlPoint){
+            hackenbush.view.drawingArea.selectedControlPoint.x = x;
+            hackenbush.view.drawingArea.selectedControlPoint.y = y;
         }
-        else if(drawingArea.currentNodeId){
+        else if(hackenbush.view.drawingArea.currentNodeId){
             var point;  
-            if(drawingArea.isOnGrass(x,y)) y = height - drawingArea.grassHeight;
+            if(hackenbush.view.drawingArea.isOnGrass(x,y)) y = height - hackenbush.view.drawingArea.grassHeight;
                 
-            var id = drawingArea.getNodeByCoord(x, y);
-            if(id && id !== drawingArea.currentNodeId) {
-                var coord = drawingArea.graphUi.getNodeValue(id);
+            var id = hackenbush.view.drawingArea.getNodeByCoord(x, y);
+            if(id && id !== hackenbush.view.drawingArea.currentNodeId) {
+                var coord = hackenbush.view.drawingArea.graphUi.getNodeValue(id);
                 point = new Point(coord.x, coord.y);
             }
             else{
                 point = new Point(x, y);
             }
-            drawingArea.dash.setNodeValue(drawingArea.currentNodeId, point);
+            hackenbush.view.drawingArea.dash.setNodeValue(hackenbush.view.drawingArea.currentNodeId, point);
         }
-        drawingArea.refresh();
+        hackenbush.view.drawingArea.refresh();
     }
     
     
-    drawingArea.draw = function(x, y, color){
+    hackenbush.view.drawingArea.draw = function(x, y, color){
                         
-        if(drawingArea.isOnGrass(x,y)) y = height - drawingArea.grassHeight;
+        if(hackenbush.view.drawingArea.isOnGrass(x,y)) y = height - hackenbush.view.drawingArea.grassHeight;
             
-        var id = drawingArea.getNodeByCoord(x, y);
+        var id = hackenbush.view.drawingArea.getNodeByCoord(x, y);
             
         if(id){
-            var item = drawingArea.graphUi.getNodeValue(id);
+            var item = hackenbush.view.drawingArea.graphUi.getNodeValue(id);
             x = item.x;
             y = item.y;   
         }
             
-        id = drawingArea.nodeIdCounter + 42;
+        id = hackenbush.view.drawingArea.nodeIdCounter + 42;
         var goal = new Point(x, y);
             
-        var startPoint = drawingArea.graphUi.getNodeValue(drawingArea.currentNodeId);
+        var startPoint = hackenbush.view.drawingArea.graphUi.getNodeValue(hackenbush.view.drawingArea.currentNodeId);
         var averageX = (x + startPoint.x)/2;
         var averageY = (y + startPoint.y)/2;
         var orientationP1 = new Point(averageX, averageY);
         var orientationP2 = new Point(averageX, averageY);
-        var bezierCurve = new BezierCurve(drawingArea.currentNodeId, orientationP1, orientationP2, id, color)
+        var bezierCurve = new BezierCurve(hackenbush.view.drawingArea.currentNodeId, orientationP1, orientationP2, id, color)
                 
-        if(!drawingArea.dash.nodeExists(id)) {
-            drawingArea.dash.addWeightedNode(id, goal);
-            drawingArea.dash.addWeightedEdge(drawingArea.currentNodeId, id, bezierCurve);
+        if(!hackenbush.view.drawingArea.dash.nodeExists(id)) {
+            hackenbush.view.drawingArea.dash.addWeightedNode(id, goal);
+            hackenbush.view.drawingArea.dash.addWeightedEdge(hackenbush.view.drawingArea.currentNodeId, id, bezierCurve);
         }
         else{
-            drawingArea.dash.setNodeValue(id, goal);
-            drawingArea.dash.setEdgeValue(drawingArea.currentNodeId, id, 0, bezierCurve);
+            hackenbush.view.drawingArea.dash.setNodeValue(id, goal);
+            hackenbush.view.drawingArea.dash.setEdgeValue(hackenbush.view.drawingArea.currentNodeId, id, 0, bezierCurve);
         }
                 
-        drawingArea.refresh();
+        hackenbush.view.drawingArea.refresh();
     }
         
         
-    drawingArea.addEdge = function() {
+    hackenbush.view.drawingArea.addEdge = function() {
             
-        var dashId = drawingArea.nodeIdCounter + 42;
-        var startId = drawingArea.currentNodeId;
+        var dashId = hackenbush.view.drawingArea.nodeIdCounter + 42;
+        var startId = hackenbush.view.drawingArea.currentNodeId;
             
-        if(drawingArea.dash.nodeExists(dashId)){
+        if(hackenbush.view.drawingArea.dash.nodeExists(dashId)){
                 
-            var indexEdge = drawingArea.dash.getNodeById(startId).neighbors["#"+dashId].length - 1;
-            var color = drawingArea.dash.getEdgeValue(startId, dashId, indexEdge).color;
+            var indexEdge = hackenbush.view.drawingArea.dash.getNodeById(startId).neighbors["#"+dashId].length - 1;
+            var color = hackenbush.view.drawingArea.dash.getEdgeValue(startId, dashId, indexEdge).color;
                 
-            var point = drawingArea.dash.getNodeValue(dashId);
-            var id = drawingArea.getNodeByCoord(point.x, point.y);
+            var point = hackenbush.view.drawingArea.dash.getNodeValue(dashId);
+            var id = hackenbush.view.drawingArea.getNodeByCoord(point.x, point.y);
                 
             if(!id) {
-                drawingArea.addNode(point.x, point.y);
-                id = drawingArea.nodeIdCounter;
+                hackenbush.view.drawingArea.addNode(point.x, point.y);
+                id = hackenbush.view.drawingArea.nodeIdCounter;
             }
-            var start = drawingArea.graphUi.getNodeValue(startId);
-            var goal = drawingArea.graphUi.getNodeValue(id);
+            var start = hackenbush.view.drawingArea.graphUi.getNodeValue(startId);
+            var goal = hackenbush.view.drawingArea.graphUi.getNodeValue(id);
             var averageX = (start.x + goal.x)/2;
             var averageY = (start.y + goal.y)/2;
             var bezierCurve = new BezierCurve(startId, new Point(averageX, averageY), new Point(averageX, averageY), id, color);
                 
-            drawingArea.graphUi.addWeightedEdge(startId, id, bezierCurve); 
+            hackenbush.view.drawingArea.graphUi.addWeightedEdge(startId, id, bezierCurve); 
         }
             
     }
         
-    drawingArea.saveChanges = function(){
+    hackenbush.view.drawingArea.saveChanges = function(){
         //FUNCTIONS
         function searchDuplicate(currentNodeId){
                 
-            var currentPoint = drawingArea.dash.getNodeValue(currentNodeId);
+            var currentPoint = hackenbush.view.drawingArea.dash.getNodeValue(currentNodeId);
                 
-            for(var itemKey in drawingArea.graphUi.nodes){
+            for(var itemKey in hackenbush.view.drawingArea.graphUi.nodes){
                 var id = itemKey.replace('#', '')*1;
-                var point = drawingArea.graphUi.getNodeValue(id);
+                var point = hackenbush.view.drawingArea.graphUi.getNodeValue(id);
                 if(id !== currentNodeId && currentPoint.x === point.x && currentPoint.y === point.y)return id;
             }
             return 0;
         }            
         function mergeNodes(oldId, id){
-            var oldNode = drawingArea.graphUi.getNodeById(oldId);
+            var oldNode = hackenbush.view.drawingArea.graphUi.getNodeById(oldId);
                 
             for(var neighborKey in oldNode.neighbors){
                 var neighborId = neighborKey.replace('#', '')*1;
@@ -281,102 +281,102 @@
                     var weight = edges[i].weight;
                     if(edges[i].weight.startId === oldId) edges[i].weight.startId = id;
                     if(edges[i].weight.goalId === oldId) edges[i].weight.goalId = id;
-                    drawingArea.graphUi.addWeightedEdge(id, neighborId, weight);
+                    hackenbush.view.drawingArea.graphUi.addWeightedEdge(id, neighborId, weight);
                 }
             }
-            drawingArea.graphUi.removeNode(oldId);
+            hackenbush.view.drawingArea.graphUi.removeNode(oldId);
         }
         //ALGORITHM
-        var currentNodeId = drawingArea.currentNodeId;
+        var currentNodeId = hackenbush.view.drawingArea.currentNodeId;
         if(currentNodeId){
                 
-            var currentPoint = drawingArea.dash.getNodeValue(currentNodeId);
-            drawingArea.graphUi.setNodeValue(currentNodeId, currentPoint);
+            var currentPoint = hackenbush.view.drawingArea.dash.getNodeValue(currentNodeId);
+            hackenbush.view.drawingArea.graphUi.setNodeValue(currentNodeId, currentPoint);
             var id = searchDuplicate(currentNodeId);
-            var point = drawingArea.graphUi.getNodeValue(currentNodeId);
+            var point = hackenbush.view.drawingArea.graphUi.getNodeValue(currentNodeId);
             if (id) mergeNodes(currentNodeId, id);
                 
-            else if (drawingArea.isOnGrass(point.x, point.y) && !drawingArea.graphUi.isAlreadyGrounded(currentNodeId)){
-                drawingArea.graphUi.groundNode(currentNodeId);
+            else if (hackenbush.view.drawingArea.isOnGrass(point.x, point.y) && !hackenbush.view.drawingArea.graphUi.isAlreadyGrounded(currentNodeId)){
+                hackenbush.view.drawingArea.graphUi.groundNode(currentNodeId);
             }
                 
-            else if (!drawingArea.isOnGrass(point.x, point.y) &&  drawingArea.graphUi.isAlreadyGrounded(currentNodeId)) 
-                drawingArea.graphUi.unGroundNode(currentNodeId);
+            else if (!hackenbush.view.drawingArea.isOnGrass(point.x, point.y) &&  hackenbush.view.drawingArea.graphUi.isAlreadyGrounded(currentNodeId)) 
+                hackenbush.view.drawingArea.graphUi.unGroundNode(currentNodeId);
         }
     }
         
-    drawingArea.erase = function(x, y, isPlaying){
-        var edge = drawingArea.getEdgeByCoord(x, y);
+    hackenbush.view.drawingArea.erase = function(x, y, isPlaying){
+        var edge = hackenbush.view.drawingArea.getEdgeByCoord(x, y);
         if(edge) {
             var startId = edge.weight.startId;
             var goalId = edge.weight.goalId;
             var edgeId = edge.id;
             if(isPlaying){
-                var edgeIndex = drawingArea.graphUi.getEdgeIndexByIds(startId, goalId, edgeId);
-                var color = graphGame.getEdgeValue(startId, goalId, edgeIndex);
-                if(color === 2 || color === controller.currentPlayer){
-                    drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
-                    drawingArea.graphUi.removeFlyingNodes();
-                    controller.erase(startId, goalId, edgeIndex);
+                var edgeIndex = hackenbush.view.drawingArea.graphUi.getEdgeIndexByIds(startId, goalId, edgeId);
+                var color = hackenbush.modele.graphGame.getEdgeValue(startId, goalId, edgeIndex);
+                if(color === 2 || color === hackenbush.controller.currentPlayer){
+                    hackenbush.view.drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
+                    hackenbush.view.drawingArea.graphUi.removeFlyingNodes();
+                    hackenbush.controller.erase(startId, goalId, edgeIndex);
                 }
             }
             else{
-                drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
+                hackenbush.view.drawingArea.graphUi.removeEdgeByIds(startId, goalId, edgeId);
             }
         }
-        drawingArea.update();
+        hackenbush.view.drawingArea.update();
     }
         
-    drawingArea.apply = function(){
-        drawingArea.dash = new HackenbushGraph();
-        drawingArea.currentNodeId = 0;
-        drawingArea.mouseoverNode = null;
-        drawingArea.mouseoverEdge = null;
-        drawingArea.selectedControlPoint = null;
-        drawingArea.graphUi.removeLonelyNodes();
-        drawingArea.update(true);
+    hackenbush.view.drawingArea.apply = function(){
+        hackenbush.view.drawingArea.dash = new HackenbushGraph();
+        hackenbush.view.drawingArea.currentNodeId = 0;
+        hackenbush.view.drawingArea.mouseoverNode = null;
+        hackenbush.view.drawingArea.mouseoverEdge = null;
+        hackenbush.view.drawingArea.selectedControlPoint = null;
+        hackenbush.view.drawingArea.graphUi.removeLonelyNodes();
+        hackenbush.view.drawingArea.update(true);
     }
         
-    drawingArea.eraseAll = function() {
-        drawingArea.selectedEdge = null;
-        drawingArea.graphUi = new HackenbushGraph();
-        drawingArea.dash = new HackenbushGraph();
-        drawingArea.update(true);
+    hackenbush.view.drawingArea.eraseAll = function() {
+        hackenbush.view.drawingArea.selectedEdge = null;
+        hackenbush.view.drawingArea.graphUi = new HackenbushGraph();
+        hackenbush.view.drawingArea.dash = new HackenbushGraph();
+        hackenbush.view.drawingArea.update(true);
     }
     
-    drawingArea.buildGraphGame = function(){
+    hackenbush.view.drawingArea.buildGraphGame = function(){
         
         var alreadyVisitedEdge = new Array(); 
         var graph = new HackenbushGraph();
-        drawingArea.graphUi.removeFlyingNodes();
-        for(var nodeKey in drawingArea.graphUi.nodes) {
+        hackenbush.view.drawingArea.graphUi.removeFlyingNodes();
+        for(var nodeKey in hackenbush.view.drawingArea.graphUi.nodes) {
             var id = nodeKey.replace('#','')*1;
             graph.addNode(id);
         }
-        for(nodeKey in drawingArea.graphUi.nodes) {
+        for(nodeKey in hackenbush.view.drawingArea.graphUi.nodes) {
             id = nodeKey.replace('#','')*1;
-            var neighbors = drawingArea.graphUi.getNodeById(id).neighbors;
+            var neighbors = hackenbush.view.drawingArea.graphUi.getNodeById(id).neighbors;
             
             for(var neighborKey in neighbors){
                 var destId = neighborKey.replace('#','')*1;
                 var edges = neighbors[neighborKey];
                 
                 for(var i = 0; i < edges.length; i++){
-                    var edgeId = drawingArea.graphUi.nodes[nodeKey].neighbors[neighborKey][i].id;
+                    var edgeId = hackenbush.view.drawingArea.graphUi.nodes[nodeKey].neighbors[neighborKey][i].id;
                     if(!alreadyVisitedEdge['#'+edgeId]){
                         alreadyVisitedEdge['#'+edgeId] = true;
-                        var color = controller.playerColors.indexOf(edges[i].weight.color); 
+                        var color = hackenbush.controller.playerColors.indexOf(edges[i].weight.color); 
                         if (color === -1) color = 2;
                         graph.addWeightedEdge(id, destId, color);
                     }
                 }
             }
         }
-        graph.groundedNodes = drawingArea.graphUi.groundedNodes;
-        controller.buildGraphGame(graph);
+        graph.groundedNodes = hackenbush.view.drawingArea.graphUi.groundedNodes;
+        hackenbush.controller.buildGraphGame(graph);
     }
     
-    drawingArea.listenToDrawingArea = function() {
+    hackenbush.view.drawingArea.listenToDrawingArea = function() {
         
         var mousedown = false;
         
@@ -400,9 +400,9 @@
             //taking care of the border width
             if(startCoords.x > canvas[0].width - Xtolerance || startCoords.x < Xtolerance || startCoords.y > canvas[0].height - Ytolerance || startCoords.y < Ytolerance) return
             
-            if(drawingArea.tool === "draw") drawingArea.addNode(startCoords.x, startCoords.y);
-            else if(drawingArea.tool === "erase") drawingArea.erase(startCoords.x, startCoords.y, controller.isPlaying);
-            else if(drawingArea.tool === "edit") drawingArea.setSelectedItem(startCoords.x, startCoords.y);
+            if(hackenbush.view.drawingArea.tool === "draw") hackenbush.view.drawingArea.addNode(startCoords.x, startCoords.y);
+            else if(hackenbush.view.drawingArea.tool === "erase") hackenbush.view.drawingArea.erase(startCoords.x, startCoords.y, hackenbush.controller.isPlaying);
+            else if(hackenbush.view.drawingArea.tool === "edit") hackenbush.view.drawingArea.setSelectedItem(startCoords.x, startCoords.y);
             
             
         });
@@ -412,29 +412,29 @@
             
             if(mousedown){
                 if(canvasCoords.x > canvas[0].width - Xtolerance || canvasCoords.x < Xtolerance || canvasCoords.y > canvas[0].height - Ytolerance || canvasCoords.y < Ytolerance) return
-                if(drawingArea.tool === "draw") drawingArea.draw(canvasCoords.x, canvasCoords.y, drawingArea.color);
-                if(drawingArea.tool === "edit") drawingArea.move(canvasCoords.x, canvasCoords.y);
+                if(hackenbush.view.drawingArea.tool === "draw") hackenbush.view.drawingArea.draw(canvasCoords.x, canvasCoords.y, hackenbush.view.drawingArea.color);
+                if(hackenbush.view.drawingArea.tool === "edit") hackenbush.view.drawingArea.move(canvasCoords.x, canvasCoords.y);
              
             }
-            else  drawingArea.mouseOverSomething(canvasCoords.x, canvasCoords.y, controller.isPlaying);
+            else  hackenbush.view.drawingArea.mouseOverSomething(canvasCoords.x, canvasCoords.y, hackenbush.controller.isPlaying);
         });
         
         
         $('body').mouseup(function(event){
             mousedown = false;
             
-            if(drawingArea.tool === "draw") drawingArea.addEdge();
-            else if(drawingArea.tool === "edit") drawingArea.saveChanges();
-            drawingArea.apply(); 
+            if(hackenbush.view.drawingArea.tool === "draw") hackenbush.view.drawingArea.addEdge();
+            else if(hackenbush.view.drawingArea.tool === "edit") hackenbush.view.drawingArea.saveChanges();
+            hackenbush.view.drawingArea.apply(); 
         });
     }     
-    controller.listenToDrawingArea = function(){
+    hackenbush.controller.listenToDrawingArea = function(){
         $("#canvasArea").mousedown(function(event){
-            if(controller.isPlaying){
-                if(controller.turnPlayed)controller.applyRules(); 
+            if(hackenbush.controller.isPlaying){
+                if(hackenbush.controller.turnPlayed)hackenbush.controller.applyRules(); 
             }
         });
     }
-    drawingArea.listenToDrawingArea(); 
-    controller.listenToDrawingArea();
+    hackenbush.view.drawingArea.listenToDrawingArea(); 
+    hackenbush.controller.listenToDrawingArea();
 })();

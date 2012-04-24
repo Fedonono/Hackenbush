@@ -1,21 +1,20 @@
 // M. Sablonniere's function
 (function(){
-	if(!window.controller) window.controller= new Object();
 	// Use this to set and get the current page
 	page: '',
 
 	// Handler for hashchange events
-	controller.onhashchange = function() {
-		var hashParams = controller.getHashParams();
-		controller.page = hashParams.page ? hashParams.page : controller.page;
+	hackenbush.controller.onhashchange = function() {
+		var hashParams = hackenbush.controller.getHashParams();
+		hackenbush.controller.page = hashParams.page ? hashParams.page : hackenbush.controller.page;
 		if (hashParams.page) {
-		  controller.selectedPage(controller.page);
-		  controller.loadPage(hashParams.page);
+		  hackenbush.controller.selectedPage(hackenbush.controller.page);
+		  hackenbush.controller.loadPage(hashParams.page);
 		}
 	};
 
 	// Recover parameters from hash
-	controller.getHashParams = function() {
+	hackenbush.controller.getHashParams = function() {
 		if (window.location.hash.length != 0) {
 			var hash = window.location.hash.substr(1).split('/');
 			return {
@@ -30,9 +29,9 @@
 		}
 	};
 
-	// Listen for hashchange events and use controller.onhashchange handle method
+	// Listen for hashchange events and use hackenbush.controller.onhashchange handle method
 	// Direct listener technique to be able to simulate the event on page load
-	window.onhashchange = controller.onhashchange.bind(controller);
+	window.onhashchange = hackenbush.controller.onhashchange.bind(hackenbush.controller);
 	$(window.onhashchange);
 })();
 

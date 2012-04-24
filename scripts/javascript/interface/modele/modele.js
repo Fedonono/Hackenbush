@@ -1,3 +1,3 @@
 (function() {
-    window.graphGame = null;
+    hackenbush.modele.graphGame = null;
 })();

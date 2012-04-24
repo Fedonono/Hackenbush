@@ -15,15 +15,15 @@
 				var bValid = true;
 				allFields.removeClass( "ui-state-error" );
 
-				bValid = bValid && controller.checkLength( name, "Graph Name", 3, 16 );
+				bValid = bValid && hackenbush.controller.checkLength( name, "Graph Name", 3, 16 );
 
-				bValid = bValid && controller.checkRegexp( name, /^([0-9a-zA-Z])+$/, "Graph Name only allow : a-z 0-9" );
+				bValid = bValid && hackenbush.controller.checkRegexp( name, /^([0-9a-zA-Z])+$/, "Graph Name only allow : a-z 0-9" );
 				if ( bValid ) {
-					var canvas = drawingArea.canvas[0];
-					var graphUi = drawingArea.graphUi;
-					var imageData = controller.saveAsPNG(canvas, 200, 150);
+					var canvas = hackenbush.view.drawingArea.canvas[0];
+					var graphUi = hackenbush.view.drawingArea.graphUi;
+					var imageData = hackenbush.controller.saveAsPNG(canvas, 200, 150);
 					if (canvas !== undefined && graphUi !== undefined && imageData !== undefined)
-						controller.saveGame(name.val(), controller.playerColors, graphUi, imageData);
+						hackenbush.controller.saveGame(name.val(), hackenbush.controller.playerColors, graphUi, imageData);
 					$( this ).dialog( "close" );
 				}
 			},

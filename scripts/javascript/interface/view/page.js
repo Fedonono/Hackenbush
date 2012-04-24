@@ -5,7 +5,7 @@
 	 * @param element a DOM element
 	 * @param visible the boolean to make the element visible or not.
 	 */			
-	controller.modClassButton = function(element, visible) {
+	hackenbush.controller.modClassButton = function(element, visible) {
 		if (visible) {
 			element.addClass('toolChooser');
 			element.addClass('button');
@@ -38,7 +38,7 @@
 	 * @param element a DOM element
 	 * @param color string of color needed (blue, green or red)
 	 */	
-	controller.modClassColor = function(element, color) {
+	hackenbush.controller.modClassColor = function(element, color) {
 		if (element.hasClass('blue'))
 			element.removeClass('blue');
 		if (element.hasClass('red'))
@@ -54,7 +54,7 @@
 	 *
 	 * @param page the string name of current page (recup by the hash and M. Sabloniere's function
 	 */	
-	controller.selectedPage = function(page) {
+	hackenbush.controller.selectedPage = function(page) {
 		var prevSelectedId = $('.selected');
 		prevSelectedId.addClass('button-bottom');
 		prevSelectedId.removeClass('selected');
@@ -68,7 +68,7 @@
 	 *
 	 * @param page the string name of current page (recup by the hash and M. Sabloniere's function
 	 */	
-	controller.loadPage = function(page) {
+	hackenbush.controller.loadPage = function(page) {
 		var mainContainer = $('#main-container-canvas');
 		if (page === "edition" || page === "play") {
 			var containerToHide = $('.visible'); // make the page test.html or the edition page visible/invisible
@@ -100,9 +100,9 @@
 
 				colorChooser.removeClass('button');
 				colorChooser.addClass('locked');
-				if (controller.playerColors !== undefined) {
-					controller.modClassColor($('#p1Color'), controller.playerColors[0]);
-					controller.modClassColor($('#p2Color'), controller.playerColors[1]);
+				if (hackenbush.controller.playerColors !== undefined) {
+					hackenbush.controller.modClassColor($('#p1Color'), hackenbush.controller.playerColors[0]);
+					hackenbush.controller.modClassColor($('#p2Color'), hackenbush.controller.playerColors[1]);
 				}
 
 				toModif = true;
@@ -117,7 +117,7 @@
 			}
 		}
 		else {
-			controller.loadAjax(page);
+			hackenbush.controller.loadAjax(page);
 			mainContainer.addClass('hidden');
 		}
 	};
@@ -127,7 +127,7 @@
 	 *
 	 * @param page the string name of current page (recup by the hash and M. Sabloniere's function
 	 */	
-	controller.loadAjax = function(page) {
+	hackenbush.controller.loadAjax = function(page) {
 		$.ajax({
 			type: 'POST',
 			url: './views/'+page+'.html',		
