@@ -160,7 +160,7 @@
 			random = false;
 		}
         $.getJSON(path, function(gameData) {
-            hackenbush.controller.objectToArray(hackenbush.views.drawingArea.graphUi, gameData, random);
+            hackenbush.controller.objectToArray(hackenbush.views.drawingArea, gameData, random);
 			if (!random)
 				$('input').val(name);
             hackenbush.views.drawingArea.update();
@@ -176,10 +176,10 @@
 	 * @param random, a boolean, if the graph is taken from M. Soulignac's website or not.
 	 */	
     hackenbush.controller.objectToArray = function(graphUi, data, random) {
-        graphUi.nodes = new Array();
 		if (!random) {
 			hackenbush.controller.playerColors = data.playerColors;
 			data = data.graphUi;
+			graphUi = graphUi.graphUi;
 			$('#player1').val(hackenbush.controller.playerColors[0]);
 			$('#player2').val(hackenbush.controller.playerColors[1]);
 			hackenbush.controller.modClassColor($('#p1Color'), hackenbush.controller.playerColors[0]);
@@ -211,7 +211,7 @@
 	 */	
     hackenbush.controller.getObjProperties = function(graphUi, data, toObj, random) {
 		if (random)
-			hackenbush.controller.getObjPropertiesRandom(graphUi, data);
+			graphUi.graphUi = hackenbush.controller.getObjPropertiesRandom(data);
 		else
 			hackenbush.controller.getObjPropertiesNoRandom(graphUi, data, toObj);
     };
@@ -266,55 +266,45 @@
 	 * @param graphUi, a hash table or an object, where the data will be stocked
 	 * @param data, where the data are stocked
 	 */	
-	/*hackenbush.controller.getObjPropertiesRandom = function(graphUi, data) { POUR GUIOME
-        var nodeId, edgeId, id, nId, hashKeyNId, nX, nY, sId, dId, hKeySId, hKeyDId, p1X, p1Y, p2X, p2Y, edge, weight;*/
-       /* graphUi.groundedNodes = data.groundedNodes;
-        graphUi.nodes.length = data.nodes.length;
-        graphUi.edgeIdCounter = data.edgeIdCounter;*/
-		/*console.log(data);
-		graphUi.nodes = new Array();
+	hackenbush.controller.getObjPropertiesRandom = function(data) {
+		var graphUi = new HackenbushGraph();
+		var nodeId, nId, nX, nY, nWeight;
+		var edgeId, sId, dId, color, p1X, p1Y, p2X, p2Y, eWeight;
+
+		graphUi.nodeIdCounter = 1;
+		graphUi.edgeIdCounter = 0;
+
         for (nodeId in data.nodes) {
 			nId = data.nodes[nodeId][0];
 			nX = data.nodes[nodeId][1];
 			nY = data.nodes[nodeId][2];
-			hashKeyNId = '#'+nId;
-			graphUi.nodes[hashKeyNId] = new Array();
-			graphUi.nodes[hashKeyNId].neighbors = new Array();
-			graphUi.nodes[hashKeyNId].degree = 0;
-			graphUi.nodes[hashKeyNId].id = nId;
-			graphUi.nodes[hashKeyNId].weight = new Point(nX, nY);
-			graphUi.nodes.length++;
+			nWeight = new Point(nX, nY);
+			graphUi.addWeightedNode(nId, nWeight);
+			if (nY == 550)
+				graphUi.groundNodeNoCheck(nId);
+			graphUi.linkedToGround['#'+nId] = true;
         }
 		graphUi.nodeIdCounter = nId+1;
 		for (edgeId in data.edges) {
 			sId = data.edges[edgeId][0];
-			hKeySId = '#'+sId;
 			dId = data.edges[edgeId][1];
-			hKeyDId = '#'+dId;
+			color = data.edges[edgeId][2]? "red" : "blue";
 			p1X = data.edges[edgeId][3][0];
 			p1Y = data.edges[edgeId][3][1];
 			p2X = data.edges[edgeId][4][0];
 			p2Y = data.edges[edgeId][4][1];
 
-			edge = new Object();
-			edge.weight = new Object();
-			edge.weight.color = "red";
-			edge.weight.controlP1 = new Point(p1X, p1Y);
-			edge.weight.controlP2 = new Point(p2X, p2Y);
+			eWeight = new Object();
+			eWeight.color = color;
+			eWeight.controlP1 = new Point(p1X, p1Y);
+			eWeight.controlP2 = new Point(p2X, p2Y);
+			eWeight.startId = sId;
+			eWeight.goalId = dId;
 			
-			graphUi.nodes[hKeySId].neighbors[hKeyDId] = new Array();
-			graphUi.nodes[hKeySId].neighbors[hKeyDId].push(edge, 1);
-			graphUi.nodes[hKeySId].neighbors.length++;
-
-			graphUi.nodes[hKeyDId].neighbors[hKeySId] = new Array();
-			graphUi.nodes[hKeyDId].neighbors[hKeySId].push(edge, 1);
-			graphUi.nodes[hKeyDId].neighbors.length++;
+			graphUi.addWeightedEdge(sId, dId, eWeight);
 		}
-		graphUi.linkedToGround = new Array();
-        /*for (id in data.linkedToGround) {
-            graphUi.linkedToGround[id] = data.linkedToGround[id];
-        }*/
-    //};
+		return graphUi;
+    };
 
 	/** 
 	 * Rescale/resize a canvas

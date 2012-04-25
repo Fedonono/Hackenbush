@@ -143,14 +143,22 @@ var HackenbushGraph = function(){
      *@throws AlreadyGroundedNodeException if the node is already grounded
 	 */    
     this.groundNode = function(id){
-        
         if (this.isAlreadyGrounded(id))
             throw new AlreadyGroundedNodeException(id);
-        
-        this.groundedNodes.push(id);
+
+		this.groundNodeNoCheck(id);
+
         this.setLinkedToGround();
     }
-    
+
+    /** 
+	 * push the id of a grounded node in this.groundedNodes .
+	 *
+     *@param id the id of the node
+	 */    
+	this.groundNodeNoCheck = function(id) {
+        this.groundedNodes.push(id);
+	}
     
     /** 
 	 * push the id of a grounded node in this.groundedNodes .
