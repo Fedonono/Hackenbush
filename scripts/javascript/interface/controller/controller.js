@@ -276,11 +276,11 @@
 
         for (nodeId in data.nodes) {
 			nId = data.nodes[nodeId][0];
-			nX = data.nodes[nodeId][1];
-			nY = data.nodes[nodeId][2];
+			nX = data.nodes[nodeId][1]+100;
+			nY = data.nodes[nodeId][2]+20;
 			nWeight = new Point(nX, nY);
 			graphUi.addWeightedNode(nId, nWeight);
-			if (nY == 550)
+			if (nY == 570)
 				graphUi.groundNodeNoCheck(nId);
 			graphUi.linkedToGround['#'+nId] = true;
         }
@@ -289,10 +289,10 @@
 			sId = data.edges[edgeId][0];
 			dId = data.edges[edgeId][1];
 			color = data.edges[edgeId][2]? "red" : "blue";
-			p1X = data.edges[edgeId][3][0];
-			p1Y = data.edges[edgeId][3][1];
-			p2X = data.edges[edgeId][4][0];
-			p2Y = data.edges[edgeId][4][1];
+			p1X = data.edges[edgeId][3][0]+100;
+			p1Y = data.edges[edgeId][3][1]+20;
+			p2X = data.edges[edgeId][4][0]+100;
+			p2Y = data.edges[edgeId][4][1]+20;
 
 			eWeight = new Object();
 			eWeight.color = color;
