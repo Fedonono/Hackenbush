@@ -152,7 +152,8 @@
 		var path, random, gameData; // have to init gameData to avoid a closure.
 		$('#load-form').dialog("close");
 		if (name === "M.Soulignac_random_graph") {
-			path = './scripts/php/view/randomGraph.php';
+			var d = new Date();
+			path = './scripts/php/view/randomGraph.php?time='+d.getTime(); // to avoid the Internet Explorer's cache, not the same url each time
 			random = true;
 		}
 		else {
