@@ -227,6 +227,10 @@
         graphUi.groundedNodes = data.groundedNodes;
         graphUi.nodes.length = data.nodes.length;
         graphUi.edgeIdCounter = data.edgeIdCounter;
+		if (toObj)
+			graphUi.nodes = new Object();
+		else
+			graphUi.nodes = new Array();
         for (sourceId in data.nodes) {
             if (sourceId !== "length") {
                 if (toObj) {

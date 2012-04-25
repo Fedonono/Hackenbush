@@ -159,7 +159,7 @@
         if(id) point = hackenbush.views.drawingArea.graphUi.getNodeValue(id);
             
         else{
-            id = ++hackenbush.views.drawingArea.nodeIdCounter;                
+            id = ++hackenbush.views.drawingArea.graphUi.nodeIdCounter;                
             point = new Point( x, y);
             hackenbush.views.drawingArea.graphUi.addWeightedNode(id, point);
             if(hackenbush.views.drawingArea.isOnGrass(x,y)) hackenbush.views.drawingArea.graphUi.groundNode(id);
@@ -207,7 +207,7 @@
             y = item.y;   
         }
             
-        id = hackenbush.views.drawingArea.nodeIdCounter + 42;
+        id = hackenbush.views.drawingArea.graphUi.nodeIdCounter + 42;
         var goal = new Point(x, y);
             
         var startPoint = hackenbush.views.drawingArea.graphUi.getNodeValue(hackenbush.views.drawingArea.currentNodeId);
@@ -232,7 +232,7 @@
         
     hackenbush.views.drawingArea.addEdge = function() {
             
-        var dashId = hackenbush.views.drawingArea.nodeIdCounter + 42;
+        var dashId = hackenbush.views.drawingArea.graphUi.nodeIdCounter + 42;
         var startId = hackenbush.views.drawingArea.currentNodeId;
             
         if(hackenbush.views.drawingArea.dash.nodeExists(dashId)){
@@ -245,7 +245,7 @@
                 
             if(!id) {
                 hackenbush.views.drawingArea.addNode(point.x, point.y);
-                id = hackenbush.views.drawingArea.nodeIdCounter;
+                id = hackenbush.views.drawingArea.graphUi.nodeIdCounter;
             }
             var start = hackenbush.views.drawingArea.graphUi.getNodeValue(startId);
             var goal = hackenbush.views.drawingArea.graphUi.getNodeValue(id);
@@ -400,7 +400,8 @@
             //taking care of the border width
             if(startCoords.x > canvas[0].width - Xtolerance || startCoords.x < Xtolerance || startCoords.y > canvas[0].height - Ytolerance || startCoords.y < Ytolerance) return
             
-            if(hackenbush.views.drawingArea.tool === "draw") hackenbush.views.drawingArea.addNode(startCoords.x, startCoords.y);
+            if(hackenbush.views.drawingArea.tool === "draw")
+				hackenbush.views.drawingArea.addNode(startCoords.x, startCoords.y);
             else if(hackenbush.views.drawingArea.tool === "erase") hackenbush.views.drawingArea.erase(startCoords.x, startCoords.y, hackenbush.controller.isPlaying);
             else if(hackenbush.views.drawingArea.tool === "edit") hackenbush.views.drawingArea.setSelectedItem(startCoords.x, startCoords.y);
             

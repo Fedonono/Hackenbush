@@ -22,7 +22,6 @@
     
     hackenbush.views.drawingArea.bezierCurveWidth = 3;
     
-    hackenbush.views.drawingArea.nodeIdCounter = 0;
     hackenbush.views.drawingArea.currentNodeId = 0;
     hackenbush.views.drawingArea.mouseoverNode = null;
     hackenbush.views.drawingArea.mouseoverEdge = null;
