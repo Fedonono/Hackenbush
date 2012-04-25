@@ -149,7 +149,7 @@
 	 * @param name, a string
 	 */	
     hackenbush.controller.loadGame = function(name) {
-		var path, random;
+		var path, random, gameData; // have to init gameData to avoid a closure.
 		$('#load-form').dialog("close");
 		if (name === "M.Soulignac_random_graph") {
 			path = './scripts/php/view/randomGraph.php';
@@ -159,8 +159,8 @@
 			path = './ressources/savedGames/'+name+'.json';
 			random = false;
 		}
-        $.getJSON(path, function(data) {
-            hackenbush.controller.objectToArray(hackenbush.views.drawingArea.graphUi, data, random);
+        $.getJSON(path, function(gameData) {
+            hackenbush.controller.objectToArray(hackenbush.views.drawingArea.graphUi, gameData, random);
 			if (!random)
 				$('input').val(name);
             hackenbush.views.drawingArea.update();
@@ -177,15 +177,15 @@
 	 */	
     hackenbush.controller.objectToArray = function(graphUi, data, random) {
         graphUi.nodes = new Array();
-        hackenbush.controller.playerColors = data.playerColors;
 		if (!random) {
+			hackenbush.controller.playerColors = data.playerColors;
 			data = data.graphUi;
 			$('#player1').val(hackenbush.controller.playerColors[0]);
 			$('#player2').val(hackenbush.controller.playerColors[1]);
 			hackenbush.controller.modClassColor($('#p1Color'), hackenbush.controller.playerColors[0]);
 			hackenbush.controller.modClassColor($('#p2Color'), hackenbush.controller.playerColors[1]);
 		}
-        hackenbush.controller.getObjProperties(graphUi, data, false, random);
+		hackenbush.controller.getObjProperties(graphUi, data, false, random);
     };
 
 	/** 
