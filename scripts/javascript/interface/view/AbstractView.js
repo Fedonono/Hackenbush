@@ -1,6 +1,8 @@
 var AbstractView = function() {
     
     this.graphUi = new HackenbushGraph();
+
+	this.graphUi.nodeIdCounter = 0;
     
     this.dash = new HackenbushGraph();
     

@@ -225,13 +225,14 @@
 	 */	
 	hackenbush.controller.getObjPropertiesNoRandom = function(graphUi, data, toObj) {
         var sourceId, destId, id;
-        graphUi.groundedNodes = data.groundedNodes;
-        graphUi.nodes.length = data.nodes.length;
-        graphUi.edgeIdCounter = data.edgeIdCounter;
 		if (toObj)
 			graphUi.nodes = new Object();
 		else
 			graphUi.nodes = new Array();
+        graphUi.groundedNodes = data.groundedNodes;
+        graphUi.nodes.length = data.nodes.length;
+        graphUi.edgeIdCounter = data.edgeIdCounter;
+		graphUi.nodeIdCounter = 0;
         for (sourceId in data.nodes) {
             if (sourceId !== "length") {
                 if (toObj) {
@@ -253,8 +254,6 @@
         }
         if ((sourceId !== undefined) && (sourceId !== "length"))
             graphUi.nodeIdCounter = sourceId.replace('#', '')*1;
-        else
-            graphUi.nodeIdCounter = 0;
         if (toObj)
             graphUi.linkedToGround = new Object();
         else {
@@ -276,7 +275,7 @@
 		var nodeId, nId, nX, nY, nWeight;
 		var edgeId, sId, dId, color, p1X, p1Y, p2X, p2Y, eWeight;
 
-		graphUi.nodeIdCounter = 1;
+		graphUi.nodeIdCounter = 0;
 		graphUi.edgeIdCounter = 0;
 
         for (nodeId in data.nodes) {

@@ -12,7 +12,6 @@ var SimpleGraph = function(directed){
     this.directed = directed;
     this.nodes = new Array();
     this.edgeIdCounter = 0;
-	this.nodeIdCounter = 0;
     
     /** 
 	 * Returns the node identified by id

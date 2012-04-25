@@ -340,6 +340,7 @@
     hackenbush.views.drawingArea.eraseAll = function() {
         hackenbush.views.drawingArea.selectedEdge = null;
         hackenbush.views.drawingArea.graphUi = new HackenbushGraph();
+        hackenbush.views.drawingArea.graphUi.nodeIdCounter = 0;
         hackenbush.views.drawingArea.dash = new HackenbushGraph();
         hackenbush.views.drawingArea.update(true);
     }
