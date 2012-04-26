@@ -286,7 +286,6 @@
 			graphUi.addWeightedNode(nId, nWeight);
 			if (nY == 570)
 				graphUi.groundNodeNoCheck(nId);
-			graphUi.linkedToGround['#'+nId] = true;
         }
 		graphUi.nodeIdCounter = nId+1;
 		for (edgeId in data.edges) {
