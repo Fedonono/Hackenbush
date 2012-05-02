@@ -1,5 +1,6 @@
 var AIPlayer12 = function(){
-    AbstractHackenbushGraph.call(this, false);
+    AbstractAIPlayer.call(this);
+    //AbstractHackenbushGraph.call(this, false);
 
 	/** 
 	 * Returns the next edge to remove in abstrHbGraph, a graph modeling a Red-Blue Hackenbush game
