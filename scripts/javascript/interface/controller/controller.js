@@ -8,6 +8,21 @@
     hackenbush.controller.currentPlayer = 0;
     hackenbush.controller.turnPlayed = false;
     
+    
+    hackenbush.controller.synchronize = function(action, args) {
+        for(var viewKey in hackenbush.views){
+            if(hackenbush.views[viewKey].selfSynchronization)
+                hackenbush.views[viewKey].selfSynchronization(action, args);
+        }
+        /*var param ="(";
+        for(var i = 0; i <args.length; i++){
+            param += args[i];
+        }
+        param +=")"
+        action += param
+        hackenbush.modele.graphGame[action];*/
+    }
+    
     hackenbush.controller.buildGraphGame = function(graph){
         hackenbush.modele.graphGame = graph;
     };

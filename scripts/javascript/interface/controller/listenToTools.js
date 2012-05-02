@@ -7,8 +7,8 @@
 		
         $("#start").click( function(event) {
             $('.startbg').addClass("locked");
-			hackenbush.controller.modClassButton($('#modeChooser'), false);
-			hackenbush.controller.modClassButton($('#load'), false);
+            hackenbush.controller.modClassButton($('#modeChooser'), false);
+            hackenbush.controller.modClassButton($('#load'), false);
             hackenbush.controller.startGame();
         });
         
