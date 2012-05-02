@@ -5,8 +5,11 @@
     var width = canvas[0].width;
     var height = canvas[0].height;
     
-    if(!hackenbush.views.drawingArea) hackenbush.views.drawingArea = new AbstractView();
+    //if(!hackenbush.views.drawingArea) hackenbush.views.drawingArea = new AbstractView();
     
+    hackenbush.views.drawingArea.graphUi = new HackenbushGraph();
+    hackenbush.views.drawingArea.graphUi.nodeIdCounter = 0;
+    hackenbush.views.drawingArea.dash = new HackenbushGraph();
     hackenbush.views.drawingArea.canvas = canvas;
     hackenbush.views.drawingArea.context = context;
     hackenbush.views.drawingArea.imageData = context.getImageData(0, 0, width, height); 
