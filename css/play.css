@@ -59,3 +59,7 @@
 	font-size: 42px;
 	z-index: 2;
 }
+
+.inIa .redBlueGraph, .inIa .notIAGraph {
+	background: red;
+}

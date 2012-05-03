@@ -9,17 +9,26 @@
 	if (isset($gamesData)) {
 		$gamesNumber = count($gamesData);
 		for ($i = 0; $i < $gamesNumber; $i++) {
-			echo "<div class='game' id='".$gamesData[$i]->name."'>";
+			if (substr_compare($gamesData[$i]->name, "IA_", 0, 3) === 0)
+				$graphClass = "isRedBlueGraph";
+			else
+				$graphClass = "notIAGraph";
+			echo "<div class='game ".$graphClass."' id='".$gamesData[$i]->name."'>";
 			echo '<img src="'.$gamesData[$i]->imageData.'" alt="'.$gamesData[$i]->name.'"/>'.$gamesData[$i]->name;
 			echo "</div>";
 		}
 		echo "</div>";
 		echo "<script type='text/javascript'>
 				(function() {
-					var load = $('.load');
-					load.delegate('div', 'click', function(ev) {
-						hackenbush.controller.loadGame(ev.currentTarget.id);
-					});
+					if (hackenbush.controller.isHumanParty()) {
+						$('.load').delegate('div', 'click', function(ev) {
+							hackenbush.controller.loadGame(ev.currentTarget.id);
+						});
+					} else {
+						$('.isRedBlueGraph').click( function(ev) {
+							hackenbush.controller.loadGame(ev.currentTarget.id);
+						});
+					}
 				})();
 			</script>";
 	} else

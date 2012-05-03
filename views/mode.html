@@ -1,15 +1,22 @@
 <div class='modeChooser'>
 	<div class='mode' id='humanVsHuman'>Human VS Human</div>
-	<div class='mode' id='humanVsIa'>Human Vs IA</div>
-	<div class='mode' id='iaVsIa'>IA VS IA</div>
-	<div class='mode' id='IaVsHuman'>IA VS Human</div>
+	<div class='mode redBlueGraph' id='humanVsIa'>Human Vs IA</div>
+	<div class='mode redBlueGraph' id='iaVsIa'>IA VS IA</div>
+	<div class='mode redBlueGraph' id='IaVsHuman'>IA VS Human</div>
 </div>
 <script type='text/javascript'>
 	(function() {
-		var mode = $('.modeChooser');
-		mode.delegate('div', 'click', function(ev) {
-			//controller.loadMode(ev.currentTarget.id); pour plus tard
-			$('#mode-modal').dialog("close");
-		});
+		if (hackenbush.controller.isRedBlueGraph(hackenbush.views.drawingArea.graphUi)) {
+			var mode = $('.modeChooser');
+			mode.delegate('div', 'click', function(ev) {
+				hackenbush.controller.loadMode(ev.currentTarget.id);
+				$('#mode-modal').dialog("close");
+			});
+		} else {
+			$('.redBlueGraph').click( function(ev) {
+				hackenbush.controller.loadMode(ev.currentTarget.id);
+				$('#mode-modal').dialog("close");
+			});
+		}
 	})();
 </script>

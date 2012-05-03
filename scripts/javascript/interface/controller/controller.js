@@ -172,6 +172,88 @@
         hackenbush.controller.setTurns(0);
     }
 
+	/** 
+	 * Change the current mode game
+	 *
+	 * @param mode, string of the choosen mode
+	 */	
+	hackenbush.controller.loadMode = function(mode) {
+		switch (mode) {
+			case "humanVsHuman":
+				hackenbush.controller.playersNature = [true, true];
+				hackenbush.controller.modElemIa(false);
+				break;
+			case "humanVsIa":
+				hackenbush.controller.playersNature = [true, false];
+				hackenbush.controller.modElemIa(true);
+				break;
+			case "iaVsIa":
+				hackenbush.controller.playersNature = [false, false];
+				hackenbush.controller.modElemIa(true);
+				break;
+			case "IaVsHuman":
+				hackenbush.controller.playersNature = [false, true];
+				hackenbush.controller.modElemIa(true);
+				break;
+			default: 
+				hackenbush.controller.playersNature = [true, true];
+				hackenbush.controller.modElemIa(false);
+				break;
+		}
+	}
+
+	/** 
+	 * Check if the current mode is human vs human or not
+	 *
+	 * @return a boolean, true if the current mode is a human vs human party
+	 */	
+	hackenbush.controller.isHumanParty = function() {
+		if (hackenbush.controller.playersNature.indexOf(false) === -1)
+			return true;
+		else
+			return false;
+	}
+
+	/** 
+	 * Check if the current graph is a Red/Blue graph or not
+	 *
+	 * @param graph, the graph to analyse
+	 * @return a boolean, true if the graph is a red/blue graph
+	 */	
+	hackenbush.controller.isRedBlueGraph = function(graph) {
+		var sourceId, destId, redBlueGraph;
+		redBlueGraph = true;
+        for (sourceId in graph.nodes) {
+			if (!redBlueGraph) break;
+			for (destId in graph.nodes[sourceId].neighbors) {
+				redBlueGraph = !hackenbush.controller.isAGreenEdge(sourceId, destId);
+				if (!redBlueGraph) break;
+			}
+        }
+        return redBlueGraph;
+	}
+
+	/** 
+	 * Check if there is a green edge contained between two given nodes 
+	 *
+	 * @param sourceId, hash key of a node
+	 * @param destId, hash key of a node
+	 * @return boolean, true if there is a green edge
+	 */	
+	hackenbush.controller.isAGreenEdge = function(sourceId, destId) {
+		var greenEdge = false;
+		var sId = hackenbush.views.drawingArea.graphUi.splitId(sourceId);
+		var dId = hackenbush.views.drawingArea.graphUi.splitId(destId);
+		var edgesCount = hackenbush.views.drawingArea.graphUi.getEdgesCount(sId, dId);
+		var indexEdge = 0;
+		while (!greenEdge && indexEdge < edgesCount) {
+			if (greenEdge && hackenbush.views.drawingArea.graphUi.getEdgeValueWithoutCheck(sId, dId, indexEdge).color === "green")
+				greenEdge = true;
+			indexEdge++;
+		}
+		return greenEdge;
+	}
+
     /** 
 	 * Save a Game
 	 *
@@ -188,8 +270,10 @@
         }
         var gameJson = JSON.stringify(game);
         var imgData = encodeURIComponent(imageData); // have to encode to conserve the sign '+' when there is ajax
-
-        hackenbush.controller.saveToFile(name, gameJson, imgData);
+		if (graphUiObj.redBlueGraph === true)
+			hackenbush.controller.saveToFile('IA_'+name, gameJson, imgData);
+		else
+			hackenbush.controller.saveToFile(name, gameJson, imgData);
     };
 
     /** 
@@ -295,6 +379,7 @@
 	 */	
     hackenbush.controller.getObjPropertiesNoRandom = function(graphUi, data, toObj) {
         var sourceId, destId, id;
+        graphUi.redBlueGraph = true;
         if (toObj)
             graphUi.nodes = new Object();
         else
@@ -319,6 +404,8 @@
                 graphUi.nodes[sourceId].weight = data.nodes[sourceId].weight;
                 for (destId in data.nodes[sourceId].neighbors ) {
                     graphUi.nodes[sourceId].neighbors[destId] = data.nodes[sourceId].neighbors[destId];
+                    if (toObj && graphUi.redBlueGraph)
+						graphUi.redBlueGraph = !hackenbush.controller.isAGreenEdge(sourceId, destId);
                 }
             }
         }
