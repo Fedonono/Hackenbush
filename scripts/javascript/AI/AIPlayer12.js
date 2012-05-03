@@ -1,6 +1,7 @@
 var AIPlayer12 = function(){
     AbstractAIPlayer.call(this);
     
+    //time in ms.
     this.timer = 0;
     this.timeout = 850;
     
