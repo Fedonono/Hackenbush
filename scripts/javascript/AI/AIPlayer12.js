@@ -1,6 +1,9 @@
 var AIPlayer12 = function(){
     AbstractAIPlayer.call(this);
-
+    
+    this.timer = 0;
+    this.timeout = 850;
+    
     this.quickestTrick = function(abstrHbGraph, color){
         
     }
