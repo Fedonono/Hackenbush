@@ -1,5 +1,6 @@
 (function(){
     
+    /* VAR */
     hackenbush.controller.isPlaying = false;
     hackenbush.controller.playersNature = [true, true]; //human := true, computer :=false
     hackenbush.controller.currentTurnElem = $("#currentTurn");
@@ -9,12 +10,21 @@
     hackenbush.controller.turnPlayed = false;
     
     
-    hackenbush.controller.synchronize = function(action, args) {
+    /* METHODS */
+    
+    /**
+     * sychronize the views together.
+     * 
+     * @param action : a strig value indicating what to synchronize
+     * @param args : an array of arguments to perform the action 
+     *
+     **/
+    hackenbush.controller.synchronizeViews = function(action, args) {
         for(var viewKey in hackenbush.views){
             if(hackenbush.views[viewKey].selfSynchronization)
                 hackenbush.views[viewKey].selfSynchronization(action, args);
         }
-        /*var param ="(";
+    /*var param ="(";
         for(var i = 0; i <args.length; i++){
             param += args[i];
         }
@@ -23,10 +33,23 @@
         hackenbush.modele.graphGame[action];*/
     }
     
+    /**
+     * set the graphGame 
+     * 
+     * @param graph : the graph given to the graphGame
+     **/
     hackenbush.controller.buildGraphGame = function(graph){
         hackenbush.modele.graphGame = graph;
     };
     
+    
+    /**
+     * remove an edge in the graphGame and all the edge unconnected to the ground.
+     * 
+     * @param startId : the node identified by startId
+     * @param goalId : the node identifyed bu goalId
+     * @param edgeIndex : the index of the edge in the edges array between these two nodes
+     **/
     hackenbush.controller.erase = function(startId, goalId, edgeIndex){
         hackenbush.controller.turnPlayed = true;
         hackenbush.modele.graphGame.removeEdge(startId, goalId, edgeIndex);
@@ -34,6 +57,11 @@
         hackenbush.modele.graphGame.removeFlyingNodes();
     }
     
+    /**
+     * check if a players have already lost.
+     *  
+     * @return the color of the winner (2 if nobody wins)
+     **/
     hackenbush.controller.playersCanStillWin = function(){
         var colorReference = null;
         for(var j= 0; j < hackenbush.modele.graphGame.groundedNodes.length; j++){
@@ -50,15 +78,20 @@
         return colorReference;
     }
     
+    /**
+     * initialize and launch the game
+     **/
     hackenbush.controller.startGame = function() {
         hackenbush.controller.setTurns(hackenbush.controller.currentTurn++);
         hackenbush.controller.isPlaying = true;
         var winner = hackenbush.controller.playersCanStillWin(); 
         if(!hackenbush.modele.graphGame.getOrder()) hackenbush.controller.invalidPlayField("The hackenbush game is empty");
-        else if(winner !== 2) hackenbush.controller.win(winner);
-        
+        else if(winner !== 2) hackenbush.controller.win(winner);    
     }
 
+    /**
+     * reset the game
+     **/
     hackenbush.controller.reset = function(){
         $('.startbg').removeClass("locked");
         var winEl = $('#win');
@@ -72,6 +105,9 @@
         hackenbush.controller.currentPlayerElem.html('P'+(hackenbush.controller.currentPlayer + 1));
     }
     
+    /**
+     * vouches for the good conduct of the game
+     **/
     hackenbush.controller.applyRules = function(){
         
         var winner = hackenbush.controller.playersCanStillWin(); 
@@ -86,15 +122,26 @@
         }
     }
     
+    /**
+     * gives voice to the next player
+     **/
     hackenbush.controller.switchPlayers= function(){
         hackenbush.controller.currentPlayer = (hackenbush.controller.currentPlayer + 1)%2;
         hackenbush.controller.currentPlayerElem.html('P'+(hackenbush.controller.currentPlayer + 1));
     }
     
+    /**
+     * print the curent turn int the html page
+     **/
     hackenbush.controller.setTurns = function(turns) {
         hackenbush.controller.currentTurnElem.html(turns);
     }
     
+    /**
+     * print a message if the graph game is invalid
+     * 
+     * @param message : string value
+     **/
     hackenbush.controller.invalidPlayField = function(message){
         var winEl = $('#win');
         winEl.removeClass('hidden');
@@ -102,6 +149,11 @@
         hackenbush.controller.turnCounter = 1;
     }
     
+    /**
+     * print a message for the winner
+     * 
+     * @param player : an integer refering to the winner
+     **/
     hackenbush.controller.win = function(player) {
         player++;
         var winEl = $('#win');
@@ -111,13 +163,16 @@
         hackenbush.controller.setTurns(0);
     }
     
+    /**
+     * stop the game
+     **/
     hackenbush.controller.stopGame = function() {
         hackenbush.controller.isPlaying = false;
         hackenbush.controller.turnCounter = 1;
         hackenbush.controller.setTurns(0);
     }
 
-	/** 
+    /** 
 	 * Save a Game
 	 *
 	 * @param name, a string
@@ -137,7 +192,7 @@
         hackenbush.controller.saveToFile(name, gameJson, imgData);
     };
 
-	/** 
+    /** 
 	 * Save the game to a file (need php to do this => so we use ajax for js=>php transmission)
 	 *
 	 * @param name, a string
@@ -158,33 +213,33 @@
         });
     };
 
-	/** 
+    /** 
 	 * Load a saved Game
 	 *
 	 * @param name, a string
 	 */	
     hackenbush.controller.loadGame = function(name) {
-		var path, random, gameData; // have to init gameData to avoid a closure.
-		$('#load-form').dialog("close");
-		if (name === "M.Soulignac_random_graph") {
-			var d = new Date();
-			path = './scripts/php/view/randomGraph.php?time='+d.getTime(); // to avoid the Internet Explorer's cache, not the same url each time
-			random = true;
-		}
-		else {
-			path = './ressources/savedGames/'+name+'.json';
-			random = false;
-		}
+        var path, random, gameData; // have to init gameData to avoid a closure.
+        $('#load-form').dialog("close");
+        if (name === "M.Soulignac_random_graph") {
+            var d = new Date();
+            path = './scripts/php/view/randomGraph.php?time='+d.getTime(); // to avoid the Internet Explorer's cache, not the same url each time
+            random = true;
+        }
+        else {
+            path = './ressources/savedGames/'+name+'.json';
+            random = false;
+        }
         $.getJSON(path, function(gameData) {
             hackenbush.controller.objectToArray(hackenbush.views.drawingArea, gameData, random);
-			if (!random)
-				$('input').val(name);
+            if (!random)
+                $('input').val(name);
             hackenbush.views.drawingArea.update();
         });
     };
 
     /* misc */
-	/** 
+    /** 
 	 * Convert an object to Array (json object to hash array in this case)
 	 *
 	 * @param graphUi, where we stock the new hash Array
@@ -192,23 +247,23 @@
 	 * @param random, a boolean, if the graph is taken from M. Soulignac's website or not.
 	 */	
     hackenbush.controller.objectToArray = function(graphUi, data, random) {
-		if (!random) {
-			hackenbush.controller.playerColors = data.playerColors;
-			data = data.graphUi;
-			graphUi = graphUi.graphUi;
-			$('#player1').val(hackenbush.controller.playerColors[0]);
-			$('#player2').val(hackenbush.controller.playerColors[1]);
-			hackenbush.controller.modClassColor($('#p1Color'), hackenbush.controller.playerColors[0]);
-			hackenbush.controller.modClassColor($('#p2Color'), hackenbush.controller.playerColors[1]);
-		}
-		hackenbush.controller.getObjProperties(graphUi, data, false, random);
+        if (!random) {
+            hackenbush.controller.playerColors = data.playerColors;
+            data = data.graphUi;
+            graphUi = graphUi.graphUi;
+            $('#player1').val(hackenbush.controller.playerColors[0]);
+            $('#player2').val(hackenbush.controller.playerColors[1]);
+            hackenbush.controller.modClassColor($('#p1Color'), hackenbush.controller.playerColors[0]);
+            hackenbush.controller.modClassColor($('#p2Color'), hackenbush.controller.playerColors[1]);
+        }
+        hackenbush.controller.getObjProperties(graphUi, data, false, random);
     };
 
-	/** 
+    /** 
 	 * Convert array to create new Object
 	 *
 	 * @param graphUi, a hash table, where the data will be stocked
-	 * @return a object with the data in graphUi
+	 * @return an object with data in graphUi
 	 */	
     hackenbush.controller.arrayToObject = function(graphUi) {
         var graphUiObj = new Object();
@@ -217,7 +272,7 @@
         return graphUiObj;
     };
 
-	/** 
+    /** 
 	 * Get the properties of an element to convert it into a hash table or an object
 	 *
 	 * @param graphUi, a hash table or an object, where the data will be stocked
@@ -226,38 +281,38 @@
 	 * @param random, a boolean, if the graph is taken from M. Soulignac's website or not.
 	 */	
     hackenbush.controller.getObjProperties = function(graphUi, data, toObj, random) {
-		if (random)
-			graphUi.graphUi = hackenbush.controller.getObjPropertiesRandom(data);
-		else
-			hackenbush.controller.getObjPropertiesNoRandom(graphUi, data, toObj);
+        if (random)
+            graphUi.graphUi = hackenbush.controller.getObjPropertiesRandom(data);
+        else
+            hackenbush.controller.getObjPropertiesNoRandom(graphUi, data, toObj);
     };
-	/** 
+    /** 
 	 * Get the properties of an element to convert it into a hash table or an object
 	 *
 	 * @param graphUi, a hash table or an object, where the data will be stocked
 	 * @param data, where the data are stocked
 	 * @param toObj, a boolean, if you need an object->hash table translation or hash table->object translation
 	 */	
-	hackenbush.controller.getObjPropertiesNoRandom = function(graphUi, data, toObj) {
+    hackenbush.controller.getObjPropertiesNoRandom = function(graphUi, data, toObj) {
         var sourceId, destId, id;
-		if (toObj)
-			graphUi.nodes = new Object();
-		else
-			graphUi.nodes = new Array();
+        if (toObj)
+            graphUi.nodes = new Object();
+        else
+            graphUi.nodes = new Array();
         graphUi.groundedNodes = data.groundedNodes;
         graphUi.nodes.length = data.nodes.length;
         graphUi.edgeIdCounter = data.edgeIdCounter;
-		graphUi.nodeIdCounter = 0;
+        graphUi.nodeIdCounter = 0;
         for (sourceId in data.nodes) {
             if (sourceId !== "length") {
                 if (toObj) {
-					graphUi.nodes[sourceId] = new Object();
+                    graphUi.nodes[sourceId] = new Object();
                     graphUi.nodes[sourceId].neighbors = new Object();
-				}
+                }
                 else {
-					graphUi.nodes[sourceId] = new Array();
+                    graphUi.nodes[sourceId] = new Array();
                     graphUi.nodes[sourceId].neighbors = new Array();
-				}
+                }
                 graphUi.nodes[sourceId].degree = data.nodes[sourceId].degree;
                 graphUi.nodes[sourceId].id = data.nodes[sourceId].id;
                 graphUi.nodes[sourceId].neighbors.length = data.nodes[sourceId].neighbors.length;
@@ -279,52 +334,52 @@
         }
     };
 
-	/** 
+    /** 
 	 * Get the properties of an element to convert it into a hash table or an object
 	 *
 	 * @param graphUi, a hash table or an object, where the data will be stocked
 	 * @param data, where the data are stocked
 	 */	
-	hackenbush.controller.getObjPropertiesRandom = function(data) {
-		var graphUi = new HackenbushGraph();
-		var nodeId, nId, nX, nY, nWeight;
-		var edgeId, sId, dId, color, p1X, p1Y, p2X, p2Y, eWeight;
+    hackenbush.controller.getObjPropertiesRandom = function(data) {
+        var graphUi = new HackenbushGraph();
+        var nodeId, nId, nX, nY, nWeight;
+        var edgeId, sId, dId, color, p1X, p1Y, p2X, p2Y, eWeight;
 
-		graphUi.nodeIdCounter = 0;
-		graphUi.edgeIdCounter = 0;
+        graphUi.nodeIdCounter = 0;
+        graphUi.edgeIdCounter = 0;
 
         for (nodeId in data.nodes) {
-			nId = data.nodes[nodeId][0];
-			nX = data.nodes[nodeId][1]+100;
-			nY = data.nodes[nodeId][2]+20;
-			nWeight = new Point(nX, nY);
-			graphUi.addWeightedNode(nId, nWeight);
-			if (nY == 570)
-				graphUi.groundNodeNoCheck(nId);
+            nId = data.nodes[nodeId][0];
+            nX = data.nodes[nodeId][1]+100;
+            nY = data.nodes[nodeId][2]+20;
+            nWeight = new Point(nX, nY);
+            graphUi.addWeightedNode(nId, nWeight);
+            if (nY == 570)
+                graphUi.groundNodeNoCheck(nId);
         }
-		graphUi.nodeIdCounter = nId+1;
-		for (edgeId in data.edges) {
-			sId = data.edges[edgeId][0];
-			dId = data.edges[edgeId][1];
-			color = data.edges[edgeId][2]? "red" : "blue";
-			p1X = data.edges[edgeId][3][0]+100;
-			p1Y = data.edges[edgeId][3][1]+20;
-			p2X = data.edges[edgeId][4][0]+100;
-			p2Y = data.edges[edgeId][4][1]+20;
+        graphUi.nodeIdCounter = nId+1;
+        for (edgeId in data.edges) {
+            sId = data.edges[edgeId][0];
+            dId = data.edges[edgeId][1];
+            color = data.edges[edgeId][2]? "red" : "blue";
+            p1X = data.edges[edgeId][3][0]+100;
+            p1Y = data.edges[edgeId][3][1]+20;
+            p2X = data.edges[edgeId][4][0]+100;
+            p2Y = data.edges[edgeId][4][1]+20;
 
-			eWeight = new Object();
-			eWeight.color = color;
-			eWeight.controlP1 = new Point(p1X, p1Y);
-			eWeight.controlP2 = new Point(p2X, p2Y);
-			eWeight.startId = sId;
-			eWeight.goalId = dId;
+            eWeight = new Object();
+            eWeight.color = color;
+            eWeight.controlP1 = new Point(p1X, p1Y);
+            eWeight.controlP2 = new Point(p2X, p2Y);
+            eWeight.startId = sId;
+            eWeight.goalId = dId;
 			
-			graphUi.addWeightedEdge(sId, dId, eWeight);
-		}
-		return graphUi;
+            graphUi.addWeightedEdge(sId, dId, eWeight);
+        }
+        return graphUi;
     };
 
-	/** 
+    /** 
 	 * Rescale/resize a canvas
 	 *
 	 * @param oCanvas, the canvas you want to resize
@@ -347,7 +402,7 @@
         return oCanvas;
     };
 
-	/** 
+    /** 
 	 * Return the image data of a resized canvas
 	 *
 	 * @param oCanvas, the canvas you want to resize

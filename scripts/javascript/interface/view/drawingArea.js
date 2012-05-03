@@ -5,8 +5,8 @@
     var width = canvas[0].width;
     var height = canvas[0].height;
     
-    //if(!hackenbush.views.drawingArea) hackenbush.views.drawingArea = new AbstractView();
     
+    /* VAR */
     hackenbush.views.drawingArea.graphUi = new HackenbushGraph();
     hackenbush.views.drawingArea.graphUi.nodeIdCounter = 0;
     hackenbush.views.drawingArea.dash = new HackenbushGraph();
@@ -33,6 +33,15 @@
     
     hackenbush.views.drawingArea.grassHeight = 30;
     
+    
+    /* METHODS */
+    
+    
+    /**
+     * draw a node in the canvas.
+     * 
+     * @param point : a 2D Point  
+     */
     hackenbush.views.drawingArea.drawNode = function(point){
         
         var context = hackenbush.views.drawingArea.context;
@@ -47,6 +56,11 @@
         context.closePath();
     }
         
+    /**
+     * draw a node with shadow in the canvas(using drawNode).
+     * 
+     * @param point : a 2D Point  
+     */    
     hackenbush.views.drawingArea.drawShadowNode = function(point){
         var context = hackenbush.views.drawingArea.context;
         context.shadowColor = "black";
@@ -55,6 +69,12 @@
         context.shadowBlur = 0;
     }
     
+    /**
+     * draw a control point in the canvas.
+     * 
+     * @param point : a 2D Point
+     * @param borderColor : a string representing the color in hexadecimal.  
+     */
     hackenbush.views.drawingArea.drawControlPoint = function(point, borderColor) {
         var context = hackenbush.views.drawingArea.context;
         context.lineWidth = hackenbush.views.drawingArea.controlPBorderWidth;
@@ -67,6 +87,12 @@
         context.closePath();
     }
     
+    /**
+     * draw a line between two points in the canvas.
+     * 
+     * @param start: 2D Point
+     * @param goal : 2D Point  
+     */
     hackenbush.views.drawingArea.drawLine = function (start, goal) { 
         var context = hackenbush.views.drawingArea.context;
         context.lineWidth = 2;
@@ -80,6 +106,13 @@
         context.globalAlpha = 1;
     }
     
+    /**
+     * draw a beziercurve in the canvas.
+     * 
+     * @param bezierCurve : a BezierCurve object containing 4 control points.
+     * @param alpha : the alpha of the bezier curve.
+     * @param showControlPoint : a boolean (true ==> show the control points || false ==> do not show the control points) 
+     */
     hackenbush.views.drawingArea.drawBezierCurve = function(bezierCurve, alpha, showControlPoint){
         var start, goal;
         if(hackenbush.views.drawingArea.dash.nodeExists(bezierCurve.startId)) start = hackenbush.views.drawingArea.dash.getNodeValue(bezierCurve.startId);
@@ -111,6 +144,13 @@
         
     }
     
+    /**
+     * draw a beziercurve with shadow in the canvas (using drawBezierCurve).
+     * 
+     * @param bezierCurve : a BezierCurve object containing 4 control points.
+     * @param alpha : the alpha of the bezier curve.
+     * @param showControlPoint : a boolean (true ==> show the control points || false ==> do not show the control points) 
+     */
     hackenbush.views.drawingArea.drawShadowBezierCurve = function(bezierCurve, alpha, showControlPoint){
         var context = hackenbush.views.drawingArea.context;
         context.shadowColor = bezierCurve.color;
@@ -120,6 +160,9 @@
     }
     
  
+    /**
+     * draw the ground.
+     */
     hackenbush.views.drawingArea.drawGrass = function() {
         var context = hackenbush.views.drawingArea.context;
         context.beginPath();
@@ -132,7 +175,10 @@
         context.shadowBlur = 0;
         hackenbush.views.drawingArea.imageData = context.getImageData(0, 0, width, height);
     }
-        
+    
+    /**
+     * refreshs the canvas while mousemove is detected and the user edit the drawing area.
+     */
     hackenbush.views.drawingArea.refresh = function() {
         hackenbush.views.drawingArea.context.putImageData(hackenbush.views.drawingArea.imageData, 0, 0);
             
@@ -175,6 +221,10 @@
         if(hackenbush.views.drawingArea.selectedEdge) hackenbush.views.drawingArea.drawShadowBezierCurve(hackenbush.views.drawingArea.selectedEdge.weight, 1, true);
     }
         
+        
+    /**
+     * updates the canvas when mouseup is detected and the user has changed something.
+     */    
     hackenbush.views.drawingArea.update = function(showSelectedEdge){            
         hackenbush.views.drawingArea.reset();
         for (var itemKey in hackenbush.views.drawingArea.graphUi.nodes){
@@ -201,7 +251,13 @@
         if(hackenbush.views.drawingArea.selectedEdge  && showSelectedEdge) hackenbush.views.drawingArea.drawShadowBezierCurve(hackenbush.views.drawingArea.selectedEdge.weight, 1, true);
         hackenbush.views.drawingArea.imageData = hackenbush.views.drawingArea.context.getImageData(0, 0, width, height);
     }
-        
+    
+
+    /**
+     * set the cursor while the mouse is over the canvas.
+     * 
+     * @param tool : a string refering to the current tool used.
+     */
     hackenbush.views.drawingArea.setCursor = function(tool) {
         if (tool === "draw") canvas.css("cursor", "crosshair");
         else if(tool === "erase") canvas.css("cursor", "url('./ressources/images/cursor-scissors.png'), pointer");
@@ -209,6 +265,7 @@
         else if (tool === "selected") canvas.css("cursor", "move");
     }
 
+    
     hackenbush.views.drawingArea.elementSelected = function(tool) {
         var elementTool = $('#'+tool);
         var prevElementTool = $('#main-left .hideInPlay.locked');
@@ -221,17 +278,24 @@
         elementTool.removeClass('toolChooser');
         elementTool.addClass('locked');
     }
-        
+    
+    /**
+     * modify the cursor when it is over a node, a bezier curve or a control point, in the canvas. 
+     */    
     hackenbush.views.drawingArea.cursorIsOver = function() {
         if (hackenbush.views.drawingArea.tool === "edit" ) hackenbush.views.drawingArea.setCursor('selected');
         if (hackenbush.views.drawingArea.tool === "erase") canvas.css("cursor", "url('./ressources/images/cursor-scissors-active.png'), not-allowed");
     }
-        
+    
+    /**
+     * reset the canvas to it initial state.
+     */
     hackenbush.views.drawingArea.reset = function(){
         var context = hackenbush.views.drawingArea.context;
         context.clearRect(0, 0, width, height);
         hackenbush.views.drawingArea.drawGrass();
     }
+    
     
     hackenbush.views.drawingArea.drawGrass();
 })();

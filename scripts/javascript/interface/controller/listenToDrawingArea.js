@@ -1,15 +1,35 @@
 
 (function(){
-
+    /* VAR */
     var canvas = $("#canvasArea");
     var width = canvas[0].width;
     var height = canvas[0].height;
     
+    
+    /* METHODS */
+    
+    /**
+     *checks if the position match the ground
+     *
+     *@param x : x-coordonate
+     *@param y : y-coordonate
+     *
+     *@return true if the position match the ground. False otherwise.
+     **/
     hackenbush.views.drawingArea.isOnGrass = function(x, y){
         if(y+hackenbush.views.drawingArea.nodeRadius >= height - hackenbush.views.drawingArea.grassHeight) return true;
         return false;
     }
     
+    
+    /**
+     * returns the control point overflowed by the mouse 
+     * 
+     * @param x : x-coordonate (mouse)
+     * @param y : y-coordonate (mouse)
+     * 
+     * @return a Point refering to the control point overflowed. null if neither is selected
+     **/
     hackenbush.views.drawingArea.getControlPointByCoord = function(x, y) {
         function match(controlPoint){
             if(x >= controlPoint.x - hackenbush.views.drawingArea.nodeRadius && x <= controlPoint.x + hackenbush.views.drawingArea.nodeRadius && y >= controlPoint.y - hackenbush.views.drawingArea.nodeRadius && y <= controlPoint.y + hackenbush.views.drawingArea.nodeRadius)
@@ -26,6 +46,15 @@
         return point;
     }
     
+    
+    /**
+     * returns the node overflowed by the mouse
+     * 
+     * @param x : x-coordonate (mouse)
+     * @param y : y-coordonate (mouse)
+     * 
+     * @return a Point refering to the node overflowed. null if neither is selected
+     **/
     hackenbush.views.drawingArea.getNodeByCoord = function(x, y) {
         var radius = hackenbush.views.drawingArea.nodeRadius;
         var distance = 2*radius;
@@ -36,6 +65,15 @@
         return 0;          
     }
     
+    
+    /**
+     * returns the edge overflowed by the mouse
+     * 
+     * @param x : x-coordonate (mouse)
+     * @param y : y-coordonate (mouse)
+     * 
+     * @return the edge overflowed. null if neither is selected
+     **/
     hackenbush.views.drawingArea.getEdgeByCoord = function(x, y) {
         
         function match(bezierCurve){
@@ -87,6 +125,12 @@
     }
     
     
+    /**
+     * detects items on the canvas which are selected by the user (performed at mousedown)
+     * 
+     * @param x : x-coordonate (mouse)
+     * @param y : y-coordonate (mouse)
+     **/
     hackenbush.views.drawingArea.setSelectedItem = function(x, y){
         
         hackenbush.views.drawingArea.selectedControlPoint = hackenbush.views.drawingArea.getControlPointByCoord(x, y);
@@ -123,6 +167,12 @@
     }
     
     
+    /**
+     * kind of mouseover event, performed while mousemove, that detects if the mouse overflow any element on the canvas.
+     * 
+     * @param x : x-coordonate (mouse)
+     * @param y : y-coordonate (mouse)
+     **/
     hackenbush.views.drawingArea.mouseOverSomething = function(x, y, isPlaying){
         var id = hackenbush.views.drawingArea.getNodeByCoord(x, y);
         if(id) {
@@ -149,6 +199,13 @@
     }
     
     
+    /**
+     * adds a node to the drawing area
+     * 
+     * @param x : x-coordonate (mouse)
+     * @param y : y-coordonate (mouse)
+     * 
+     **/
     hackenbush.views.drawingArea.addNode = function(x, y) {
             
         if(hackenbush.views.drawingArea.isOnGrass(x,y)) y = height-hackenbush.views.drawingArea.grassHeight;
@@ -171,6 +228,12 @@
     }
     
     
+    /**
+     * moves a node on the canvas without changing it position in the view model.(performed while [mousemove+mousedown] ) (using dash model)
+     * 
+     * @param x : x-coordonate (mouse)
+     * @param y : y-coordonate (mouse)
+     **/
     hackenbush.views.drawingArea.move = function(x, y){
         
         if(hackenbush.views.drawingArea.selectedControlPoint){
@@ -195,6 +258,13 @@
     }
     
     
+    /**
+     * draws a stem composed by an edge connecting two nodes.(performed while [mousemove+mousedown]) (using dash model)
+     * 
+     * @param x : x-coordonate (mouse)
+     * @param y : y-coordonate (mouse) 
+     * @param color : the edge color
+     **/
     hackenbush.views.drawingArea.draw = function(x, y, color){
                         
         if(hackenbush.views.drawingArea.isOnGrass(x,y)) y = height - hackenbush.views.drawingArea.grassHeight;
@@ -229,7 +299,9 @@
         hackenbush.views.drawingArea.refresh();
     }
         
-        
+    /**
+     * adds an edge to the view model using the dash model modifyed by the user.(using view model) (perfomred at mouseup)
+     **/    
     hackenbush.views.drawingArea.addEdge = function() {
             
         var dashId = hackenbush.views.drawingArea.graphUi.nodeIdCounter + 42;
@@ -257,7 +329,11 @@
         }
             
     }
-        
+    
+
+    /**
+     * applys the changes ordered by the user (using view model) (performed at mouseup)
+     **/
     hackenbush.views.drawingArea.saveChanges = function(){
         //FUNCTIONS
         function searchDuplicate(currentNodeId){
@@ -305,6 +381,14 @@
         }
     }
         
+        
+    /**
+     * cuts a stem. If the user uses editing mode, he can cut every stem. If he uses playing mode, he cans only cut stem from his color.
+     * 
+     * @param x : x-coordonate (mouse)
+     * @param y : y-coordonate (mouse)
+     * @param isPlaying : true if the user is playing, false otherwise.
+     **/    
     hackenbush.views.drawingArea.erase = function(x, y, isPlaying){
         var edge = hackenbush.views.drawingArea.getEdgeByCoord(x, y);
         if(edge) {
@@ -327,6 +411,10 @@
         hackenbush.views.drawingArea.update();
     }
         
+        
+    /**
+     * reinitializes the dash and apply some rules(like remove lonely nodes)
+     **/    
     hackenbush.views.drawingArea.apply = function(){
         hackenbush.views.drawingArea.dash = new HackenbushGraph();
         hackenbush.views.drawingArea.currentNodeId = 0;
@@ -337,6 +425,9 @@
         hackenbush.views.drawingArea.update(true);
     }
         
+    /**
+     * reinitializes all the drawing area removing every drawing.
+     **/    
     hackenbush.views.drawingArea.eraseAll = function() {
         hackenbush.views.drawingArea.selectedEdge = null;
         hackenbush.views.drawingArea.graphUi = new HackenbushGraph();
@@ -345,6 +436,10 @@
         hackenbush.views.drawingArea.update(true);
     }
     
+    
+    /**
+     * builds the graph game
+     **/
     hackenbush.views.drawingArea.buildGraphGame = function(){
         
         var alreadyVisitedEdge = new Array(); 
@@ -377,6 +472,10 @@
         hackenbush.controller.buildGraphGame(graph);
     }
     
+    
+    /**
+     * adds necessary listeners to the drawing area 
+     **/
     hackenbush.views.drawingArea.listenToDrawingArea = function() {
         
         var mousedown = false;

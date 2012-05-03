@@ -2,7 +2,9 @@
     
     hackenbush.controller.playerColors = new Array(); 
     
-    
+    /**
+     * adds necessary listeners to the tool box (general controller)
+     **/
     hackenbush.controller.listenToTools = function(){		
 		
         $("#start").click( function(event) {
@@ -39,6 +41,10 @@
             }
         });   
     }
+    
+    /**
+     * initializes an array(playerColors) wich know the player colors
+     **/
     hackenbush.controller.initPlayerColors = function(){
         var player1 = $("#player1");
         var player2 = $("#player2");
@@ -46,6 +52,11 @@
         hackenbush.controller.playerColors[1] = player2[0].value;
     }
         
+    /**
+     * changes the player colors
+     * 
+     * @param playerInt : an integer representing the player (player1 := 0, player2 := 1)
+     **/    
     hackenbush.controller.setPlayerColors = function(playerInt) {
         // VAR
         var player1 = $("#player1");
@@ -78,6 +89,10 @@
     
     hackenbush.views.drawingArea.color = "green"; // default color : primary green
     hackenbush.views.drawingArea.tool = "draw"; // default tool : draw
+    
+    /**
+     * adds necessary listeners to the tool box (little view controller)
+     **/
     hackenbush.views.drawingArea.listenToTools = function() {
         
         $(".colorChooser").mousedown(function(event){
