@@ -22,6 +22,11 @@ var AIPlayer12 = function(){
 	 * @return the next edge to remove in abstrHbGraph (undefined if impossible), as an array of integers [sourceid, destid]
 	 */			
     this.play = function(abstrHbGraph, color, lastMove) {
-        return this.randomTrick();
+        
+        var trick = null;
+        
+        trick = this.randomTrick();
+        
+        return trick;
     } 
 }
