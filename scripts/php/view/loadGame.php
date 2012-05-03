@@ -9,7 +9,7 @@
 	if (isset($gamesData)) {
 		$gamesNumber = count($gamesData);
 		for ($i = 0; $i < $gamesNumber; $i++) {
-			if (substr_compare($gamesData[$i]->name, "IA_", 0, 3) === 0)
+			if (substr_compare($gamesData[$i]->name, "RB_", 0, 3) === 0)
 				$graphClass = "isRedBlueGraph";
 			else
 				$graphClass = "notIAGraph";

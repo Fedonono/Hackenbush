@@ -1,21 +1,32 @@
 (function() {
     /** 
-	 * Change element deals with if the selected mode contains an IA or not
+	 * Add/remove class inIa at the specified element
 	 *
-	 * @param ia, boolean true if an IA is present, false if there is no IA
-	 */			
-	hackenbush.controller.modElemIa = function(ia) {
-		var loadForm = $('#load-form');
-		var modeForm = $('#mode-modal');
+	 * @param element, the element to modified
+	 * @param ia, boolean, true if we add the class, false otherwise
+	 */		
+	function modClassElementIa(element, ia) {
 		if (ia) {
-			loadForm.addClass('inIa');
-			modeForm.addClass('inIa');
+			element.addClass('inIa');
 		} else {
-			if (loadForm.hasClass('inIa')) {
-				loadForm.removeClass('inIa');
-				modeForm.removeClass('inIa');
+			if (element.hasClass('inIa')) {
+				element.removeClass('inIa');
 			}
 		}
+	}
+
+    /** 
+	 * Change element deals with if the selected mode contains an IA or not
+	 *
+	 * @param element, the element to modified
+	 * @param ia, boolean true if an IA is present, false if there is no IA
+	 */			
+	hackenbush.controller.modElemIa = function(element, ia) {
+		if (element === "mode")
+			element = $('#mode-modal');
+		else
+			element = $('#load-form');
+		modClassElementIa(element, ia);
 	}
 
     /** 

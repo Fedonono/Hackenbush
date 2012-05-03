@@ -172,7 +172,7 @@
         hackenbush.controller.setTurns(0);
     }
 
-	/** 
+    /** 
 	 * Change the current mode game
 	 *
 	 * @param mode, string of the choosen mode
@@ -181,23 +181,23 @@
 		switch (mode) {
 			case "humanVsHuman":
 				hackenbush.controller.playersNature = [true, true];
-				hackenbush.controller.modElemIa(false);
+				hackenbush.controller.modElemIa("load", false);
 				break;
 			case "humanVsIa":
 				hackenbush.controller.playersNature = [true, false];
-				hackenbush.controller.modElemIa(true);
+				hackenbush.controller.modElemIa("load", true);
 				break;
 			case "iaVsIa":
 				hackenbush.controller.playersNature = [false, false];
-				hackenbush.controller.modElemIa(true);
+				hackenbush.controller.modElemIa("load", true);
 				break;
 			case "IaVsHuman":
 				hackenbush.controller.playersNature = [false, true];
-				hackenbush.controller.modElemIa(true);
+				hackenbush.controller.modElemIa("load", true);
 				break;
 			default: 
 				hackenbush.controller.playersNature = [true, true];
-				hackenbush.controller.modElemIa(false);
+				hackenbush.controller.modElemIa("load", false);
 				break;
 		}
 	}
@@ -247,14 +247,14 @@
 		var edgesCount = hackenbush.views.drawingArea.graphUi.getEdgesCount(sId, dId);
 		var indexEdge = 0;
 		while (!greenEdge && indexEdge < edgesCount) {
-			if (greenEdge && hackenbush.views.drawingArea.graphUi.getEdgeValueWithoutCheck(sId, dId, indexEdge).color === "green")
+			if (hackenbush.views.drawingArea.graphUi.getEdgeValueWithoutCheck(sId, dId, indexEdge).color === "green")
 				greenEdge = true;
 			indexEdge++;
 		}
 		return greenEdge;
 	}
 
-    /** 
+	/** 
 	 * Save a Game
 	 *
 	 * @param name, a string
@@ -271,7 +271,7 @@
         var gameJson = JSON.stringify(game);
         var imgData = encodeURIComponent(imageData); // have to encode to conserve the sign '+' when there is ajax
 		if (graphUiObj.redBlueGraph === true)
-			hackenbush.controller.saveToFile('IA_'+name, gameJson, imgData);
+			hackenbush.controller.saveToFile('RB_'+name, gameJson, imgData);
 		else
 			hackenbush.controller.saveToFile(name, gameJson, imgData);
     };
@@ -289,7 +289,9 @@
             url: './scripts/php/controller/saveGame.php',
             data: 'name='+name+'&data='+gameJson+'&imageData='+imageData,
             success: function() {
-                $('input').val(name);
+				if (name.indexOf('RB_') != -1)
+					name = name.split('RB_')[1];
+				$('input').val(name);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error: ' + textStatus);
@@ -316,8 +318,11 @@
         }
         $.getJSON(path, function(gameData) {
             hackenbush.controller.objectToArray(hackenbush.views.drawingArea, gameData, random);
-            if (!random)
-                $('input').val(name);
+            if (!random) {
+				if (name.indexOf('RB_') != -1)
+					name = name.split('RB_')[1];
+				$('input').val(name);
+			}
             hackenbush.views.drawingArea.update();
         });
     };
@@ -379,11 +384,13 @@
 	 */	
     hackenbush.controller.getObjPropertiesNoRandom = function(graphUi, data, toObj) {
         var sourceId, destId, id;
-        graphUi.redBlueGraph = true;
-        if (toObj)
-            graphUi.nodes = new Object();
-        else
-            graphUi.nodes = new Array();
+		if (toObj) {
+			graphUi.nodes = new Object();
+			graphUi.redBlueGraph = true;
+		}
+		else
+			graphUi.nodes = new Array();
+
         graphUi.groundedNodes = data.groundedNodes;
         graphUi.nodes.length = data.nodes.length;
         graphUi.edgeIdCounter = data.edgeIdCounter;
