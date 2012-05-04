@@ -10,8 +10,8 @@
             $('.startbg').addClass("locked");
             var modeChooser = $('#modeChooser');
             var load = $('#load');
-            hackenbush.controller.modClassButton(modeChooser, false);
-            hackenbush.controller.modClassButton(load, false);
+            hackenbush.views.page.modClassButton(modeChooser, false);
+            hackenbush.views.page.modClassButton(load, false);
             modeChooser.unbind('click');
             load.unbind('click');
             hackenbush.controller.startGame();
@@ -19,6 +19,12 @@
         
         $("#edition").click(function(event) {
             hackenbush.controller.stopGame();
+        });
+
+		$('#help').click(function(event) {
+			var helpModal = $('#help-modal');
+			helpModal.dialog( "open" );
+			helpModal.load("./views/help-"+hackenbush.controller.page+".html");
         });
 
         hackenbush.controller.listenToolChooserInEdit();
@@ -33,11 +39,6 @@
             var toolSelected = event.currentTarget.id;
             if(toolSelected === "save"){
                 $('#save-form').dialog( "open" );
-            }
-            if(toolSelected === "help") {
-                var helpModal = $('#help-modal');
-                helpModal.dialog( "open" );
-                helpModal.load("./views/help-"+hackenbush.controller.page+".html");
             }
         });   
     }

@@ -13,7 +13,7 @@
     outline: 3px solid rgba(0,226,229,0.5);
 }
 
-.game:hover, .mode:hover {
+.game:hover, .mode:hover, .randomGraph:hover {
 	background-color: #a0f4f5;
 	color: white;
 	cursor: pointer;
@@ -22,3 +22,10 @@
 .game, .mode, .winner {
 	color: #ff8585;
 }
+
+.randomGraph {
+	font-size: 130px;
+	line-height: 154px;
+	height: 154px;
+}
+

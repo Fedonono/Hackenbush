@@ -179,23 +179,23 @@
 		switch (mode) {
 			case "humanVsHuman":
 				hackenbush.controller.playersNature = [true, true];
-				hackenbush.controller.modElemIa("load", false);
+				hackenbush.views.page.modElemIa("load", false);
 				break;
 			case "humanVsIa":
 				hackenbush.controller.playersNature = [true, false];
-				hackenbush.controller.modElemIa("load", true);
+				hackenbush.views.page.modElemIa("load", true);
 				break;
 			case "iaVsIa":
 				hackenbush.controller.playersNature = [false, false];
-				hackenbush.controller.modElemIa("load", true);
+				hackenbush.views.page.modElemIa("load", true);
 				break;
 			case "IaVsHuman":
 				hackenbush.controller.playersNature = [false, true];
-				hackenbush.controller.modElemIa("load", true);
+				hackenbush.views.page.modElemIa("load", true);
 				break;
 			default: 
 				hackenbush.controller.playersNature = [true, true];
-				hackenbush.controller.modElemIa("load", false);
+				hackenbush.views.page.modElemIa("load", false);
 				break;
 		}
 	}
@@ -340,8 +340,8 @@
             graphUi = graphUi.graphUi;
             $('#player1').val(hackenbush.controller.playerColors[0]);
             $('#player2').val(hackenbush.controller.playerColors[1]);
-            hackenbush.controller.modClassColor($('#p1Color'), hackenbush.controller.playerColors[0]);
-            hackenbush.controller.modClassColor($('#p2Color'), hackenbush.controller.playerColors[1]);
+            hackenbush.views.page.modClassColor($('#p1Color'), hackenbush.controller.playerColors[0]);
+            hackenbush.views.page.modClassColor($('#p2Color'), hackenbush.controller.playerColors[1]);
         }
         hackenbush.controller.getObjProperties(graphUi, data, false, random);
     };

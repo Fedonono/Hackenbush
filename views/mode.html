@@ -7,14 +7,14 @@
 <script type='text/javascript'>
 	(function() {
 		if (hackenbush.controller.isRedBlueGraph(hackenbush.views.drawingArea.graphUi)) {
-			hackenbush.controller.modElemIa("mode", false);
+			hackenbush.views.page.modElemIa("mode", false);
 			var mode = $('.modeChooser');
 			mode.delegate('div', 'click', function(ev) {
 				hackenbush.controller.loadMode(ev.currentTarget.id);
 				$('#mode-modal').dialog("close");
 			});
 		} else {
-			hackenbush.controller.modElemIa("mode", true);
+			hackenbush.views.page.modElemIa("mode", true);
 			$('.notInIa').click( function(ev) {
 				hackenbush.controller.loadMode(ev.currentTarget.id);
 				$('#mode-modal').dialog("close");

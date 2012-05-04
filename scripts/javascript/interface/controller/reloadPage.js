@@ -8,8 +8,8 @@
 		var hashParams = hackenbush.controller.getHashParams();
 		hackenbush.controller.page = hashParams.page ? hashParams.page : hackenbush.controller.page;
 		if (hashParams.page) {
-		  hackenbush.controller.selectedPage(hackenbush.controller.page);
-		  hackenbush.controller.loadPage(hashParams.page);
+		  hackenbush.views.page.selectedPage(hackenbush.controller.page);
+		  hackenbush.views.page.loadPage(hashParams.page);
 		}
 	};
 

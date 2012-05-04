@@ -1,4 +1,5 @@
 (function() {
+	hackenbush.views.page = new Object();
     /** 
 	 * Add/remove class inIa at the specified element
 	 *
@@ -21,7 +22,7 @@
 	 * @param element, the element to modified
 	 * @param ia, boolean true if an IA is present, false if there is no IA
 	 */			
-	hackenbush.controller.modElemIa = function(element, ia) {
+	hackenbush.views.page.modElemIa = function(element, ia) {
 		if (element === "mode")
 			element = $('#mode-modal');
 		else
@@ -35,7 +36,7 @@
 	 * @param element a DOM element
 	 * @param visible the boolean to make the element visible or not.
 	 */			
-	hackenbush.controller.modClassButton = function(element, visible) {
+	hackenbush.views.page.modClassButton = function(element, visible) {
 		if (visible) {
 			element.addClass('toolChooser');
 			element.addClass('button');
@@ -68,7 +69,7 @@
 	 * @param element a DOM element
 	 * @param color string of color needed (blue, green or red)
 	 */	
-	hackenbush.controller.modClassColor = function(element, color) {
+	hackenbush.views.page.modClassColor = function(element, color) {
 		if (element.hasClass('blue'))
 			element.removeClass('blue');
 		if (element.hasClass('red'))
@@ -84,7 +85,7 @@
 	 *
 	 * @param page the string name of current page (recup by the hash and M. Sabloniere's function
 	 */	
-	hackenbush.controller.selectedPage = function(page) {
+	hackenbush.views.page.selectedPage = function(page) {
 		var prevSelectedId = $('.selected');
 		prevSelectedId.addClass('button-bottom');
 		prevSelectedId.removeClass('selected');
@@ -98,7 +99,7 @@
 	 *
 	 * @param page the string name of current page (recup by the hash and M. Sabloniere's function)
 	 */	
-	hackenbush.controller.loadPage = function(page) {
+	hackenbush.views.page.loadPage = function(page) {
 		var mainContainer = $('#main-container-canvas');
 		if (page === "edition" || page === "play") {
 			var containerToHide = $('.visible'); // make the page test.html or the edition page visible/invisible
@@ -106,9 +107,6 @@
 			containerToHide.addClass('hidden');
 			mainContainer.removeClass('hidden');
 			mainContainer.addClass('visible');
-			var winEl = $('#win');
-			if (!winEl.hasClass('hidden'))
-				winEl.addClass('hidden');
 
 			var toModif = false;
 
@@ -130,7 +128,7 @@
 				colorChooser.addClass('button');
 				colorChooser.removeClass('locked');
 
-				this.modClassButton(load, true);
+				hackenbush.views.page.modClassButton(load, true);
 
 				toModif = true;
 				var visible = true;
@@ -142,18 +140,18 @@
 				colorChooser.removeClass('button');
 				colorChooser.addClass('locked');
 				if (hackenbush.controller.playerColors !== undefined) {
-					hackenbush.controller.modClassColor($('#p1Color'), hackenbush.controller.playerColors[0]);
-					hackenbush.controller.modClassColor($('#p2Color'), hackenbush.controller.playerColors[1]);
+					hackenbush.views.page.modClassColor($('#p1Color'), hackenbush.controller.playerColors[0]);
+					hackenbush.views.page.modClassColor($('#p2Color'), hackenbush.controller.playerColors[1]);
 				}
 
-				this.modClassButton(load, true);
+				hackenbush.views.page.modClassButton(load, true);
 
 				toModif = true;
 				var visible = false;
 			}
 			if (toModif) {
-				this.modClassButton($('.hideInPlay'), visible);
-				this.modClassButton(modeChooser, !visible);
+				hackenbush.views.page.modClassButton($('.hideInPlay'), visible);
+				hackenbush.views.page.modClassButton(modeChooser, !visible);
 				modClassBlock($('.informations'), !visible);
 				modClassBlock($('.options'), visible);
 				modClassBlock($('.startbg'), !visible);

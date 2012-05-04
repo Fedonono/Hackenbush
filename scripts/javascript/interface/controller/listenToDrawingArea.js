@@ -1,4 +1,3 @@
-
 (function(){
     /* VAR */
     var canvas = $("#canvasArea");
@@ -441,7 +440,7 @@
      **/    
     hackenbush.views.drawingArea.resetGame = function() {
         hackenbush.views.drawingArea.eraseAll();
-        hackenbush.controller.loadPage("play");
+        hackenbush.views.page.loadPage("play");
     }
 
     /**
