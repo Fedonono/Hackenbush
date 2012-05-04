@@ -60,7 +60,7 @@
     color : #d3bebe;
 }
 
-.button.toolChooser, #main-left .locked, .help {
+.button.toolChooser, #main-left .locked, .help, .hideInEdit {
     background-image: url(../ressources/images/toolChooser.png);
 }
 
@@ -100,7 +100,7 @@
     background-position:-283px -7px;
 }
 
-#load:hover {
+.button#load:hover {
     background-position:-283px 57px;
 }
 
@@ -120,8 +120,23 @@
     background-position:-422px 58px;
 }
 
+#resetGame {
+    background-position:-489px -5px;
+}
+
+#resetGame:hover {
+    background-position:-490px 57px;
+}
+
+#modeChooser {
+    background-position:-561px -5px;
+}
+
+.button#modeChooser:hover {
+    background-position:-561px 58px;
+}
+
 #modeChooser, #resetGame {
-    background-position:0px 0px;
 	position: relative;
 	top: -280px;
 	border-radius: 2.5em;
