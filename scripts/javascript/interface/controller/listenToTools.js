@@ -5,47 +5,56 @@
     /**
      * adds necessary listeners to the tool box (general controller)
      **/
-    hackenbush.controller.listenToTools = function(){		
-		
+    hackenbush.controller.listenToTools = function(){				
         $("#start").click( function(event) {
             $('.startbg').addClass("locked");
-            hackenbush.controller.modClassButton($('#modeChooser'), false, false);
-            hackenbush.controller.modClassButton($('#load'), false, false);
-            $('#load').unbind('click');
+            var modeChooser = $('#modeChooser');
+            var load = $('#load');
+            hackenbush.controller.modClassButton(modeChooser, false);
+            hackenbush.controller.modClassButton(load, false);
+            modeChooser.unbind('click');
+            load.unbind('click');
             hackenbush.controller.startGame();
         });
         
         $("#edition").click(function(event) {
             hackenbush.controller.stopGame();
         });
-                
-        hackenbush.controller.listenToolChooser();
+
+        hackenbush.controller.listenToolChooserInEdit();
+        hackenbush.controller.listenToolChooserInPlay();
     }
     
     /**
-     * adds necessary listeners to the tool box for the toolChooser element
+     * adds necessary listeners to the tool box for the toolChooser element in Edition mode
      **/
-    hackenbush.controller.listenToolChooser = function(){
-        $(".toolChooser").click( function(event) {
+    hackenbush.controller.listenToolChooserInEdit = function(){
+        $(".toolChooser.hideInPlay").click( function(event) {
             var toolSelected = event.currentTarget.id;
             if(toolSelected === "save"){
                 $('#save-form').dialog( "open" );
-            }
-            if(toolSelected === "load") {
-                var loadForm = $('#load-form');
-                loadForm.dialog( "open" );
-                loadForm.load("./scripts/php/view/loadGame.php");
             }
             if(toolSelected === "help") {
                 var helpModal = $('#help-modal');
                 helpModal.dialog( "open" );
                 helpModal.load("./views/help-"+hackenbush.controller.page+".html");
             }
-            if(toolSelected === "modeChooser") {
-                var modeModal = $('#mode-modal');
-                modeModal.dialog( "open" );
-                modeModal.load("./views/mode.html");
-            }
+        });   
+    }
+
+    /**
+     * adds necessary listeners to the tool box for the toolChooser element in Play mode
+     **/
+    hackenbush.controller.listenToolChooserInPlay = function(){
+        $("#load").click( function(event) {
+			var loadForm = $('#load-form');
+			loadForm.dialog( "open" );
+			loadForm.load("./scripts/php/view/loadGame.php");
+        });
+        $("#modeChooser").click( function(event) {
+			var modeModal = $('#mode-modal');
+			modeModal.dialog( "open" );
+			modeModal.load("./views/mode.html");
         });   
     }
 
