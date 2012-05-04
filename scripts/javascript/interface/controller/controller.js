@@ -93,7 +93,6 @@
      * reset the game
      **/
     hackenbush.controller.reset = function(){
-        $('.startbg').removeClass("locked");
         var winEl = $('#win');
         winEl.addClass('hidden');
         winEl.html("");

@@ -9,8 +9,9 @@
 		
         $("#start").click( function(event) {
             $('.startbg').addClass("locked");
-            hackenbush.controller.modClassButton($('#modeChooser'), false);
-            hackenbush.controller.modClassButton($('#load'), false);
+            hackenbush.controller.modClassButton($('#modeChooser'), false, false);
+            hackenbush.controller.modClassButton($('#load'), false, false);
+            $('#load').unbind('click');
             hackenbush.controller.startGame();
         });
         
@@ -18,6 +19,13 @@
             hackenbush.controller.stopGame();
         });
                 
+        hackenbush.controller.listenToolChooser();
+    }
+    
+    /**
+     * adds necessary listeners to the tool box for the toolChooser element
+     **/
+    hackenbush.controller.listenToolChooser = function(){
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
             if(toolSelected === "save"){
@@ -27,7 +35,6 @@
                 var loadForm = $('#load-form');
                 loadForm.dialog( "open" );
                 loadForm.load("./scripts/php/view/loadGame.php");
-                if(hackenbush.controller.isPlaying)hackenbush.controller.reset();
             }
             if(toolSelected === "help") {
                 var helpModal = $('#help-modal');
@@ -41,7 +48,7 @@
             }
         });   
     }
-    
+
     /**
      * initializes an array(playerColors) wich know the player colors
      **/
@@ -111,6 +118,7 @@
         $(".toolChooser").click( function(event) {
             var toolSelected = event.currentTarget.id;
             if(toolSelected === "eraseAll") hackenbush.views.drawingArea.eraseAll();
+            if(toolSelected === "resetGame") hackenbush.views.drawingArea.resetGame();
             if (toolSelected === "edit" | toolSelected === "draw" | toolSelected === "erase") {
                 hackenbush.views.drawingArea.elementSelected(toolSelected);
                 hackenbush.views.drawingArea.setCursor(toolSelected);

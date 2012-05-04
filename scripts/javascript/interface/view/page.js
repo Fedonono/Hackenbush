@@ -35,15 +35,18 @@
 	 * @param element a DOM element
 	 * @param visible the boolean to make the element visible or not.
 	 */			
-	hackenbush.controller.modClassButton = function(element, visible) {
+	hackenbush.controller.modClassButton = function(element, visible, first) {
 		if (visible) {
 			element.addClass('toolChooser');
 			element.addClass('button');
 			element.removeClass('locked');
+			if (first)
+				hackenbush.controller.listenToolChooser();
 		} else {
 			element.removeClass('toolChooser');
 			element.removeClass('button');
 			element.addClass('locked');
+			element.unbind('click');
 		}
 	}
 
@@ -116,6 +119,7 @@
 			var load = $('#load');
 
 			hackenbush.controller.loadMode("humanVsHuman");
+			hackenbush.controller.reset();
 
 			if (page === "edition" && mainContainer.hasClass('lock')) { // to switch between edition and play, we need just to modify the button (to unlock/lock them).
 				mainContainer.removeClass('lock');
@@ -124,7 +128,7 @@
 				colorChooser.addClass('button');
 				colorChooser.removeClass('locked');
 
-				this.modClassButton(load, true);
+				this.modClassButton(load, true, true);
 
 				toModif = true;
 				var visible = true;
@@ -140,14 +144,14 @@
 					hackenbush.controller.modClassColor($('#p2Color'), hackenbush.controller.playerColors[1]);
 				}
 
-				this.modClassButton(load, true);
+				this.modClassButton(load, true, true);
 
 				toModif = true;
 				var visible = false;
 			}
 			if (toModif) {
-				this.modClassButton($('.hideInPlay'), visible);
-				this.modClassButton($('#modeChooser'), !visible);
+				this.modClassButton($('.hideInPlay'), visible, false);
+				this.modClassButton($('#modeChooser'), !visible, false);
 				modClassBlock($('.informations'), !visible);
 				modClassBlock($('.options'), visible);
 				modClassBlock($('.startbg'), !visible);

@@ -435,8 +435,15 @@
         hackenbush.views.drawingArea.dash = new HackenbushGraph();
         hackenbush.views.drawingArea.update(true);
     }
-    
-    
+
+    /**
+     * reinitializes all the drawing area removing every drawing and unlock differents buttons.
+     **/    
+    hackenbush.views.drawingArea.resetGame = function() {
+        hackenbush.views.drawingArea.eraseAll();
+        hackenbush.controller.loadPage("play");
+    }
+
     /**
      * builds the graph game
      **/

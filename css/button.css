@@ -120,11 +120,11 @@
     background-position:-422px 58px;
 }
 
-#modeChooser {
+#modeChooser, #resetGame {
     background-position:0px 0px;
 	position: relative;
-	top: -380px;
-	border-radius: 2em;
+	top: -280px;
+	border-radius: 2.5em;
 }
 
 .button-bottom, .selected {
