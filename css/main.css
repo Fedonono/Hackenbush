@@ -71,6 +71,10 @@ a {
 	text-align: right;
 }
 
+#foot {
+	color: #b19fa1;
+}
+
 .visible {
 	display: inherit;
 }

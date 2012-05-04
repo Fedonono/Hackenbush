@@ -57,7 +57,7 @@
 }
 
 .options, .button, .button-bottom, .locked, .selected, .informations, .mini-button, .randomGraph {
-    color : #d3bebe;
+    color: #d3bebe;
 }
 
 .button.toolChooser, #main-left .locked, #resetGame, #modeChooser {
