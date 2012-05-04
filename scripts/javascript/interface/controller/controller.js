@@ -303,26 +303,28 @@
 	 * @param name, a string
 	 */	
     hackenbush.controller.loadGame = function(name) {
-        var path, random, gameData; // have to init gameData to avoid a closure.
-        $('#load-form').dialog("close");
-        if (name === "M.Soulignac_random_graph") {
-            var d = new Date();
-            path = './scripts/php/view/randomGraph.php?time='+d.getTime(); // to avoid the Internet Explorer's cache, not the same url each time
-            random = true;
-        }
-        else {
-            path = './ressources/savedGames/'+name+'.json';
-            random = false;
-        }
-        $.getJSON(path, function(gameData) {
-            hackenbush.controller.objectToArray(hackenbush.views.drawingArea, gameData, random);
-            if (!random) {
-				if (name.indexOf('RB_') != -1)
-					name = name.split('RB_')[1];
-				$('input').val(name);
+		if (name !== "") {
+			var path, random, gameData; // have to init gameData to avoid a closure.
+			$('#load-form').dialog("close");
+			if (name === "M.Soulignac_random_graph") {
+				var d = new Date();
+				path = './scripts/php/view/randomGraph.php?time='+d.getTime(); // to avoid the Internet Explorer's cache, not the same url each time
+				random = true;
 			}
-            hackenbush.views.drawingArea.update();
-        });
+			else {
+				path = './ressources/savedGames/'+name+'.json';
+				random = false;
+			}
+			$.getJSON(path, function(gameData) {
+				hackenbush.controller.objectToArray(hackenbush.views.drawingArea, gameData, random);
+				if (!random) {
+					if (name.indexOf('RB_') != -1)
+						name = name.split('RB_')[1];
+					$('input').val(name);
+				}
+				hackenbush.views.drawingArea.update();
+			});
+		}
     };
 
     /* misc */
