@@ -96,7 +96,6 @@
         var winEl = $('#win');
         winEl.addClass('hidden');
         winEl.html("");
-        hackenbush.views.drawingArea.tool = "erase";
         hackenbush.controller.isPlaying = false;
         hackenbush.controller.currentPlayer = 0;
         hackenbush.controller.currentTurn = 0;

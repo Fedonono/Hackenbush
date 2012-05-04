@@ -121,6 +121,7 @@
 			load.unbind('click');
 			modeChooser.unbind('click');
 			hackenbush.controller.listenToolChooserInPlay();
+			hackenbush.views.drawingArea.tool = "draw";
 
 			if (page === "edition" && mainContainer.hasClass('lock')) { // to switch between edition and play, we need just to modify the button (to unlock/lock them).
 				mainContainer.removeClass('lock');
