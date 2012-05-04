@@ -91,10 +91,10 @@ var SimpleGraph = function(directed){
         if (this.nodeExists(id))
             throw new AlreadyExistingNodeException(id);
 
-        this.addWeightedNodeSimple(id, weight);
+        this.addWeightedNodeWithoutCheck(id, weight);
     }
 
-	this.addWeightedNodeSimple = function(id, weight) {
+	this.addWeightedNodeWithoutCheck = function(id, weight) {
         this.nodes['#'+id] = new Node(id, weight);
         this.nodes['#'+id].neighbors = new Array();
         this.incrNodesSize();

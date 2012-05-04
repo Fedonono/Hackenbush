@@ -27,10 +27,19 @@ var MultiGraph = function(directed){
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
 	 */	
 	this.addWeightedEdge = function(sourceId, destId, weight) {
-		this.addWeightedEdgeMulti(sourceId, destId, weight);
+        this.addWeightedEdgeProto(sourceId, destId, weight);
 	}
 
-    this.addWeightedEdgeMulti = function(sourceId, destId, weight) {
+    /** 
+	 * Adds an edge between nodes identified by sourceId and destId, with the specified weight 
+	 *
+	 * @param sourceId the identifier of the source node (strictly positive integer)
+	 * @param destId the identifier of the destination node (strictly positive integer)
+	 * @param weight the weight of the edge
+	 * @throws InvalidIdException if one of the specified ids is not valid (wrong type, <= 0, ...)		 
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
+	 */	
+	this.addWeightedEdgeProto = function(sourceId, destId, weight) {
         if (!this.edgeExists(sourceId, destId, 0)) {
             this.nodes['#'+sourceId].neighbors['#'+destId] = new Array();
             this.incrNeighborsSize(sourceId);
@@ -40,6 +49,30 @@ var MultiGraph = function(directed){
             }
         }
 
+        this.addWeightedEdgeMulti(sourceId, destId, weight);
+	}
+
+    /** 
+	 * Adds an edge between nodes identified by sourceId and destId, with the specified weight 
+	 *
+	 * @param sourceId the identifier of the source node (strictly positive integer)
+	 * @param destId the identifier of the destination node (strictly positive integer)
+	 * @param weight the weight of the edge
+	 */	
+    this.addWeightedEdgeWithoutCheck = function(sourceId, destId, weight) {
+        if (!this.edgeExistsWithoutCheck(sourceId, destId, 0)) {
+            this.nodes['#'+sourceId].neighbors['#'+destId] = new Array();
+            this.incrNeighborsSize(sourceId);
+            if (!this.directed && sourceId !== destId) {
+                this.nodes['#'+destId].neighbors['#'+sourceId] = new Array();
+                this.incrNeighborsSize(destId);
+            }
+        }
+
+        this.addWeightedEdgeMulti(sourceId, destId, weight);
+    }
+
+	this.addWeightedEdgeMulti = function(sourceId, destId, weight) {
         var edge = new Edge(weight, ++this.edgeIdCounter);
 
         this.nodes['#'+sourceId].neighbors['#'+destId].push(edge);
@@ -79,6 +112,22 @@ var MultiGraph = function(directed){
         return false;
     }
 
+    /** 
+	 * Tells if an edge exists between nodes identified by sourceId and destId 
+	 *
+	 * @param sourceId the identifier of the source node (strictly positive integer)
+	 * @param destId the identifier of the destination node (strictly positive integer)
+	 * @param indexEdge the index of the expected edge
+	 * @return a boolean modeling the existence of the specified edge
+	 */	
+	this.edgeExistsWithoutCheck = function(sourceId, destId, indexEdge){
+        if(this.nodes['#'+sourceId].neighbors['#'+destId]){        
+            if (this.nodes['#'+sourceId].neighbors['#'+destId][indexEdge])
+                return true;
+        }
+        return false;
+    }
+
 	
     /** 
 	 * Returns the value of the edge between nodes identified by sourceId, destId and indexEdge
@@ -97,9 +146,9 @@ var MultiGraph = function(directed){
     }
 
 	this.getEdgeValueWithoutCheck = function(sourceId, destId, indexEdge) {
-        return this.getEdgeByIdMulti(sourceId, destId, indexEdge).weight;
+        return this.getEdgeByIdWithoutCheck(sourceId, destId, indexEdge).weight;
     }
-	
+
     /** 
 	 * Returns the edge between nodes identified by sourceId, destId and indexEdge
 	 *
@@ -116,10 +165,18 @@ var MultiGraph = function(directed){
         if (!this.edgeExists(sourceId, destId, indexEdge))
             throw new UnexistingEdgeException(sourceId, destId);
 
-        return this.getEdgeByIdMulti(sourceId, destId, indexEdge);
+        return this.getEdgeByIdWithoutCheck(sourceId, destId, indexEdge);
     }
-	
-	this.getEdgeByIdMulti = function(sourceId, destId, indexEdge) {
+
+    /** 
+	 * Returns the edge between nodes identified by sourceId, destId and indexEdge
+	 *
+	 * @param sourceId the identifier of the source node (strictly positive integer)
+	 * @param destId the identifier of the destination node (strictly positive integer)
+     * @param indexEdge the index of the expected edge
+	 * @return the value of the specified edge
+	 */
+	this.getEdgeByIdWithoutCheck = function(sourceId, destId, indexEdge) {
         return this.nodes['#'+sourceId].neighbors['#'+destId][indexEdge];
     }
 
@@ -134,10 +191,15 @@ var MultiGraph = function(directed){
         if (!this.nodeExists(id))
             throw new UnexistingNodeException(id);
 
-		this.removeNodeMulti(id);
+		this.removeNodeWithoutCheck(id);
 	}
 
-	this.removeNodeMulti = function(id) {
+    /** 
+	 * Removes a node with the specified identifier
+	 *
+	 * @param id the identifier of the node (strictly positive integer)
+	 */	
+	this.removeNodeWithoutCheck = function(id) {
         // Delete all nodes, edges in relation with argument id
         var sourceId, destId, sourceIdInt, edgesNumber;
         var idString = '#'+id;
@@ -181,10 +243,17 @@ var MultiGraph = function(directed){
 	 * @throws InvalidIndexException if the nodes exist but indexEdge is outside the allowed range
 	 */	
     this.removeEdge = function(sourceId, destId, indexEdge) {
-        this.removeEdgeMulti(sourceId, destId, indexEdge);
+        this.removeEdgeWithoutCheck(sourceId, destId, indexEdge);
     }
 
-	this.removeEdgeMulti = function(sourceId, destId, indexEdge) {
+    /** 
+	 * Removes an edge between nodes identified by sourceId, destId and indexEdge
+	 *
+	 * @param sourceId the identifier of the source node (strictly positive integer)
+	 * @param destId the identifier of the destination node (strictly positive integer)
+     * @param indexEdge the index of the expected edge
+	 */	
+	this.removeEdgeWithoutCheck = function(sourceId, destId, indexEdge) {
         if (!this.edgeExists(sourceId, destId, indexEdge))
             throw new UnexistingEdgeException(sourceId, destId);
 
@@ -206,7 +275,17 @@ var MultiGraph = function(directed){
             }
         }
     }
-	
+    /** 
+	 * Removes an edge between nodes identified by sourceId, destId and edgeId
+	 *
+	 * @param sourceId the identifier of the source node (strictly positive integer)
+	 * @param destId the identifier of the destination node (strictly positive integer)
+     * @param  edgeId the id of the expected edge
+	 * @throws InvalidIdException if one of the specified ids is not valid (wrong type, <= 0, ...)		 
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
+	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist
+	 * @throws InvalidIndexException if the nodes exist but indexEdge is outside the allowed range
+	 */	
     this.removeEdgeByIds = function(sourceId, destId, edgeId) {
         if (!this.nodeExists(sourceId))
             throw new UnexistingNodeException(sourceId);

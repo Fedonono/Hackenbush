@@ -82,18 +82,18 @@ var HackenbushGraph = function(){
 	 * @return a clone of this
 	 */			
 	this.clone = function() {
-		hG = new HackenbushGraph();
+		var hG = new HackenbushGraph();
         var sourceId, sourceIdInt, destId, destIdInt, indexEdge, value;
         for (sourceId in this.nodes) {
 			sourceIdInt = this.splitId(sourceId);
-			hG.addWeightedNodeSimple(sourceIdInt, undefined);
+			hG.addWeightedNodeWithoutCheck(sourceIdInt, undefined);
             for (destId in this.nodes[sourceId].neighbors) {
 				destIdInt = this.splitId(destId);
-				hG.addWeightedNodeSimple(destIdInt, undefined);
+				hG.addWeightedNodeWithoutCheck(destIdInt, undefined);
                 edgesNumber = this.getEdgesCount(sourceIdInt, destIdInt);
                 for (indexEdge=0; indexEdge < edgesNumber; indexEdge++) {
 					value = this.getEdgeValueWithoutCheck(sourceIdInt, destIdInt, indexEdge);
-					hG.addWeightedEdgeMulti(sourceIdInt, destIdInt, value);
+					hG.addWeightedEdgeWithoutCheck(sourceIdInt, destIdInt, value);
                 }
             }
 		}
@@ -213,7 +213,7 @@ var HackenbushGraph = function(){
         
         if (this.isAlreadyGrounded(id))this.unGroundNode(id);
 
-        this.removeNodeMulti(id);
+        this.removeNodeWithoutCheck(id);
     }
     
     this.setLinkedToGround = function() {
@@ -252,7 +252,7 @@ var HackenbushGraph = function(){
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
 	 */	
     this.addWeightedEdge = function(sourceId, destId, weight){
-        this.addWeightedEdgeMulti(sourceId, destId, weight);
+        this.addWeightedEdgeProto(sourceId, destId, weight);
         
         this.setLinkedToGround();
     }
@@ -268,7 +268,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the nodes exist but indexEdge is outside the allowed range
 	 */	 
     this.removeEdge = function(sourceId, destId, indexEdge) {
-        this.removeEdgeMulti(sourceId, destId, indexEdge);
+        this.removeEdgeWithoutCheck(sourceId, destId, indexEdge);
 
         this.setLinkedToGround();
     }
