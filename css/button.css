@@ -60,7 +60,7 @@
     color : #d3bebe;
 }
 
-.button.toolChooser, #main-left .locked, .help, .hideInEdit {
+.button.toolChooser, #main-left .locked, .helpt {
     background-image: url(../ressources/images/toolChooser.png);
 }
 
@@ -137,6 +137,7 @@
 }
 
 #modeChooser, #resetGame {
+    background-image: url(../ressources/images/toolChooser.png);
 	position: relative;
 	top: -280px;
 	border-radius: 2.5em;
