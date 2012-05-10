@@ -21,16 +21,10 @@
      **/
     hackenbush.controller.synchronizeViews = function(action, args) {
         for(var viewKey in hackenbush.views){
-            if(hackenbush.views[viewKey].selfSynchronization)
+            if(hackenbush.views[viewKey].selfSynchronization){
                 hackenbush.views[viewKey].selfSynchronization(action, args);
+            }
         }
-    /*var param ="(";
-        for(var i = 0; i <args.length; i++){
-            param += args[i];
-        }
-        param +=")"
-        action += param
-        hackenbush.modele.graphGame[action];*/
     }
     
     /**

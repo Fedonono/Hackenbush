@@ -34,8 +34,19 @@
     hackenbush.views.drawingArea.grassHeight = 30;
     
     
+    
+    
     /* METHODS */
     
+    /**
+     * keep the view synchronized with the other views
+     * 
+     * @param action : a string value refering to the action to perform
+     * @param args : an array of arguments to given for the action
+     **/
+    hackenbush.views.drawingArea.selfSynchronize = function(action, args) {
+        
+    }
     
     /**
      * draw a node in the canvas.

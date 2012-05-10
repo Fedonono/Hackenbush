@@ -7,7 +7,8 @@
     
     
     var AbstractView = function() {
-    
+        this.selfSynchronization = function(action,args){};
     }
+    
     hackenbush.views.drawingArea = new AbstractView();    
 })()
