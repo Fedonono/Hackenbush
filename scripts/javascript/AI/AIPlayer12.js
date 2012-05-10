@@ -60,7 +60,7 @@
                 move = this.randomMove();
             }
         
-            return Move;
+            return move;
         } 
     }
 

@@ -542,6 +542,19 @@
             }
         });
     }
+    
+    
+    /**
+     * Stop listening to the canvas
+     **/
+    hackenbush.controller.unbindDrawingArea = function(){
+        canvas.unbind("mousedouwn");
+        canvas.unbind("mousemove");
+        canvas.unbind("mouseup");
+        hackenbush.controller.canvasUnbinded = true;
+    }
+    
+    
     hackenbush.views.drawingArea.listenToDrawingArea(); 
     hackenbush.controller.listenToDrawingArea();
 })();

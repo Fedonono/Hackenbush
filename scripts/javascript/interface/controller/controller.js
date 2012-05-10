@@ -8,6 +8,8 @@
     hackenbush.controller.currentTurn = 1;
     hackenbush.controller.currentPlayer = 0;
     hackenbush.controller.turnPlayed = false;
+    hackenbush.controller.AI = new AIPlayer12();
+    hackenbush.controller.canvasUnbinded = false;
     
     
     /* METHODS */
@@ -76,11 +78,20 @@
      * initialize and launch the game
      **/
     hackenbush.controller.startGame = function() {
+                
         hackenbush.controller.setTurns(hackenbush.controller.currentTurn++);
         hackenbush.controller.isPlaying = true;
         var winner = hackenbush.controller.playersCanStillWin(); 
         if(!hackenbush.modele.graphGame.getOrder()) hackenbush.controller.invalidPlayField("The hackenbush game is empty");
         else if(winner !== 2) hackenbush.controller.win(winner);    
+        
+        /*if(hackenbush.controller.canvasUnbinded){
+            hackenbush.controller.listenToDrawingArea();
+            for(var view in hackenbush.views){
+                if(view.listenToDrawingArea) view.listenToDrawingArea();
+            }
+            hackenbush.controller.canvasUnbinded = false;
+        }*/
     }
 
     /**
@@ -114,23 +125,50 @@
         }
     }
     
+    
     /**
      * gives voice to the next player
      **/
     hackenbush.controller.switchPlayers= function(){
         hackenbush.controller.currentPlayer = (hackenbush.controller.currentPlayer + 1)%2;
         hackenbush.controller.currentPlayerElem.html('P'+(hackenbush.controller.currentPlayer + 1));
+        
+        if(!hackenbush.controller.playersNature[hackenbush.controller.currentPlayer]){
+            hackenbush.controller.unbindDrawingArea();
+            hackenbush.controller.applyComputerMove();
+        }
+        else if(hackenbush.controller.canvasUnbinded){
+            hackenbush.controller.listenToDrawingArea();
+            for(var view in hackenbush.views){
+                if(view.listenToDrawingArea) view.listenToDrawingArea();
+            }
+            hackenbush.controller.canvasUnbinded = false;
+        }
+    }
+    
+    
+    
+    /**
+     * apply the AI move
+     **/
+    hackenbush.controller.applyComputerMove = function(){
+        var move = hackenbush.controller.AI.play();
+        if(!move)hackenbush.controller.win((hackenbush.controller.currentPlayer + 1)%2);
+        //........
+        //missing code
+        //.......
+        hackenbush.controller.applyRules();
     }
     
     /**
-     * print the curent turn int the html page
+     * prints the curent turn int the html page
      **/
     hackenbush.controller.setTurns = function(turns) {
         hackenbush.controller.currentTurnElem.html(turns);
     }
     
     /**
-     * print a message if the graph game is invalid
+     * prints a message if the graph game is invalid
      * 
      * @param message : string value
      **/
@@ -162,6 +200,14 @@
         hackenbush.controller.isPlaying = false;
         hackenbush.controller.turnCounter = 1;
         hackenbush.controller.setTurns(0);
+        
+        if(hackenbush.controller.canvasUnbinded){
+            hackenbush.controller.listenToDrawingArea();
+            for(var view in hackenbush.views){
+                if(view.listenToDrawingArea) view.listenToDrawingArea();
+            }
+            hackenbush.controller.canvasUnbinded = false;
+        }
     }
 
     /** 
@@ -169,84 +215,84 @@
 	 *
 	 * @param mode, string of the choosen mode
 	 */	
-	hackenbush.controller.loadMode = function(mode) {
-		switch (mode) {
-			case "humanVsHuman":
-				hackenbush.controller.playersNature = [true, true];
-				hackenbush.views.page.modElemIa("load", false);
-				break;
-			case "humanVsIa":
-				hackenbush.controller.playersNature = [true, false];
-				hackenbush.views.page.modElemIa("load", true);
-				break;
-			case "iaVsIa":
-				hackenbush.controller.playersNature = [false, false];
-				hackenbush.views.page.modElemIa("load", true);
-				break;
-			case "IaVsHuman":
-				hackenbush.controller.playersNature = [false, true];
-				hackenbush.views.page.modElemIa("load", true);
-				break;
-			default: 
-				hackenbush.controller.playersNature = [true, true];
-				hackenbush.views.page.modElemIa("load", false);
-				break;
-		}
-	}
+    hackenbush.controller.loadMode = function(mode) {
+        switch (mode) {
+            case "humanVsHuman":
+                hackenbush.controller.playersNature = [true, true];
+                hackenbush.views.page.modElemIa("load", false);
+                break;
+            case "humanVsIa":
+                hackenbush.controller.playersNature = [true, false];
+                hackenbush.views.page.modElemIa("load", true);
+                break;
+            case "iaVsIa":
+                hackenbush.controller.playersNature = [false, false];
+                hackenbush.views.page.modElemIa("load", true);
+                break;
+            case "IaVsHuman":
+                hackenbush.controller.playersNature = [false, true];
+                hackenbush.views.page.modElemIa("load", true);
+                break;
+            default:
+                hackenbush.controller.playersNature = [true, true];
+                hackenbush.views.page.modElemIa("load", false);
+                break;
+        }
+    }
 
-	/** 
+    /** 
 	 * Check if the current mode is human vs human or not
 	 *
 	 * @return a boolean, true if the current mode is a human vs human party
 	 */	
-	hackenbush.controller.isHumanParty = function() {
-		if (hackenbush.controller.playersNature.indexOf(false) === -1)
-			return true;
-		else
-			return false;
-	}
+    hackenbush.controller.isHumanParty = function() {
+        if (hackenbush.controller.playersNature.indexOf(false) === -1)
+            return true;
+        else
+            return false;
+    }
 
-	/** 
+    /** 
 	 * Check if the current graph is a Red/Blue graph or not
 	 *
 	 * @param graph, the graph to analyse
 	 * @return a boolean, true if the graph is a red/blue graph
 	 */	
-	hackenbush.controller.isRedBlueGraph = function(graph) {
-		var sourceId, destId, redBlueGraph;
-		redBlueGraph = true;
+    hackenbush.controller.isRedBlueGraph = function(graph) {
+        var sourceId, destId, redBlueGraph;
+        redBlueGraph = true;
         for (sourceId in graph.nodes) {
-			if (!redBlueGraph) break;
-			for (destId in graph.nodes[sourceId].neighbors) {
-				redBlueGraph = !hackenbush.controller.isAGreenEdge(sourceId, destId);
-				if (!redBlueGraph) break;
-			}
+            if (!redBlueGraph) break;
+            for (destId in graph.nodes[sourceId].neighbors) {
+                redBlueGraph = !hackenbush.controller.isAGreenEdge(sourceId, destId);
+                if (!redBlueGraph) break;
+            }
         }
         return redBlueGraph;
-	}
+    }
 
-	/** 
+    /** 
 	 * Check if there is a green edge contained between two given nodes 
 	 *
 	 * @param sourceId, hash key of a node
 	 * @param destId, hash key of a node
 	 * @return boolean, true if there is a green edge
 	 */	
-	hackenbush.controller.isAGreenEdge = function(sourceId, destId) {
-		var greenEdge = false;
-		var sId = hackenbush.views.drawingArea.graphUi.splitId(sourceId);
-		var dId = hackenbush.views.drawingArea.graphUi.splitId(destId);
-		var edgesCount = hackenbush.views.drawingArea.graphUi.getEdgesCount(sId, dId);
-		var indexEdge = 0;
-		while (!greenEdge && indexEdge < edgesCount) {
-			if (hackenbush.views.drawingArea.graphUi.getEdgeValueWithoutCheck(sId, dId, indexEdge).color === "green")
-				greenEdge = true;
-			indexEdge++;
-		}
-		return greenEdge;
-	}
+    hackenbush.controller.isAGreenEdge = function(sourceId, destId) {
+        var greenEdge = false;
+        var sId = hackenbush.views.drawingArea.graphUi.splitId(sourceId);
+        var dId = hackenbush.views.drawingArea.graphUi.splitId(destId);
+        var edgesCount = hackenbush.views.drawingArea.graphUi.getEdgesCount(sId, dId);
+        var indexEdge = 0;
+        while (!greenEdge && indexEdge < edgesCount) {
+            if (hackenbush.views.drawingArea.graphUi.getEdgeValueWithoutCheck(sId, dId, indexEdge).color === "green")
+                greenEdge = true;
+            indexEdge++;
+        }
+        return greenEdge;
+    }
 
-	/** 
+    /** 
 	 * Save a Game
 	 *
 	 * @param name, a string
@@ -262,10 +308,10 @@
         }
         var gameJson = JSON.stringify(game);
         var imgData = encodeURIComponent(imageData); // have to encode to conserve the sign '+' when there is ajax
-		if (graphUiObj.redBlueGraph === true)
-			hackenbush.controller.saveToFile('RB_'+name, gameJson, imgData);
-		else
-			hackenbush.controller.saveToFile(name, gameJson, imgData);
+        if (graphUiObj.redBlueGraph === true)
+            hackenbush.controller.saveToFile('RB_'+name, gameJson, imgData);
+        else
+            hackenbush.controller.saveToFile(name, gameJson, imgData);
     };
 
     /** 
@@ -281,9 +327,9 @@
             url: './scripts/php/controller/saveGame.php',
             data: 'name='+name+'&data='+gameJson+'&imageData='+imageData,
             success: function() {
-				if (name.indexOf('RB_') != -1)
-					name = name.split('RB_')[1];
-				$('input').val(name);
+                if (name.indexOf('RB_') != -1)
+                    name = name.split('RB_')[1];
+                $('input').val(name);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error: ' + textStatus);
@@ -297,28 +343,28 @@
 	 * @param name, a string
 	 */	
     hackenbush.controller.loadGame = function(name) {
-		if (name !== "") {
-			var path, random, gameData; // have to init gameData to avoid a closure.
-			$('#load-form').dialog("close");
-			if (name === "M.Soulignac_random_graph") {
-				var d = new Date();
-				path = './scripts/php/view/randomGraph.php?time='+d.getTime(); // to avoid the Internet Explorer's cache, not the same url each time
-				random = true;
-			}
-			else {
-				path = './ressources/savedGames/'+name+'.json';
-				random = false;
-			}
-			$.getJSON(path, function(gameData) {
-				hackenbush.controller.objectToArray(hackenbush.views.drawingArea, gameData, random);
-				if (!random) {
-					if (name.indexOf('RB_') != -1)
-						name = name.split('RB_')[1];
-					$('input').val(name);
-				}
-				hackenbush.views.drawingArea.update();
-			});
-		}
+        if (name !== "") {
+            var path, random, gameData; // have to init gameData to avoid a closure.
+            $('#load-form').dialog("close");
+            if (name === "M.Soulignac_random_graph") {
+                var d = new Date();
+                path = './scripts/php/view/randomGraph.php?time='+d.getTime(); // to avoid the Internet Explorer's cache, not the same url each time
+                random = true;
+            }
+            else {
+                path = './ressources/savedGames/'+name+'.json';
+                random = false;
+            }
+            $.getJSON(path, function(gameData) {
+                hackenbush.controller.objectToArray(hackenbush.views.drawingArea, gameData, random);
+                if (!random) {
+                    if (name.indexOf('RB_') != -1)
+                        name = name.split('RB_')[1];
+                    $('input').val(name);
+                }
+                hackenbush.views.drawingArea.update();
+            });
+        }
     };
 
     /* misc */
@@ -378,12 +424,12 @@
 	 */	
     hackenbush.controller.getObjPropertiesNoRandom = function(graphUi, data, toObj) {
         var sourceId, destId, id;
-		if (toObj) {
-			graphUi.nodes = new Object();
-			graphUi.redBlueGraph = true;
-		}
-		else
-			graphUi.nodes = new Array();
+        if (toObj) {
+            graphUi.nodes = new Object();
+            graphUi.redBlueGraph = true;
+        }
+        else
+            graphUi.nodes = new Array();
 
         graphUi.groundedNodes = data.groundedNodes;
         graphUi.nodes.length = data.nodes.length;
@@ -406,7 +452,7 @@
                 for (destId in data.nodes[sourceId].neighbors ) {
                     graphUi.nodes[sourceId].neighbors[destId] = data.nodes[sourceId].neighbors[destId];
                     if (toObj && graphUi.redBlueGraph)
-						graphUi.redBlueGraph = !hackenbush.controller.isAGreenEdge(sourceId, destId);
+                        graphUi.redBlueGraph = !hackenbush.controller.isAGreenEdge(sourceId, destId);
                 }
             }
         }

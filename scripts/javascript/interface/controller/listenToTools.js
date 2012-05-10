@@ -21,10 +21,10 @@
             hackenbush.controller.stopGame();
         });
 
-		$('#help').click(function(event) {
-			var helpModal = $('#help-modal');
-			helpModal.dialog( "open" );
-			helpModal.load("./views/help-"+hackenbush.controller.page+".html");
+        $('#help').click(function(event) {
+            var helpModal = $('#help-modal');
+            helpModal.dialog( "open" );
+            helpModal.load("./views/help-"+hackenbush.controller.page+".html");
         });
 
         hackenbush.controller.listenToolChooserInEdit();
@@ -48,14 +48,14 @@
      **/
     hackenbush.controller.listenToolChooserInPlay = function(){
         $("#load").click( function(event) {
-			var loadForm = $('#load-form');
-			loadForm.dialog( "open" );
-			loadForm.load("./scripts/php/view/loadGame.php");
+            var loadForm = $('#load-form');
+            loadForm.dialog( "open" );
+            loadForm.load("./scripts/php/view/loadGame.php");
         });
         $("#modeChooser").click( function(event) {
-			var modeModal = $('#mode-modal');
-			modeModal.dialog( "open" );
-			modeModal.load("./views/mode.html");
+            var modeModal = $('#mode-modal');
+            modeModal.dialog( "open" );
+            modeModal.load("./views/mode.html");
         });   
     }
 
