@@ -19,7 +19,7 @@ var SimpleGraph = function(directed){
 	 * @param id the identifier of the node (strictly positive integer)
 	 * @return the specified node
 	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
-	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist	 
+	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist
 	 */
     this.getNodeById = function(id) {
         if (!this.nodeExists(id))

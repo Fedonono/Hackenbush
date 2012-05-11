@@ -99,7 +99,15 @@ var HackenbushGraph = function(){
 		}
 		return hG;
 	}
-    
+
+    /** 
+	 * Return the index of the specified node in the groundedNodes array
+	 *
+     * @param id the identifier of the node
+	 * @return the index, integer which defined the index of the node in the groundedNodes array
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
+     * @throws NotConnectedToGroundException if the node is not grounded.
+	 */ 
     this.getGroundedNodeIndex = function(id) {         
         
         var index = this.groundedNodes.indexOf(id);
@@ -112,7 +120,13 @@ var HackenbushGraph = function(){
         
         return index;
     }
-    
+    /** 
+	 * Check if the specified node is linked to ground
+	 *
+     * @param id the identifier of the node
+	 * @return boolean, true if the node is linked to ground, false otherwise
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
+	 */ 
     this.isAlreadyGrounded = function(id) {
         
         var index = this.groundedNodes.indexOf(id);
@@ -137,7 +151,7 @@ var HackenbushGraph = function(){
     /** 
 	 * push the id of a grounded node in this.groundedNodes .
 	 *
-     *@param id the id of the node
+     *@param id the identifier of the node
 	 *@throws InvalidIdException if the id is <= 0 or not an integer.
      *@throws UnexistingNodeException  if the id does not exists in the graph.
      *@throws AlreadyGroundedNodeException if the node is already grounded
@@ -163,10 +177,10 @@ var HackenbushGraph = function(){
     /** 
 	 * push the id of a grounded node in this.groundedNodes .
 	 *
-     *@param id the id of the node
-	 *@throws InvalidIdException if the id is <= 0 or not an integer.
-     *@throws UnexistingNodeException  if the id does not exists in the graph.
-     *@throws NotConnectedToGroundException if the node is not grounded.
+     * @param id the id of the node
+	 * @throws InvalidIdException if the id is <= 0 or not an integer.
+     * @throws UnexistingNodeException  if the id does not exists in the graph.
+     * @throws NotConnectedToGroundException if the node is not grounded.
 	 */
     this.unGroundNode = function(id){
         if(!this.nodeExists(id))
@@ -183,7 +197,7 @@ var HackenbushGraph = function(){
     /**
     * Used to remove an id of the groundedNodes table
     * 
-	*@throws InvalidIndexException if k is outside the allowed range or the k is < 0 or not an integer
+	* @throws InvalidIndexException if k is outside the allowed range or the k is < 0 or not an integer
 	*/
     this.spliceGroundedNodes = function(index){       
         if(!this.isInt(index) || index < 0 || index >= this.groundedNodes.length)
@@ -191,7 +205,9 @@ var HackenbushGraph = function(){
        
         this.groundedNodes.splice(index, 1);
     }
-   
+    /**
+    * Remove lonely node (node without link with an edge)
+	*/
     this.removeLonelyNodes = function(){
         for(var itemKey in this.nodes){
             var id = itemKey.replace("#", '')*1;
@@ -216,6 +232,9 @@ var HackenbushGraph = function(){
         this.removeNodeWithoutCheck(id);
     }
     
+    /** 
+	 * Assign an array with all nodes linked to ground at this.linkedToGround
+	 */	    
     this.setLinkedToGround = function() {
         
         var visited = new Array();
@@ -257,7 +276,7 @@ var HackenbushGraph = function(){
         this.setLinkedToGround();
     }
     /** 
-	 * Removes an edge between nodes identified by sourceId, destId and indexEdge + setLinkedToGround
+	 * Removes an edge between nodes identified by sourceId, destId and indexEdge + call setLinkedToGround()
 	 *
 	 * @param sourceId the identifier of the source node (strictly positive integer)
 	 * @param destId the identifier of the destination node (strictly positive integer)
@@ -272,7 +291,14 @@ var HackenbushGraph = function(){
 
         this.setLinkedToGround();
     }
-    
+    /** 
+	 * Merge 2 differents nodes
+	 *
+	 * @param oldId the identifier of the node to delete (strictly positive integer)
+	 * @param id the identifier of the node to keep (strictly positive integer)
+	 * @throws InvalidIdException if the specified id is not valid (wrong type, <= 0, ...)	
+	 * @throws UnexistingNodeException if the id is valid but the corresponding node does not exist
+	 */	 
     this.mergeNodes = function (oldId, id) {
         var oldNode = this.getNodeById(oldId);
                 
@@ -286,7 +312,9 @@ var HackenbushGraph = function(){
         }
         this.removeNode(oldId);
     }
-    
+    /** 
+	 * Remove flying Nodes (node without linked to ground)
+	 */
     this.removeFlyingNodes = function(){
         for(var nodeKey in this.nodes){
             var id = this.nodes[nodeKey].id;
