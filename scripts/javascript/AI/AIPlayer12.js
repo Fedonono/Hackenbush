@@ -15,6 +15,7 @@
     
         //METHODS
         
+        
         /**
          * return the first edge removable by the current player (about 1ms to perform on a random graph returned by the Mr Soulignac's method and our graph type)
          *
@@ -79,6 +80,94 @@
          **/
         this.releventMove = function(hbg, color){
             
+            var ratedGraph = hbg.clone();
+            
+            //adds the concept of rank, weakness and strength to the edges
+            (function rateTheGraph(){
+                ratedGraph.setNodesValues({});
+            
+                var groundedNodesCount = ratedGraph.getGroundedNodesCount();
+                var queue = new Array();
+                var stack = new Array();
+                var visited = new Array();
+            
+                //adding grounded nodes to the queue.
+                for(var i = 1; i < groundedNodesCount; i++){
+                    var currentNodeId = ratedGraph.getGroundedNode(i);
+                    queue.push(currentNodeId);
+                    visited["#"+currentNodeId] = true;
+                    ratedGraph.getNodeValue(currentNodeId).rank = 0;
+                    ratedGraph.getNodeValue(currentNodeId).weakness = 0;
+                    ratedGraph.getNodeValue(currentNodeId).strength = null;
+                }
+            
+                //dequeue the queue adding the concept of rank and weakness to the edges
+                while(queue.length > 0){
+                    currentNodeId = queue.shift();
+                    stack.push(currentNodeId);
+                    
+                    var nodeValue = ratedGraph.getNodeValue(currentNodeId);
+                    var neighborhoodSize = ratedGraph.getNeighborhoodSize(currentNodeId);
+                
+                    for( i = 1; i <= neighborhoodSize; i++){
+                    
+                        var neighborId = ratedGraph.getNeighbor(currentNodeId, i);
+                        var neighborValue = ratedGraph.getNodeValue(neighborId);
+                        var edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
+                    
+                        if(!visited["#"+neighborId]){
+                            queue.push(neighborId);
+                            visited["#"+neighborId] = true;
+                            
+                            //propagate a rank
+                            ratedGraph.neighborValue.rank = nodeValue.rank + 1;
+                            
+                            // propagate a weakness
+                            neighborValue.weakness = nodeValue.weakness;
+                            var friendlyEdgesCount = 0;
+                            var enemyEdgesCount = 0;
+                            for(var k = 0; k < edgesCount; k++) {
+                                if(ratedGraph.getEdgeValue(currentNodeId, neighborId, k) === color) friendlyEdgesCount ++;
+                                else enemyEdgesCount++;
+                            }
+                            neighborValue.weakness += enemyEdgesCount - friendlyEdgesCount;
+                        }
+                    }
+                }
+                
+                // unstack the stack adding the concept of strength to the edges
+                while(stack.length > 0) {
+                    currentNodeId = stack.pop();
+                    nodeValue = ratedGraph.getNodeValue(currentNodeId);
+                    if(nodeValue.strength !== undefined) nodeValue.strength = 0;
+                    
+                    for( i = 1; i < neighborhoodSize; i++) {
+                        
+                        neighborId = ratedGraph.getNeighbor(currentNodeId, i);
+                        neighborValue = ratedGraph.getNodeValue(neighborId);
+                        edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
+                        
+                        //propagate strength
+                        neighborValue.strength += nodeValue.strength;
+                        friendlyEdgesCount = 0;
+                        enemyEdgesCount = 0;
+                        for(k = 0; k < edgesCount; k++) {
+                            if(ratedGraph.getEdgeValue(currentNodeId, neighborId, k) === color) friendlyEdgesCount ++;
+                            else enemyEdgesCount++;
+                        }
+                        neighborValue.strength += enemyEdgesCount - friendlyEdgesCount;
+                    }
+                }
+            })()
+            
+            // find the relevent move in the ratedGraph
+            return (function findReleventMove(){
+                var move = null;
+                
+                
+                
+                return move;
+            })()
         }
     
         /** 

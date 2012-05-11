@@ -157,7 +157,10 @@
                 i++; 
             }
             hackenbush.modele.graphGame.removeEdge(sourceNodeId, destNodeId, i);
+            hackenbush.modele.graphGame.removeFlyingNodes();
             hackenbush.views.drawingArea.graphUi.removeEdge(sourceNodeId, destNodeId, i);
+            hackenbush.views.drawingArea.graphUi.removeFlyingNodes();
+            
             hackenbush.controller.applyRules();
         }
     }
