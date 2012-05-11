@@ -85,7 +85,7 @@
         if(!hackenbush.modele.graphGame.getOrder()) hackenbush.controller.invalidPlayField("The hackenbush game is empty");
         else if(winner !== 2) hackenbush.controller.win(winner);    
         
-        /*if(hackenbush.controller.canvasUnbinded){
+    /*if(hackenbush.controller.canvasUnbinded){
             hackenbush.controller.listenToDrawingArea();
             for(var view in hackenbush.views){
                 if(view.listenToDrawingArea) view.listenToDrawingArea();
@@ -130,6 +130,7 @@
      * gives voice to the next player
      **/
     hackenbush.controller.switchPlayers= function(){
+        
         hackenbush.controller.currentPlayer = (hackenbush.controller.currentPlayer + 1)%2;
         hackenbush.controller.currentPlayerElem.html('P'+(hackenbush.controller.currentPlayer + 1));
         
@@ -139,8 +140,8 @@
         }
         else if(hackenbush.controller.canvasUnbinded){
             hackenbush.controller.listenToDrawingArea();
-            for(var view in hackenbush.views){
-                if(view.listenToDrawingArea) view.listenToDrawingArea();
+            for(var viewKey in hackenbush.views){
+                if(hackenbush.views[viewKey].listenToDrawingArea) hackenbush.views[viewKey].listenToDrawingArea();
             }
             hackenbush.controller.canvasUnbinded = false;
         }
@@ -152,12 +153,21 @@
      * apply the AI move
      **/
     hackenbush.controller.applyComputerMove = function(){
-        var move = hackenbush.controller.AI.play();
-        if(!move)hackenbush.controller.win((hackenbush.controller.currentPlayer + 1)%2);
-        //........
-        //missing code
-        //.......
-        hackenbush.controller.applyRules();
+        
+        var move = hackenbush.controller.AI.play(hackenbush.modele.graphGame, hackenbush.controller.currentPlayer);
+        if(!move)hackenbush.controller.win((hackenbush.controller.currentPlayer + 1)%2);//Computer is weak ;)
+        else{
+            var sourceNodeId = move[0];
+            var destNodeId = move[1];
+            var edgeCount = hackenbush.modele.graphGame.getEdgeCount(sourceNodeId, destNodeId);
+            var i = 0;
+            while(i < edgeCount && hackenbush.modele.graphGame.getEdgeValue(sourceNodeId, destNodeId, i) !== hackenbush.controller.currentPlayer){
+                i++; 
+            }
+            hackenbush.modele.graphGame.removeEdge(sourceNodeId, destNodeId, i);
+            hackenbush.views.drawingArea.graphUi.removeEdge(sourceNodeId, destNodeId, i);
+            hackenbush.controller.applyRules();
+        }
     }
     
     /**

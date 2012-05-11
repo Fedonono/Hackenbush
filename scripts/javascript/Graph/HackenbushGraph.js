@@ -24,11 +24,11 @@ var HackenbushGraph = function(){
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
 	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist	
 	 */			
-	this.getEdgeCount = function(sourceid, destid) {
+	this.getEdgeCount = function(sourceId, destId) {
         if (!this.edgeExists(sourceId, destId, 0))
             throw new UnexistingEdgeException(sourceId, destId);
 
-		return this.getEdgesCount(sourceid, destid);
+		return this.getEdgesCount(sourceId, destId);
 	}
 
 	/** 

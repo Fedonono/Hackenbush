@@ -74,11 +74,12 @@ var AbstractHackenbushGraph = function(){
 	 */			
 	this.clone = function() {}	
 	
+	
 	/** 
 	 * Returns the number of grounded nodes (i.e. linked to the ground).
 	 *
 	 * @return the number of grounded nodes
 	 */			
-	this.getGroundedNodesCount = function() {}
+	this.getGroundedNodesCount = function(){}		
 	
 }
