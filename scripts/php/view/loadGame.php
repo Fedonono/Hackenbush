@@ -3,7 +3,7 @@
 
 	$gamesData = HackenBush::getInstance()->getGames();
 
-	echo "<div class='load'><div class='game' id='M.Soulignac_random_graph'>";
+	echo "<div class='load'><div class='game isRedBlueGraph' id='M.Soulignac_random_graph'>";
 	echo "<div class='randomGraph'>?</div>";
 	echo "M.Soulignac's graph</div>";
 	if (isset($gamesData)) {
