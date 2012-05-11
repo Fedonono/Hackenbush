@@ -14,8 +14,8 @@ var MultiGraph = function(directed){
     this.nodes = new Array();
     
     /* **************************
- * overloading functions:   *
- * **************************/
+	 * overloading functions:   *
+	 * **************************/
 
     /** 
 	 * Adds an edge between nodes identified by sourceId and destId, with the specified weight 
