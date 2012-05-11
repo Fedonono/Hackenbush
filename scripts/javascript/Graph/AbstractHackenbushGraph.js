@@ -27,7 +27,7 @@ var AbstractHackenbushGraph = function(){
 	 * @return the number of edges between nodes identified by sourceid and destid
 	 * @throws InvalidIdException if one the specified ids is not valid (wrong type, <= 0, ...)	
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
-	 */
+	 */			
 	this.getEdgeCount = function(sourceid, destid) {}	
 	
 	
@@ -55,7 +55,7 @@ var AbstractHackenbushGraph = function(){
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
 	 * @throws InvalidIndexException if the nodes exist but k is outside the allowed range
 	 */			
-	this.remove = function(sourceid, destid, k) {}
+	this.remove = function(sourceid, destid, k) {}		
 	
 
 	/** 
@@ -73,5 +73,12 @@ var AbstractHackenbushGraph = function(){
 	 * @return a clone of this
 	 */			
 	this.clone = function() {}	
-
+	
+	/** 
+	 * Returns the number of grounded nodes (i.e. linked to the ground).
+	 *
+	 * @return the number of grounded nodes
+	 */			
+	this.getGroundedNodesCount = function() {}
+	
 }
