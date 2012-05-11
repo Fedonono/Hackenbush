@@ -83,15 +83,7 @@
         hackenbush.controller.isPlaying = true;
         var winner = hackenbush.controller.playersCanStillWin(); 
         if(!hackenbush.modele.graphGame.getOrder()) hackenbush.controller.invalidPlayField("The hackenbush game is empty");
-        else if(winner !== 2) hackenbush.controller.win(winner);    
-        
-    /*if(hackenbush.controller.canvasUnbinded){
-            hackenbush.controller.listenToDrawingArea();
-            for(var view in hackenbush.views){
-                if(view.listenToDrawingArea) view.listenToDrawingArea();
-            }
-            hackenbush.controller.canvasUnbinded = false;
-        }*/
+        else if(winner !== 2) hackenbush.controller.win(winner);
     }
 
     /**

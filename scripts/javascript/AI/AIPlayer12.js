@@ -16,7 +16,7 @@
         //METHODS
         
         /**
-         * return the first edge removable by the current player
+         * return the first edge removable by the current player (about 1ms to perform on a random graph returned by the Mr Soulignac's method and our graph type)
          *
          *@param hbg : the graph representing the game
          *@param color : the color of the current player (type: integer, no particular constraint on value)
@@ -69,7 +69,7 @@
         }
     
         /**
-         * return a random edge removable by the current player
+         * return a relevent edge removable by the current player
          *
          *@param hbg : the graph representing the game
          *@param color : the color of the current player (type: integer, no particular constraint on value)
@@ -77,8 +77,8 @@
          *@return a random edge removable by the current player
          *
          **/
-        this.randomMove = function(hbg, color) {
-        
+        this.releventMove = function(hbg, color){
+            
         }
     
         /** 
@@ -94,14 +94,25 @@
             this.start = new Date();
             
             var noobMove = this.quickestMove(hbg, color);
-            var move = null;
-            console.log("naive AI tooks " + new Date().valueOf() - this.start.valueOf() + " ms");
-            if( new Date().valueOf() - this.start.valueOf() < this.timeout){
-                move = this.randomMove(hbg, color);
+            //naive AI time log
+            var AItime = new Date().valueOf() - this.start.valueOf();
+            console.log("naive AI performed in " + AItime + " ms");
+            //
+            
+            var releventMove = this.releventMove(hbg, color);
+            //relevant AI time log
+            AItime = new Date().valueOf() - this.start.valueOf();
+            console.log("relevent AI performed in " + AItime + " ms");
+            //
+            
+            if(releventMove){
+                console.log("relevant AI used");
+                return releventMove;
             }
-        
-            if(move) return move;
-            else return noobMove;
+            else {
+                console.log("naive AI used");
+                return noobMove;
+            }
         } 
     }
 
