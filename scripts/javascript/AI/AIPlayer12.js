@@ -95,8 +95,8 @@
             
             var noobMove = this.quickestMove(hbg, color);
             var move = null;
-            
-            if(this.start.valueOf() - new Date().valueOf() < this.timeout){
+            console.log("naive AI tooks " + new Date().valueOf() - this.start.valueOf() + " ms");
+            if( new Date().valueOf() - this.start.valueOf() < this.timeout){
                 move = this.randomMove(hbg, color);
             }
         
