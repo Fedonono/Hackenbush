@@ -63,3 +63,15 @@
 .inIa .redBlueGraph, .inIa .notIAGraph {
 	background-color: red;
 }
+
+.winCanvas {
+	z-index:-1;
+	position:absolute;
+	left:-4px;
+	top:-4px;
+}
+
+.playerWins {
+	left: 20px;
+	top: 250px;
+}

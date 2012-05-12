@@ -186,7 +186,7 @@
         winEl.html(message);
         hackenbush.controller.turnCounter = 1;
     }
-    
+
     /**
      * print a message for the winner
      * 
@@ -194,12 +194,32 @@
      **/
     hackenbush.controller.win = function(player) {
         player++;
-        var winEl = $('#win');
-        winEl.removeClass('hidden');
-        winEl.html("Player "+player+" "+"wins");
+		hackenbush.controller.canvasWin(player);
         hackenbush.controller.turnCounter = 1;
         hackenbush.controller.setTurns(0);
     }
+    
+    /**
+     * Change the canvas Area to print a message or an image (depending on the type of winning player)
+     * 
+     * @param player : an integer refering to the winner
+     **/
+	hackenbush.controller.canvasWin = function(player) {
+        var winEl = $('#win');
+        winEl.removeClass('hidden');
+		var mode = hackenbush.controller.getMode();
+		var img = $('<img>', {
+			class: 'winCanvas'
+		});
+
+		if ((mode === "iaVsHuman" && player == 1) || (mode === "humanVsIa" && player == 2) || (mode === "iaVsIa"))
+			img.attr({ src: "./ressources/images/ia_wins.jpg" });
+		if ((mode === "iaVsHuman" && player == 2) || (mode === "humanVsIa" && player == 1))
+			img.attr({ src: "./ressources/images/player_wins.png", class: "winCanvas playerWins" });
+
+		winEl.html("Player "+player+" "+"wins !");
+		winEl.append(img);
+	}
     
     /**
      * stop the game
@@ -249,12 +269,24 @@
     }
 
     /** 
+	 * Return the actual mode
+	 *
+	 * @return a string, depending on the current mode
+	 */	
+    hackenbush.controller.getMode = function() {
+		var mode;
+        hackenbush.controller.playersNature[0] ? mode="humanVs" : mode="iaVs";
+        hackenbush.controller.playersNature[1] ? mode+="Human" : mode+="Ia";
+		return mode;
+    }
+
+    /** 
 	 * Check if the current mode is human vs human or not
 	 *
 	 * @return a boolean, true if the current mode is a human vs human party
 	 */	
     hackenbush.controller.isHumanParty = function() {
-        if (hackenbush.controller.playersNature.indexOf(false) === -1)
+        if (hackenbush.controller.getMode() === "humanVsHuman")
             return true;
         else
             return false;
