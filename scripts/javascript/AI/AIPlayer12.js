@@ -123,14 +123,7 @@
                             ratedGraph.neighborValue.rank = nodeValue.rank + 1;
                             
                             // propagate a weakness
-                            neighborValue.weakness = nodeValue.weakness;
-                            var friendlyEdgesCount = 0;
-                            var enemyEdgesCount = 0;
-                            for(var k = 0; k < edgesCount; k++) {
-                                if(ratedGraph.getEdgeValue(currentNodeId, neighborId, k) === color) friendlyEdgesCount ++;
-                                else enemyEdgesCount++;
-                            }
-                            neighborValue.weakness += enemyEdgesCount - friendlyEdgesCount;
+                            
                         }
                     }
                 }
@@ -148,14 +141,7 @@
                         edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
                         
                         //propagate strength
-                        neighborValue.strength += nodeValue.strength;
-                        friendlyEdgesCount = 0;
-                        enemyEdgesCount = 0;
-                        for(k = 0; k < edgesCount; k++) {
-                            if(ratedGraph.getEdgeValue(currentNodeId, neighborId, k) === color) friendlyEdgesCount ++;
-                            else enemyEdgesCount++;
-                        }
-                        neighborValue.strength += enemyEdgesCount - friendlyEdgesCount;
+                        
                     }
                 }
             })()
