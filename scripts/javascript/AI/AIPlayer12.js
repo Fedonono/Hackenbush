@@ -85,7 +85,7 @@
             //adds the concept of rank, weakness and strength to the edges
             (function rateTheGraph(){
                 ratedGraph.setNodesValues({});
-            
+                
                 var groundedNodesCount = ratedGraph.getGroundedNodesCount();
                 var queue = new Array();
                 var stack = new Array();
@@ -97,7 +97,6 @@
                     queue.push(currentNodeId);
                     visited["#"+currentNodeId] = true;
                     ratedGraph.getNodeValue(currentNodeId).rank = 0;
-                    ratedGraph.getNodeValue(currentNodeId).weakness = 0;
                     ratedGraph.getNodeValue(currentNodeId).strength = null;
                 }
             
@@ -107,28 +106,41 @@
                     stack.push(currentNodeId);
                     
                     var nodeValue = ratedGraph.getNodeValue(currentNodeId);
+                    nodeValue.weak = false;
                     var neighborhoodSize = ratedGraph.getNeighborhoodSize(currentNodeId);
-                
+                    var smallerRankNeighborCount = 0;
+                    
                     for( i = 1; i <= neighborhoodSize; i++){
                     
                         var neighborId = ratedGraph.getNeighbor(currentNodeId, i);
                         var neighborValue = ratedGraph.getNodeValue(neighborId);
                         var edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
                     
+                        //enqueue unvisited nodes and set their rank
                         if(!visited["#"+neighborId]){
                             queue.push(neighborId);
                             visited["#"+neighborId] = true;
-                            
                             //propagate a rank
-                            ratedGraph.neighborValue.rank = nodeValue.rank + 1;
-                            
-                            // propagate a weakness
-                            
+                            neighborValue.rank = nodeValue.rank + 1;                            
+                        }
+                        
+                        //propagate weak concept
+                        if(neighborValue.rank < nodeValue.rank){
+                            smallerRankNeighborCount ++;
+                            if(edgesCount === 1){
+                                var edgeValue = ratedGraph.getEdgeValue(currentNodeId, neighborId, 0);
+                                if(edgeValue !== color)nodeValue.weak = true;
+                                else nodeValue.weak = neighborValue.weak;
+                            }
+                        }
+                        else if(neighborValue.rank === nodeValue.rank && neighborId !== currentNodeId){
+                            smallerRankNeighborCount++;
                         }
                     }
+                    if(smallerRankNeighborCount > 1) nodeValue.weak = false;
                 }
                 
-                // unstack the stack adding the concept of strength to the edges
+                // unstack the stack adding the concept of strength to the edges and polish up the edge weak concept
                 while(stack.length > 0) {
                     currentNodeId = stack.pop();
                     nodeValue = ratedGraph.getNodeValue(currentNodeId);
@@ -140,7 +152,13 @@
                         neighborValue = ratedGraph.getNodeValue(neighborId);
                         edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
                         
-                        //propagate strength
+                        //polishing up the edge weak concept 
+                        if(neighborValue.rank <= nodeValue.rank){
+                            neighborValue.weak = nodeValue.weak;
+                        }
+                        
+                        
+                    //propagate strength
                         
                     }
                 }

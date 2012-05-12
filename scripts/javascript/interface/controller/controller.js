@@ -115,7 +115,7 @@
         }
         else{
             hackenbush.controller.setTurns(hackenbush.controller.currentTurn++);
-            hackenbush.controller.switchPlayers();
+            setTimeout("hackenbush.controller.switchPlayers()", 500);
             hackenbush.controller.turnPlayed = false;
         }
     }
@@ -163,6 +163,8 @@
             hackenbush.modele.graphGame.removeFlyingNodes();
             hackenbush.views.drawingArea.graphUi.removeEdge(sourceNodeId, destNodeId, i);
             hackenbush.views.drawingArea.graphUi.removeFlyingNodes();
+            hackenbush.views.drawingArea.update();
+            
             
             hackenbush.controller.applyRules();
         }
@@ -197,6 +199,14 @@
 		hackenbush.controller.canvasWin(player);
         hackenbush.controller.turnCounter = 1;
         hackenbush.controller.setTurns(0);
+        
+        if(hackenbush.controller.canvasUnbinded){
+            hackenbush.controller.listenToDrawingArea();
+            for(var viewKey in hackenbush.views){
+                if(hackenbush.views[viewKey].listenToDrawingArea) hackenbush.views[viewKey].listenToDrawingArea();
+            }
+            hackenbush.controller.canvasUnbinded = false;
+        }
     }
     
     /**
