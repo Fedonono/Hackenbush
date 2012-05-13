@@ -83,7 +83,7 @@ var HackenbushGraph = function(){
 	 */			
     this.clone = function() {
         var hG = new HackenbushGraph();
-        var sourceId, sourceIdInt, destId, destIdInt, indexEdge, value;
+        var sourceId, sourceIdInt, destId, destIdInt, indexEdge, value, edgesNumber, groundedNodesLength;
         for (sourceId in this.nodes) {
             sourceIdInt = this.splitId(sourceId);
             hG.addWeightedNodeWithoutCheck(sourceIdInt, undefined);
@@ -97,6 +97,8 @@ var HackenbushGraph = function(){
                 }
             }
         }
+		groundedNodesLength = this.groundedNodes.length;
+		hG.groundedNodes = this.groundedNodes.slice(0, groundedNodesLength); // not size-1 because the method slice doesn't take the end index provided
         return hG;
     }
 
