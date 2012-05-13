@@ -11,10 +11,10 @@ var HackenbushGraph = function(){
     this.groundedNodes = new Array();
     this.linkedToGround = new Array();
 	
-	/**
+    /**
 	* function getDegree(id) in Multigraph.js
 	*/
-	/**
+    /**
 
 	 * Returns the number of edges between nodes identified by sourceid and destid
 	 * @param sourceid the identifier of the source node (strictly positive integer)
@@ -24,14 +24,14 @@ var HackenbushGraph = function(){
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
 	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist	
 	 */			
-	this.getEdgeCount = function(sourceId, destId) {
+    this.getEdgeCount = function(sourceId, destId) {
         if (!this.edgeExists(sourceId, destId, 0))
             throw new UnexistingEdgeException(sourceId, destId);
 
-		return this.getEdgesCount(sourceId, destId);
-	}
+        return this.getEdgesCount(sourceId, destId);
+    }
 
-	/** 
+    /** 
 	 * Returns, as an integer, the color of the k th edge between nodes identified by sourceid and destid
 	 *
 	 * @param sourceid the identifier of the source node (strictly positive integer)
@@ -43,11 +43,11 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the nodes exist but k is outside the allowed range
 	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist
 	 */			
-	this.getColorAsInteger = function(sourceid, destid, k) {
-		return this.getEdgeValue(sourceid, destid, k-1);
-	}
+    this.getColorAsInteger = function(sourceid, destid, k) {
+        return this.getEdgeValue(sourceid, destid, k-1);
+    }
 
-	/** 
+    /** 
 	 * Removes the k th edge between nodes identified by sourceid and destid
 	 *
 	 * @param sourceid the identifier of the source node (strictly positive integer)
@@ -58,9 +58,9 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the nodes exist but k is outside the allowed range
 	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist
 	 */			
-	this.remove = function(sourceid, destid, k) {
-		this.removeEdge(sourceid, destid, k-1);
-	}
+    this.remove = function(sourceid, destid, k) {
+        this.removeEdge(sourceid, destid, k-1);
+    }
 
     /** 
 	 * Returns the identifier of the k th grounded node.
@@ -76,29 +76,29 @@ var HackenbushGraph = function(){
         return this.groundedNodes[k-1];
     }
 
-	/** 
+    /** 
 	 * Clones the current AbstractHackenbushGraph instance.
 	 *
 	 * @return a clone of this
 	 */			
-	this.clone = function() {
-		var hG = new HackenbushGraph();
+    this.clone = function() {
+        var hG = new HackenbushGraph();
         var sourceId, sourceIdInt, destId, destIdInt, indexEdge, value;
         for (sourceId in this.nodes) {
-			sourceIdInt = this.splitId(sourceId);
-			hG.addWeightedNodeWithoutCheck(sourceIdInt, undefined);
+            sourceIdInt = this.splitId(sourceId);
+            hG.addWeightedNodeWithoutCheck(sourceIdInt, undefined);
             for (destId in this.nodes[sourceId].neighbors) {
-				destIdInt = this.splitId(destId);
-				hG.addWeightedNodeWithoutCheck(destIdInt, undefined);
+                destIdInt = this.splitId(destId);
+                hG.addWeightedNodeWithoutCheck(destIdInt, undefined);
                 edgesNumber = this.getEdgesCount(sourceIdInt, destIdInt);
                 for (indexEdge=0; indexEdge < edgesNumber; indexEdge++) {
-					value = this.getEdgeValueWithoutCheck(sourceIdInt, destIdInt, indexEdge);
-					hG.addWeightedEdgeWithoutCheck(sourceIdInt, destIdInt, value);
+                    value = this.getEdgeValueWithoutCheck(sourceIdInt, destIdInt, indexEdge);
+                    hG.addWeightedEdgeWithoutCheck(sourceIdInt, destIdInt, value);
                 }
             }
-		}
-		return hG;
-	}
+        }
+        return hG;
+    }
 
     /** 
 	 * Return the index of the specified node in the groundedNodes array
@@ -160,8 +160,7 @@ var HackenbushGraph = function(){
         if (this.isAlreadyGrounded(id))
             throw new AlreadyGroundedNodeException(id);
 
-		this.groundNodeNoCheck(id);
-
+        this.groundNodeNoCheck(id);
         this.setLinkedToGround();
     }
 
@@ -170,9 +169,9 @@ var HackenbushGraph = function(){
 	 *
      * @param id the id of the node
 	 */    
-	this.groundNodeNoCheck = function(id) {
+    this.groundNodeNoCheck = function(id) {
         this.groundedNodes.push(id);
-	}
+    }
     
     /** 
 	 * push the id of a grounded node in this.groundedNodes .

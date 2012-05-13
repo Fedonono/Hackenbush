@@ -22,7 +22,7 @@ var AbstractHackenbushGraph = function(){
 
 	/** 
 	 * Returns the number of edges between nodes identified by sourceid and destid
-	 * @param sourceid the identifier of the source node (strictly positive integer)
+	 * @param sourceid the identifier of the source node (strictly positive integeAbstractHackenbushGraph.jsr)
 	 * @param destid the identifier of the destination node (strictly positive integer)
 	 * @return the number of edges between nodes identified by sourceid and destid
 	 * @throws InvalidIdException if one the specified ids is not valid (wrong type, <= 0, ...)	

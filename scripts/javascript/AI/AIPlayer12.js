@@ -82,38 +82,54 @@
             
             var ratedGraph = hbg.clone();
             
-            //adds the concept of rank, weakness and strength to the edges
+            /**
+             * adds the concept of rank, killers and strength to the edges
+             **/
             (function rateTheGraph(){
-                ratedGraph.setNodesValues({});
-                
-                var groundedNodesCount = ratedGraph.getGroundedNodesCount();
+
                 var queue = new Array();
                 var stack = new Array();
                 var visited = new Array();
+                var killerId = 0;
             
+                var groundedNodesCount = ratedGraph.getGroundedNodesCount();
+                console.log("groundedNodesCount: "+groundedNodesCount);
                 //adding grounded nodes to the queue.
                 for(var i = 1; i < groundedNodesCount; i++){
                     var currentNodeId = ratedGraph.getGroundedNode(i);
                     queue.push(currentNodeId);
                     visited["#"+currentNodeId] = true;
-                    ratedGraph.getNodeValue(currentNodeId).rank = 0;
-                    ratedGraph.getNodeValue(currentNodeId).strength = null;
                 }
-            
-                //dequeue the queue adding the concept of rank and weakness to the edges
+                //dequeue the queue adding the concept of rank and killers
                 while(queue.length > 0){
                     currentNodeId = queue.shift();
                     stack.push(currentNodeId);
                     
                     var nodeValue = ratedGraph.getNodeValue(currentNodeId);
-                    nodeValue.weak = false;
-                    var neighborhoodSize = ratedGraph.getNeighborhoodSize(currentNodeId);
-                    var smallerRankNeighborCount = 0;
+                    console.log(nodeValue);
+                    if(!nodeValue){
+                        console.log("coucou");
+                        ratedGraph.setNodeValue(currentNodeId, new Object());
+                        nodeValue = ratedGraph.getNodeValue(currentNodeId);
+                        nodeValue.rank = 0;
+                        
+                    }
+                    if(nodeValue.killers)nodeValue.killers = new Array();
                     
+                    var neighborhoodSize = ratedGraph.getNeighborhoodSize(currentNodeId);
+                    
+                    var smallerRankEnemyCount = 0;
+                    var smallerRankFriendCount = 0;
+                    var equalRankEnemyCount = 0;//excluding loop
+                    var equalRankFriendCount = 0;//excluding loop
                     for( i = 1; i <= neighborhoodSize; i++){
                     
                         var neighborId = ratedGraph.getNeighbor(currentNodeId, i);
                         var neighborValue = ratedGraph.getNodeValue(neighborId);
+                        if(!neighborValue){
+                            ratedGraph.setNodeValue(neighborId, new Object());
+                            neighborValue = ratedGraph.getNodeValue(neighborId);
+                        }
                         var edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
                     
                         //enqueue unvisited nodes and set their rank
@@ -124,47 +140,42 @@
                             neighborValue.rank = nodeValue.rank + 1;                            
                         }
                         
-                        //propagate weak concept
+                        //count smaller or equal rank enemies and friends
                         if(neighborValue.rank < nodeValue.rank){
-                            smallerRankNeighborCount ++;
-                            if(edgesCount === 1){
-                                var edgeValue = ratedGraph.getEdgeValue(currentNodeId, neighborId, 0);
-                                if(edgeValue !== color)nodeValue.weak = true;
-                                else nodeValue.weak = neighborValue.weak;
+                            for(var k = 0; k < edgesCount; k++){
+                                if(ratedGraph.getEdgeValue(currentNodeId, neighborId, k) === color) smallerRankFriendCount++;
+                                else smallerRankEnemyCount++;
                             }
                         }
-                        else if(neighborValue.rank === nodeValue.rank && neighborId !== currentNodeId){
-                            smallerRankNeighborCount++;
+                        else if(neighborValue.rank === nodeValue.rank){
+                            for(k = 0; k < edgesCount; k++){
+                                if(ratedGraph.getEdgeValue(currentNodeId, neighborId, k) === color) equalRankFriendCount++;
+                                else equalRankEnemyCount++;
+                            }
                         }
                     }
-                    if(smallerRankNeighborCount > 1) nodeValue.weak = false;
-                }
-                
-                // unstack the stack adding the concept of strength to the edges and polish up the edge weak concept
-                while(stack.length > 0) {
-                    currentNodeId = stack.pop();
-                    nodeValue = ratedGraph.getNodeValue(currentNodeId);
-                    if(nodeValue.strength !== undefined) nodeValue.strength = 0;
-                    
-                    for( i = 1; i < neighborhoodSize; i++) {
-                        
-                        neighborId = ratedGraph.getNeighbor(currentNodeId, i);
-                        neighborValue = ratedGraph.getNodeValue(neighborId);
-                        edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
-                        
-                        //polishing up the edge weak concept 
-                        if(neighborValue.rank <= nodeValue.rank){
-                            neighborValue.weak = nodeValue.weak;
+                    // add a killer if he exists
+                    if(smallerRankEnemyCount === 1 && smallerRankFriendCount + equalRankEnemyCount + equalRankFriendCount === 0){
+                        nodeValue.killers.push({
+                            rank : nodeValue.rank-1, 
+                            killerId:++killerId
+                        });
+                        // propagate already existing killers to edges from an higher rank;
+                        for( i = 1; i <= neighborhoodSize; i++){
+                            neighborId = ratedGraph.getNeighbor(currentNodeId, i);
+                            neighborValue.getNodeValue(neighborId);
+                            if(neighborValue.rank > nodeValue.rank){
+                                neighborValue.killers = new Array();
+                                neighborValue.killers = neighborValue.killers.concat(nodeValue.killers);
+                            }
                         }
-                        
-                        
-                    //propagate strength
-                        
                     }
-                }
-            })()
-            
-            // find the relevent move in the ratedGraph
+                } 
+            })()         
+            console.log(ratedGraph);
+            /**
+             *  find the relevent move in the ratedGraph and return it 
+             **/
             return (function findReleventMove(){
                 var move = null;
                 
@@ -175,13 +186,13 @@
         }
     
         /** 
-	 * Returns the next edge to remove in hgb, a graph modeling a Red-Blue Hackenbush game
-	 *
-	 * @param hbg : the graph representing the game
-	 * @param color : the color of the current player (type: integer, no particular constraint on value)
-	 * @param lastMove : the last edge removed in hgb, as an array of integers [sourceid, destid]
-	 * @return the next edge to remove in hgb (undefined if impossible), as an array of integers [sourceid, destid]
-	 */			
+ * Returns the next edge to remove in hgb, a graph modeling a Red-Blue Hackenbush game
+ *
+ * @param hbg : the graph representing the game
+ * @param color : the color of the current player (type: integer, no particular constraint on value)
+ * @param lastMove : the last edge removed in hgb, as an array of integers [sourceid, destid]
+ * @return the next edge to remove in hgb (undefined if impossible), as an array of integers [sourceid, destid]
+ */			
         this.play = function(hbg, color, lastMove) {
             
             this.start = new Date();
