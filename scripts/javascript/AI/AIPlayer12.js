@@ -93,22 +93,21 @@
                 var killerId = 0;
             
                 var groundedNodesCount = ratedGraph.getGroundedNodesCount();
-                console.log("groundedNodesCount: "+groundedNodesCount);
                 //adding grounded nodes to the queue.
-                for(var i = 1; i < groundedNodesCount; i++){
+                for(var i = 1; i <= groundedNodesCount; i++){
                     var currentNodeId = ratedGraph.getGroundedNode(i);
                     queue.push(currentNodeId);
                     visited["#"+currentNodeId] = true;
                 }
+                console.log(ratedGraph.groundedNodes);
                 //dequeue the queue adding the concept of rank and killers
                 while(queue.length > 0){
                     currentNodeId = queue.shift();
+                    console.log(currentNodeId);
                     stack.push(currentNodeId);
                     
                     var nodeValue = ratedGraph.getNodeValue(currentNodeId);
-                    console.log(nodeValue);
                     if(!nodeValue){
-                        console.log("coucou");
                         ratedGraph.setNodeValue(currentNodeId, new Object());
                         nodeValue = ratedGraph.getNodeValue(currentNodeId);
                         nodeValue.rank = 0;
@@ -117,22 +116,20 @@
                     if(nodeValue.killers)nodeValue.killers = new Array();
                     
                     var neighborhoodSize = ratedGraph.getNeighborhoodSize(currentNodeId);
-                    
                     var smallerRankEnemyCount = 0;
                     var smallerRankFriendCount = 0;
                     var equalRankEnemyCount = 0;//excluding loop
                     var equalRankFriendCount = 0;//excluding loop
                     for( i = 1; i <= neighborhoodSize; i++){
-                    
                         var neighborId = ratedGraph.getNeighbor(currentNodeId, i);
+                        console.log("neighbor"+neighborId);
                         var neighborValue = ratedGraph.getNodeValue(neighborId);
                         if(!neighborValue){
                             ratedGraph.setNodeValue(neighborId, new Object());
                             neighborValue = ratedGraph.getNodeValue(neighborId);
                         }
-                        var edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
                     
-                        //enqueue unvisited nodes and set their rank
+                        //enqueue unvisited nodeValue.s and set their rank
                         if(!visited["#"+neighborId]){
                             queue.push(neighborId);
                             visited["#"+neighborId] = true;
@@ -140,6 +137,7 @@
                             neighborValue.rank = nodeValue.rank + 1;                            
                         }
                         
+                        var edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
                         //count smaller or equal rank enemies and friends
                         if(neighborValue.rank < nodeValue.rank){
                             for(var k = 0; k < edgesCount; k++){
@@ -156,6 +154,7 @@
                     }
                     // add a killer if he exists
                     if(smallerRankEnemyCount === 1 && smallerRankFriendCount + equalRankEnemyCount + equalRankFriendCount === 0){
+                        nodeValue.killers = new Array();
                         nodeValue.killers.push({
                             rank : nodeValue.rank-1, 
                             killerId:++killerId
@@ -163,7 +162,7 @@
                         // propagate already existing killers to edges from an higher rank;
                         for( i = 1; i <= neighborhoodSize; i++){
                             neighborId = ratedGraph.getNeighbor(currentNodeId, i);
-                            neighborValue.getNodeValue(neighborId);
+                            neighborValue= ratedGraph.getNodeValue(neighborId);
                             if(neighborValue.rank > nodeValue.rank){
                                 neighborValue.killers = new Array();
                                 neighborValue.killers = neighborValue.killers.concat(nodeValue.killers);

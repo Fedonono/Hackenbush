@@ -83,22 +83,21 @@ var HackenbushGraph = function(){
 	 */			
     this.clone = function() {
         var hG = new HackenbushGraph();
-        var sourceId, sourceIdInt, destId, destIdInt, indexEdge, value, edgesNumber, groundedNodesLength;
-        for (sourceId in this.nodes) {
-            sourceIdInt = this.splitId(sourceId);
-            hG.addWeightedNodeWithoutCheck(sourceIdInt, undefined);
-            for (destId in this.nodes[sourceId].neighbors) {
-                destIdInt = this.splitId(destId);
-                hG.addWeightedNodeWithoutCheck(destIdInt, undefined);
-                edgesNumber = this.getEdgesCount(sourceIdInt, destIdInt);
-                for (indexEdge=0; indexEdge < edgesNumber; indexEdge++) {
-                    value = this.getEdgeValueWithoutCheck(sourceIdInt, destIdInt, indexEdge);
-                    hG.addWeightedEdgeWithoutCheck(sourceIdInt, destIdInt, value);
+        for (var nodeKey in this.nodes) {
+            var nodeId = this.splitId(nodeKey);
+            hG.addWeightedNodeWithoutCheck(nodeId, this.getNodeValue(nodeId));
+        }
+        for (nodeKey in this.nodes) {
+            nodeId = this.splitId(nodeKey);
+            for (var neighborKey in this.nodes[nodeKey].neighbors) {
+                var neighborId = this.splitId(neighborKey);
+                var edges = this.nodes[nodeKey].neighbors[neighborKey];
+                for (var indexEdge = 0; indexEdge < edges.length; indexEdge++) {
+                    hG.addWeightedEdge(nodeId, neighborId, this.getEdgeValue(nodeId, neighborId, indexEdge));
                 }
             }
         }
-		groundedNodesLength = this.groundedNodes.length;
-		hG.groundedNodes = this.groundedNodes.slice(0, groundedNodesLength); // not size-1 because the method slice doesn't take the end index provided
+        hG.groundedNodes = this.groundedNodes.slice(0, this.groundedNodes.length); // not size-1 because the method slice doesn't take the end index provided
         return hG;
     }
 
