@@ -40,7 +40,7 @@
                 visited["#"+currentNodeId] = true;
             }
             
-            //dequeue the queue
+            //dequeue the queueconsole.log(releventMove);
             while(queue.length != 0){
                 currentNodeId = queue.shift();
                 var neighborhoodSize = hbg.getNeighborhoodSize(currentNodeId);
@@ -52,17 +52,18 @@
                     if(!visited["#"+currentNeighborId]){
                         queue.push(currentNeighborId);
                         visited["#"+currentNeighborId] = true;
-                    }
+                    
                    
-                    var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
-                    var j = 0;
-                    var edgeMatched = false;
-                    while(j < edgeCount && !edgeMatched){
-                        if(color === hbg.getEdgeValue(currentNodeId, currentNeighborId, j)){
-                            move = [currentNodeId, currentNeighborId];
-                            edgeMatched = true;
+                        var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
+                        var j = 0;
+                        var edgeMatched = false;
+                        while(j < edgeCount && !edgeMatched){
+                            if(color === hbg.getEdgeValue(currentNodeId, currentNeighborId, j)){
+                                move = [currentNodeId, currentNeighborId];
+                                edgeMatched = true;
+                            }
+                            j++;
                         }
-                        j++;
                     }
                 }
             }
@@ -188,23 +189,23 @@
             //naive AI time log
             var AItime = new Date().valueOf() - this.start.valueOf();
             console.log("naive AI performed in " + AItime + " ms");
+            console.log(noobMove);
             //
             
             var releventMove = this.releventMove(hbg, color);
             //relevant AI time log
             AItime = new Date().valueOf() - this.start.valueOf();
             console.log("relevent AI performed in " + AItime + " ms");
+            console.log(releventMove);
             //
             
             
             if(releventMove){
                 console.log("relevant AI used");
-                console.log(releventMove);
                 return releventMove;
             }
             else {
                 console.log("naive AI used");
-                console.log(noobMove);
                 return noobMove;
             }
         } 
