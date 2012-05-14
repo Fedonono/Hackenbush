@@ -34,7 +34,7 @@
             var visited = new Array();
             
             //adding grounded nodes to the queue.
-            for(var i = 1; i < groundedNodesCount; i++){
+            for(var i = 1; i <= groundedNodesCount; i++){
                 var currentNodeId = hbg.getGroundedNode(i);
                 queue.push(currentNodeId);
                 visited["#"+currentNodeId] = true;
