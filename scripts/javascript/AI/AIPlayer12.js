@@ -196,12 +196,15 @@
             console.log("relevent AI performed in " + AItime + " ms");
             //
             
+            
             if(releventMove){
                 console.log("relevant AI used");
+                console.log(releventMove);
                 return releventMove;
             }
             else {
                 console.log("naive AI used");
+                console.log(noobMove);
                 return noobMove;
             }
         } 
