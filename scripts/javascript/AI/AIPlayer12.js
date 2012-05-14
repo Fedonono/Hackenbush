@@ -79,11 +79,10 @@
          *
          **/
         this.releventMove = function(hbg, color){
-            
             var ratedGraph = hbg.clone();
             
             /**
-             * adds the concept of rank, killers and strength to the edges
+             * adds the concept of rank, weakness and strength to the edges
              **/
             (function rateTheGraph(){
 
@@ -99,11 +98,9 @@
                     queue.push(currentNodeId);
                     visited["#"+currentNodeId] = true;
                 }
-                console.log(ratedGraph.groundedNodes);
-                //dequeue the queue adding the concept of rank and killers
+                //dequeue the queue adding the concept of rank and weakness
                 while(queue.length > 0){
                     currentNodeId = queue.shift();
-                    console.log(currentNodeId);
                     stack.push(currentNodeId);
                     
                     var nodeValue = ratedGraph.getNodeValue(currentNodeId);
@@ -111,18 +108,15 @@
                         ratedGraph.setNodeValue(currentNodeId, new Object());
                         nodeValue = ratedGraph.getNodeValue(currentNodeId);
                         nodeValue.rank = 0;
-                        
                     }
-                    if(nodeValue.killers)nodeValue.killers = new Array();
+                    if(!nodeValue.weakness)nodeValue.weakness = new Array();
                     
                     var neighborhoodSize = ratedGraph.getNeighborhoodSize(currentNodeId);
-                    var smallerRankEnemyCount = 0;
+                    
                     var smallerRankFriendCount = 0;
-                    var equalRankEnemyCount = 0;//excluding loop
-                    var equalRankFriendCount = 0;//excluding loop
+                    var currentWeakness = new Array();
                     for( i = 1; i <= neighborhoodSize; i++){
                         var neighborId = ratedGraph.getNeighbor(currentNodeId, i);
-                        console.log("neighbor"+neighborId);
                         var neighborValue = ratedGraph.getNodeValue(neighborId);
                         if(!neighborValue){
                             ratedGraph.setNodeValue(neighborId, new Object());
@@ -138,34 +132,28 @@
                         }
                         
                         var edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
-                        //count smaller or equal rank enemies and friends
-                        if(neighborValue.rank < nodeValue.rank){
+                        
+                        //traversal the neighborhood to find sammler or equal rank enemy who could be dangerous (excluding loop strand)
+                        if(neighborValue.rank <= nodeValue.rank && currentNodeId !== neighborId){
                             for(var k = 0; k < edgesCount; k++){
                                 if(ratedGraph.getEdgeValue(currentNodeId, neighborId, k) === color) smallerRankFriendCount++;
-                                else smallerRankEnemyCount++;
-                            }
-                        }
-                        else if(neighborValue.rank === nodeValue.rank){
-                            for(k = 0; k < edgesCount; k++){
-                                if(ratedGraph.getEdgeValue(currentNodeId, neighborId, k) === color) equalRankFriendCount++;
-                                else equalRankEnemyCount++;
+                                else currentWeakness.push({
+                                    rank:neighborValue.rank, 
+                                    strand:[neighborId, currentNodeId]
+                                });
                             }
                         }
                     }
                     // add a killer if he exists
-                    if(smallerRankEnemyCount === 1 && smallerRankFriendCount + equalRankEnemyCount + equalRankFriendCount === 0){
-                        nodeValue.killers = new Array();
-                        nodeValue.killers.push({
-                            rank : nodeValue.rank-1, 
-                            killerId:++killerId
-                        });
-                        // propagate already existing killers to edges from an higher rank;
+                    if(smallerRankFriendCount === 0){
+                        nodeValue.weakness = nodeValue.weakness.concat(currentWeakness);
+                        // propagate already existing weakness to edges from an higher rank;
                         for( i = 1; i <= neighborhoodSize; i++){
                             neighborId = ratedGraph.getNeighbor(currentNodeId, i);
                             neighborValue= ratedGraph.getNodeValue(neighborId);
                             if(neighborValue.rank > nodeValue.rank){
-                                neighborValue.killers = new Array();
-                                neighborValue.killers = neighborValue.killers.concat(nodeValue.killers);
+                                neighborValue.weakness = new Array();
+                                neighborValue.weakness = neighborValue.weakness.concat(nodeValue.weakness);
                             }
                         }
                     }

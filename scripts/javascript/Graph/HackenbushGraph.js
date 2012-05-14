@@ -83,9 +83,11 @@ var HackenbushGraph = function(){
 	 */			
     this.clone = function() {
         var hG = new HackenbushGraph();
+        var alreadyVisitedEdge = new Array();
+        
         for (var nodeKey in this.nodes) {
             var nodeId = this.splitId(nodeKey);
-            hG.addWeightedNodeWithoutCheck(nodeId, this.getNodeValue(nodeId));
+            hG.addWeightedNode(nodeId, this.getNodeValue(nodeId));
         }
         for (nodeKey in this.nodes) {
             nodeId = this.splitId(nodeKey);
@@ -93,7 +95,11 @@ var HackenbushGraph = function(){
                 var neighborId = this.splitId(neighborKey);
                 var edges = this.nodes[nodeKey].neighbors[neighborKey];
                 for (var indexEdge = 0; indexEdge < edges.length; indexEdge++) {
-                    hG.addWeightedEdge(nodeId, neighborId, this.getEdgeValue(nodeId, neighborId, indexEdge));
+                    var edgeId = edges[indexEdge].id;
+                    if(!alreadyVisitedEdge['#'+edgeId]){
+                        alreadyVisitedEdge['#'+edgeId] = true;
+                        hG.addWeightedEdge(nodeId, neighborId, this.getEdgeValue(nodeId, neighborId, indexEdge));
+                    }
                 }
             }
         }

@@ -447,7 +447,6 @@
      * builds the graph game
      **/
     hackenbush.views.drawingArea.buildGraphGame = function(){
-        
         var alreadyVisitedEdge = new Array(); 
         var graph = new HackenbushGraph();
         hackenbush.views.drawingArea.graphUi.removeFlyingNodes();
@@ -474,7 +473,7 @@
                 }
             }
         }
-        graph.groundedNodes = hackenbush.views.drawingArea.graphUi.groundedNodes;
+        graph.groundedNodes = hackenbush.views.drawingArea.graphUi.groundedNodes.slice(0, hackenbush.views.drawingArea.graphUi.groundedNodes.length);
         hackenbush.controller.buildGraphGame(graph);
     }
     
