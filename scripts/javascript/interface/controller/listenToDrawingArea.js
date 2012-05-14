@@ -473,7 +473,7 @@
                 }
             }
         }
-        graph.groundedNodes = hackenbush.views.drawingArea.graphUi.groundedNodes.slice(0, hackenbush.views.drawingArea.graphUi.groundedNodes.length);
+        graph.groundedNodes = hackenbush.views.drawingArea.graphUi.groundedNodes.slice(0, hackenbush.views.drawingArea.graphUi.getGroundedNodesCount());
         hackenbush.controller.buildGraphGame(graph);
     }
     

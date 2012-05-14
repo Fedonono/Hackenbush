@@ -70,7 +70,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if k is outside the allowed range
 	 */		
     this.getGroundedNode = function(k) {
-        if(!this.isInt(k) || k <= 0 || k > this.groundedNodes.length) 
+        if(!this.isInt(k) || k <= 0 || k > this.getGroundedNodesCount()) 
             throw new InvalidIndexException(k);
         
         return this.groundedNodes[k-1];
@@ -103,7 +103,7 @@ var HackenbushGraph = function(){
                 }
             }
         }
-        hG.groundedNodes = this.groundedNodes.slice(0, this.groundedNodes.length); // not size-1 because the method slice doesn't take the end index provided
+        hG.groundedNodes = this.groundedNodes.slice(0, this.getGroundedNodesCount()); // not size-1 because the method slice doesn't take the end index provided
         return hG;
     }
 
@@ -206,7 +206,7 @@ var HackenbushGraph = function(){
 	* @throws InvalidIndexException if k is outside the allowed range or the k is < 0 or not an integer
 	*/
     this.spliceGroundedNodes = function(index){       
-        if(!this.isInt(index) || index < 0 || index >= this.groundedNodes.length)
+        if(!this.isInt(index) || index < 0 || index >= this.getGroundedNodesCount())
             throw new InvalidIndexException(index);
        
         this.groundedNodes.splice(index, 1);

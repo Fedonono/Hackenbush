@@ -60,7 +60,8 @@
      **/
     hackenbush.controller.playersCanStillWin = function(){
         var colorReference = null;
-        for(var j= 0; j < hackenbush.modele.graphGame.groundedNodes.length; j++){
+        var groundedNodesLength = hackenbush.modele.graphGame.getGroundedNodesCount();
+        for(var j= 0; j < groundedNodesLength; j++){
             var nodeId = hackenbush.modele.graphGame.groundedNodes[j];
             var neighbors = hackenbush.modele.graphGame.getNodeById(nodeId).neighbors;
             for(var neighborKey in neighbors){
@@ -222,10 +223,14 @@
 			class: 'winCanvas'
 		});
 
-		if ((mode === "iaVsHuman" && player == 1) || (mode === "humanVsIa" && player == 2) || (mode === "iaVsIa"))
-			img.attr({ src: "./ressources/images/ia_wins.jpg" });
-		if ((mode === "iaVsHuman" && player == 2) || (mode === "humanVsIa" && player == 1))
+		if (mode === "humanVsHuman")
 			img.attr({ src: "./ressources/images/player_wins.png", class: "winCanvas playerWins" });
+		else {
+			if ((mode === "iaVsHuman" && player == 1) || (mode === "humanVsIa" && player == 2) || (mode === "iaVsIa"))
+				img.attr({ src: "./ressources/images/ia_wins.jpg", class: "winCanvas iaWins" });
+			if ((mode === "iaVsHuman" && player == 2) || (mode === "humanVsIa" && player == 1))
+				img.attr({ src: "./ressources/images/player_wins.png", class: "winCanvas playerWins" });
+		}
 
 		winEl.html("Player "+player+" "+"wins !");
 		winEl.append(img);
