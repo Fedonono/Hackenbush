@@ -50,10 +50,10 @@
                     var currentNeighborId = hbg.getNeighbor(currentNodeId, i);
                    
                     if(!visited["#"+currentNeighborId]){
+                        
                         queue.push(currentNeighborId);
                         visited["#"+currentNeighborId] = true;
-                    
-                   
+                        
                         var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
                         var j = 0;
                         var edgeMatched = false;
