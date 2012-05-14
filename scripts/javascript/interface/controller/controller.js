@@ -159,13 +159,14 @@
             var i = 0;
             while(i < edgeCount && hackenbush.modele.graphGame.getEdgeValue(sourceNodeId, destNodeId, i) !== hackenbush.controller.currentPlayer){
                 i++; 
-            }
-            hackenbush.modele.graphGame.removeEdge(sourceNodeId, destNodeId, i);
+            }            
+            if(hackenbush.modele.graphGame.getEdgeValue(sourceNodeId, destNodeId,i) === hackenbush.controller.currentPlayer)hackenbush.modele.graphGame.removeEdge(sourceNodeId, destNodeId, i);
+            else hackenbush.controller.win((hackenbush.controller.currentPlayer + 1)%2);//Computer is weak ;)
+            
             hackenbush.modele.graphGame.removeFlyingNodes();
             hackenbush.views.drawingArea.graphUi.removeEdge(sourceNodeId, destNodeId, i);
             hackenbush.views.drawingArea.graphUi.removeFlyingNodes();
             hackenbush.views.drawingArea.update();
-            
             
             hackenbush.controller.applyRules();
         }

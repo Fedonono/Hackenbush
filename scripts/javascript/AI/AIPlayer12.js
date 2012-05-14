@@ -41,7 +41,7 @@
             }
             
             //dequeue the queueconsole.log(releventMove);
-            while(queue.length != 0){
+            while(queue.length > 0){
                 currentNodeId = queue.shift();
                 var neighborhoodSize = hbg.getNeighborhoodSize(currentNodeId);
                 
@@ -50,21 +50,20 @@
                     var currentNeighborId = hbg.getNeighbor(currentNodeId, i);
                    
                     if(!visited["#"+currentNeighborId]){
-                        
                         queue.push(currentNeighborId);
                         visited["#"+currentNeighborId] = true;
-                        
-                        var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
-                        var j = 0;
-                        var edgeMatched = false;
-                        while(j < edgeCount && !edgeMatched){
-                            if(color === hbg.getEdgeValue(currentNodeId, currentNeighborId, j)){
-                                move = [currentNodeId, currentNeighborId];
-                                edgeMatched = true;
-                            }
-                            j++;
-                        }
                     }
+                        
+                    var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
+                    var j = 0;
+                    var edgeMatched = false;
+                    while(j < edgeCount && !edgeMatched){
+                        if(color === hbg.getEdgeValue(currentNodeId, currentNeighborId, j)){
+                            move = [currentNodeId, currentNeighborId];
+                            edgeMatched = true;
+                        }
+                        j++;
+                    } 
                 }
             }
             return move;
@@ -90,7 +89,6 @@
                 var queue = new Array();
                 var stack = new Array();
                 var visited = new Array();
-                var killerId = 0;
             
                 var groundedNodesCount = ratedGraph.getGroundedNodesCount();
                 //adding grounded nodes to the queue.
@@ -158,7 +156,11 @@
                             }
                         }
                     }
-                } 
+                }
+                while(stack.length > 0){
+                    currentNodeId = stack.shift();
+                }
+                
             })()         
             console.log(ratedGraph);
             /**
