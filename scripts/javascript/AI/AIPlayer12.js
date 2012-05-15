@@ -55,10 +55,10 @@
                     }
                         
                     var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
-                    var j = 0;
+                    var j = 1;
                     var edgeMatched = false;
-                    while(j < edgeCount && !edgeMatched){
-                        if(color === hbg.getEdgeValue(currentNodeId, currentNeighborId, j)){
+                    while(j <= edgeCount && !edgeMatched){
+                        if(color === hbg.getColorAsInteger(currentNodeId, currentNeighborId, j)){
                             move = [currentNodeId, currentNeighborId];
                             edgeMatched = true;
                         }
@@ -79,13 +79,14 @@
          *
          **/
         this.releventMove = function(hbg, color){
-            var ratedGraph = hbg.clone();
             
             /**
              * adds the concept of rank, weakness and strength to the edges
              **/
-            (function rateTheGraph(){
-
+            function rateTheGraph(hbg, isEnemyViewPoint){
+                
+                var ratedGraph = hbg.clone();
+                
                 var queue = new Array();
                 var stack = new Array();
                 var visited = new Array();
@@ -134,8 +135,13 @@
                         
                         //traversal the neighborhood to find sammler or equal rank enemy who could be dangerous (excluding loop strand)
                         if(neighborValue.rank <= nodeValue.rank && currentNodeId !== neighborId){
-                            for(var k = 0; k < edgesCount; k++){
-                                if(ratedGraph.getEdgeValue(currentNodeId, neighborId, k) === color) smallerRankFriendCount++;
+                            for(var k = 1; k <= edgesCount; k++){
+                                
+                                var bool;
+                                if(isEnemyViewPoint) bool = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) !== color);
+                                else bool = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) === color);
+                                
+                                if(bool) smallerRankFriendCount++;
                                 else currentWeakness.push({
                                     rank:neighborValue.rank, 
                                     strand:[neighborId, currentNodeId]
@@ -143,7 +149,6 @@
                             }
                         }
                     }
-                    // add a killer if he exists
                     if(smallerRankFriendCount === 0){
                         nodeValue.weakness = nodeValue.weakness.concat(currentWeakness);
                         // propagate already existing weakness to edges from an higher rank;
@@ -151,6 +156,7 @@
                             neighborId = ratedGraph.getNeighbor(currentNodeId, i);
                             neighborValue= ratedGraph.getNodeValue(neighborId);
                             if(neighborValue.rank > nodeValue.rank){
+                                
                                 neighborValue.weakness = new Array();
                                 neighborValue.weakness = neighborValue.weakness.concat(nodeValue.weakness);
                             }
@@ -158,31 +164,54 @@
                     }
                 }
                 while(stack.length > 0){
+                    
                     currentNodeId = stack.shift();
+                    nodeValue = ratedGraph.getNodeValue(currentNodeId);
+                    if(!nodeValue.strength)nodeValue.strength = 0;
+                    
+                    neighborhoodSize = ratedGraph.getNeighborhoodSize(currentNodeId);
+                    for( i = 1; i <= neighborhoodSize; i++) {
+                        neighborId = ratedGraph.getNeighbor(currentNodeId, i);
+                        neighborValue = ratedGraph.getNodeValue(neighborId);
+                        if(!neighborValue.strength)neighborValue.strength = nodeValue.strength;
+                        else neighborValue.strength += nodeValue.strength;
+                        
+                        edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
+                        for(k = 1; k <= edgesCount; k++){
+                            if(isEnemyViewPoint) bool = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) !== color);
+                            else bool = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) === color);
+                                
+                            if(bool) neighborValue.strength--;
+                            else neighborValue.strength++;
+                        }
+                    }
                 }
-                
-            })()         
-            console.log(ratedGraph);
+                return ratedGraph; 
+            }      
             /**
              *  find the relevent move in the ratedGraph and return it 
              **/
-            return (function findReleventMove(){
+            function findReleventMove(enemyRatedGraph, friendRatedGraph){
                 var move = null;
                 
-                
+               
                 
                 return move;
-            })()
+            }
+            
+            var enemyRatedGraph = rateTheGraph(hbg, true);
+            var friendRatedGraph = rateTheGraph(hbg, false);
+            return findReleventMove(enemyRatedGraph,friendRatedGraph);
         }
     
         /** 
- * Returns the next edge to remove in hgb, a graph modeling a Red-Blue Hackenbush game
- *
- * @param hbg : the graph representing the game
- * @param color : the color of the current player (type: integer, no particular constraint on value)
- * @param lastMove : the last edge removed in hgb, as an array of integers [sourceid, destid]
- * @return the next edge to remove in hgb (undefined if impossible), as an array of integers [sourceid, destid]
- */			
+             * Returns the next edge to remove in hgb, a graph modeling a Red-Blue Hackenbush game
+             *
+             * @param hbg : the graph representing the game
+             * @param color : the color of the current player (type: integer, no particular constraint on value)
+             * @param lastMove : the last edge removed in hgb, as an array of integers [sourceid, destid]
+             * @return the next edge to remove in hgb (undefined if impossible), as an array of integers [sourceid, destid]
+             */			
         this.play = function(hbg, color, lastMove) {
             
             this.start = new Date();
