@@ -5,7 +5,7 @@
 
 	echo "<div class='load'><div class='game isRedBlueGraph' id='M.Soulignac_random_graph'>";
 	echo "<div class='randomGraph'>?</div>";
-	echo "M.Soulignac's graph</div>";
+	echo "Random graph</div>";
 	if (isset($gamesData)) {
 		$gamesNumber = count($gamesData);
 		for ($i = 0; $i < $gamesNumber; $i++) {

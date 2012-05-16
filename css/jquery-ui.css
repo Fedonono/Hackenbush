@@ -87,12 +87,12 @@
 ----------------------------------*/
 
 /* states and images */
-.ui-icon {background: url(../ressources/images/jquery-ui/icon-close.png) no-repeat;}
+.ui-icon, .iconClose {background: url(../ressources/images/jquery-ui/icon-close.png) no-repeat;}
 
 /* positioning */
-.ui-icon-close { background-position: 0px 0px; }
-.ui-icon-closethick { background-position: 0px -17px; height:17px; width:17px; }
-.ui-icon-closethick:hover { background-position: 0px 0px; height:17px; width:17px; }
+.ui-icon-close, .iconClose { background-position: 0px 0px; }
+.ui-icon-closethick, .iconClose { background-position: 0px -17px; height:17px; width:17px; }
+.ui-icon-closethick:hover, .iconClose:hover { background-position: 0px 0px; height:17px; width:17px; }
 
 /* Misc visuals
 ----------------------------------*/

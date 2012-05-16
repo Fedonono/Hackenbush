@@ -79,3 +79,9 @@
 .iaWins {
 	opacity: 0.85;
 }
+
+.iconClose {
+	left: 770px;
+	top: 5px;
+	position: absolute;
+}

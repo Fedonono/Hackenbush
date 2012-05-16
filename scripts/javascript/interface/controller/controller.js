@@ -223,6 +223,9 @@
 		var img = $('<img>', {
 			class: 'winCanvas'
 		});
+		var iconClose = $('<div>', {
+			class: 'iconClose'
+		});
 
 		if (mode === "humanVsHuman")
 			img.attr({ src: "./ressources/images/player_wins.png", class: "winCanvas playerWins" });
@@ -232,9 +235,14 @@
 			if ((mode === "iaVsHuman" && player == 2) || (mode === "humanVsIa" && player == 1))
 				img.attr({ src: "./ressources/images/player_wins.png", class: "winCanvas playerWins" });
 		}
+		
 
 		winEl.html("Player "+player+" "+"wins !");
 		winEl.append(img);
+		winEl.append(iconClose);
+		iconClose.click( function() {
+			img.hasClass('hidden') ? img.removeClass('hidden') : img.addClass('hidden');
+		});
 	}
     
     /**
