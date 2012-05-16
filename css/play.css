@@ -11,15 +11,12 @@
 
 .startbg .start {
 	background: url(../ressources/images/start.png) no-repeat;
+	background-position: 0px 0px;
 	width: 800px;
 	height: 108px;
 	position: relative;
 	top: 240px;
 	left: 0px;
-}
-
-.startbg .start {
-	background-position: 0px 0px;
 }
 
 .startbg .start:hover {

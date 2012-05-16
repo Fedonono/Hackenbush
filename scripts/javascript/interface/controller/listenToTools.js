@@ -49,13 +49,15 @@
     hackenbush.controller.listenToolChooserInPlay = function(){
         $("#load").click( function(event) {
             var loadForm = $('#load-form');
+			var d = new Date();
             loadForm.dialog( "open" );
-            loadForm.load("./scripts/php/view/loadGame.php");
+            loadForm.load("./scripts/php/view/loadGame.php?time="+d.getTime()); // to avoid the Internet Explorer's cache, not the same url each time
         });
         $("#modeChooser").click( function(event) {
             var modeModal = $('#mode-modal');
+			var d = new Date();
             modeModal.dialog( "open" );
-            modeModal.load("./views/mode.html");
+            modeModal.load("./views/mode.html?time="+d.getTime());
         });   
     }
 
