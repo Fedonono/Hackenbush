@@ -167,7 +167,7 @@
                 
                 while(stack.length > 0){
                     
-                    currentNodeId = stack.shift();
+                    currentNodeId = stack.pop();
                     nodeValue = ratedGraph.getNodeValue(currentNodeId);
                     if(!nodeValue.strength)nodeValue.strength = 0;
                     
@@ -175,20 +175,32 @@
                     for( i = 1; i <= neighborhoodSize; i++) {
                         neighborId = ratedGraph.getNeighbor(currentNodeId, i);
                         neighborValue = ratedGraph.getNodeValue(neighborId);
-                        if(!neighborValue.strength)neighborValue.strength = nodeValue.strength;
-                        else neighborValue.strength += nodeValue.strength;
                         
-                        edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
-                        if(neighborValue.rank <= nodeValue.rank){
+                        if(neighborValue.rank >= nodeValue.rank){
+                            
+                            edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
                             for(k = 1; k <= edgesCount; k++){
+                                
                                 if(EnemyViewPoint) friendStrand = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) !== color);
                                 else friendStrand = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) === color);
                                 
-                                if(friendStrand) neighborValue.strength--;
-                                else neighborValue.strength++;
+                                if(friendStrand) nodeValue.strength--;
+                                else nodeValue.strength++;
                             }
                         }
                     }
+                    for( i = 1; i <= neighborhoodSize; i++) {
+                        neighborId = ratedGraph.getNeighbor(currentNodeId, i);
+                        neighborValue = ratedGraph.getNodeValue(neighborId);
+                        
+                        if(neighborId !== currentNodeId && neighborValue.rank <= nodeValue.rank){
+                            neighborId = ratedGraph.getNeighbor(currentNodeId, i);
+                            neighborValue = ratedGraph.getNodeValue(neighborId);
+                            if(!neighborValue.strength) neighborValue.strength = 0;
+                            neighborValue.strength += nodeValue.strength;
+                        }
+                    }
+                    
                 }
                 return ratedGraph; 
             }      
@@ -201,6 +213,7 @@
                     var weakStrands = new Array();
                     var queue = new Array();
                     var visited = new Array();
+                    
                     var groundedNodesCount = ratedGraph.getGroundedNodesCount();
                     for(var i = 1; i <= groundedNodesCount; i++){
                         var currentNodeId = ratedGraph.getGroundedNode(i);
@@ -208,6 +221,7 @@
                         visited["#"+currentNodeId] = true;
                     }
                     while(queue.length > 0){
+                        
                         currentNodeId = queue.shift();
                         if(ratedGraph.getNodeValue(currentNodeId).weakness.length > 0)weakStrands.push(currentNodeId);
                         var neighborhoodSize = ratedGraph.getNeighborhoodSize(currentNodeId);
@@ -231,25 +245,36 @@
                         
                         var nodeId = relevantNodes[i];
                         var nodeWeakness = enemyRatedGraph.getNodeValue(nodeId).weakness;
-                        var currentMovesId = new Array();
                         
                         for(var j = 0; j < nodeWeakness.length; j++){
                             var move = nodeWeakness[j].move;
                             var moveId = nodeWeakness[j].id;
+                            var strandValue = enemyRatedGraph.getNodeValue(move[0]);
+                            
                             if(!moves["#"+moveId]){
                                 moves["#"+moveId] = move;
-                                currentMovesId.push(moveId);
                                 ratedMoves["#"+moveId] = friendRatedGraph.getNodeValue(move[1]).strength;
                                 
                             }
                         }
                     }
+                    console.log(ratedMoves);
+                    console.log(moves);
+                    var bestRate = - 10000;
+                    for(var moveKey in ratedMoves){
+                        if(ratedMoves[moveKey] > bestRate){
+                            mostProfitableMoves = new Array();
+                            mostProfitableMoves.push(moves[moveKey]);
+                        } 
+                        else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
+                    }
+                    
                     return mostProfitableMoves;
                 }
                 
+                
                 var relevantNodes = findWeakStrands(enemyRatedGraph);
                 var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes);
-                
                 return mostProfitableMoves[0];
             }
             
@@ -274,7 +299,7 @@
             //naive AI time log
             var AItime = new Date().valueOf() - this.start.valueOf();
             console.log("naive AI performed in " + AItime + " ms");
-            console.log(noobMove);
+            //console.log(noobMove);
             //
             
             var releventMove = this.releventMove(hbg, color);

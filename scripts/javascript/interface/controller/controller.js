@@ -108,7 +108,6 @@
      * vouches for the good conduct of the game
      **/
     hackenbush.controller.applyRules = function(){
-        
         var winner = hackenbush.controller.playersCanStillWin(); 
         if(winner !== 2) hackenbush.controller.win(winner);
         else if(!hackenbush.modele.graphGame.getOrder()) {
@@ -160,13 +159,13 @@
             while(i < edgeCount && hackenbush.modele.graphGame.getEdgeValue(sourceNodeId, destNodeId, i) !== hackenbush.controller.currentPlayer){
                 i++; 
             }            
-            if(hackenbush.modele.graphGame.getEdgeValue(sourceNodeId, destNodeId,i) === hackenbush.controller.currentPlayer)hackenbush.modele.graphGame.removeEdge(sourceNodeId, destNodeId, i);
+            if(hackenbush.modele.graphGame.getEdgeValue(sourceNodeId, destNodeId,i) === hackenbush.controller.currentPlayer){
+                hackenbush.modele.graphGame.removeEdge(sourceNodeId, destNodeId, i);
+                hackenbush.views.drawingArea.graphUi.removeEdge(sourceNodeId, destNodeId, i);
+                hackenbush.views.drawingArea.graphUi.removeFlyingNodes();
+                hackenbush.views.drawingArea.update();
+            }
             else hackenbush.controller.win((hackenbush.controller.currentPlayer + 1)%2);//Computer is weak ;)
-            
-            hackenbush.modele.graphGame.removeFlyingNodes();
-            hackenbush.views.drawingArea.graphUi.removeEdge(sourceNodeId, destNodeId, i);
-            hackenbush.views.drawingArea.graphUi.removeFlyingNodes();
-            hackenbush.views.drawingArea.update();
             
             hackenbush.controller.applyRules();
         }
@@ -198,7 +197,7 @@
      **/
     hackenbush.controller.win = function(player) {
         player++;
-		hackenbush.controller.canvasWin(player);
+        hackenbush.controller.canvasWin(player);
         hackenbush.controller.turnCounter = 1;
         hackenbush.controller.setTurns(0);
         
@@ -216,34 +215,43 @@
      * 
      * @param player : an integer refering to the winner
      **/
-	hackenbush.controller.canvasWin = function(player) {
+    hackenbush.controller.canvasWin = function(player) {
         var winEl = $('#win');
         winEl.removeClass('hidden');
-		var mode = hackenbush.controller.getMode();
-		var img = $('<img>', {
-			class: 'winCanvas'
-		});
-		var iconClose = $('<div>', {
-			class: 'iconClose'
-		});
+        var mode = hackenbush.controller.getMode();
+        var img = $('<img>', {
+            class: 'winCanvas'
+        });
+        var iconClose = $('<div>', {
+            class: 'iconClose'
+        });
 
-		if (mode === "humanVsHuman")
-			img.attr({ src: "./ressources/images/player_wins.png", class: "winCanvas playerWins" });
-		else {
-			if ((mode === "iaVsHuman" && player == 1) || (mode === "humanVsIa" && player == 2) || (mode === "iaVsIa"))
-				img.attr({ src: "./ressources/images/ia_wins.jpg", class: "winCanvas iaWins" });
-			if ((mode === "iaVsHuman" && player == 2) || (mode === "humanVsIa" && player == 1))
-				img.attr({ src: "./ressources/images/player_wins.png", class: "winCanvas playerWins" });
-		}
+        if (mode === "humanVsHuman")
+            img.attr({
+                src: "./ressources/images/player_wins.png", 
+                class: "winCanvas playerWins"
+            });
+        else {
+            if ((mode === "iaVsHuman" && player == 1) || (mode === "humanVsIa" && player == 2) || (mode === "iaVsIa"))
+                img.attr({
+                    src: "./ressources/images/ia_wins.jpg", 
+                    class: "winCanvas iaWins"
+                });
+            if ((mode === "iaVsHuman" && player == 2) || (mode === "humanVsIa" && player == 1))
+                img.attr({
+                    src: "./ressources/images/player_wins.png", 
+                    class: "winCanvas playerWins"
+                });
+        }
 		
 
-		winEl.html("Player "+player+" "+"wins !");
-		winEl.append(img);
-		winEl.append(iconClose);
-		iconClose.click( function() {
-			img.hasClass('hidden') ? img.removeClass('hidden') : img.addClass('hidden');
-		});
-	}
+        winEl.html("Player "+player+" "+"wins !");
+        winEl.append(img);
+        winEl.append(iconClose);
+        iconClose.click( function() {
+            img.hasClass('hidden') ? img.removeClass('hidden') : img.addClass('hidden');
+        });
+    }
     
     /**
      * stop the game
@@ -298,10 +306,10 @@
 	 * @return a string, depending on the current mode
 	 */	
     hackenbush.controller.getMode = function() {
-		var mode;
+        var mode;
         hackenbush.controller.playersNature[0] ? mode="humanVs" : mode="iaVs";
         hackenbush.controller.playersNature[1] ? mode+="Human" : mode+="Ia";
-		return mode;
+        return mode;
     }
 
     /** 
