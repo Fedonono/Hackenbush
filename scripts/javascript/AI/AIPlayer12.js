@@ -10,7 +10,7 @@
         // MEMBERS
         
         this.start = null;
-        this.timeout = 850;// time in ms
+        this.timeout = 800;// time in ms
     
     
         //METHODS
@@ -83,8 +83,9 @@
             /**
              * adds the concept of rank, weakness and strength to the edges
              **/
-            function rateTheGraph(hbg, isEnemyViewPoint){
+            function rateTheGraph(hbg, EnemyViewPoint){
                 
+                var killerId = 0;
                 var ratedGraph = hbg.clone();
                 
                 var queue = new Array();
@@ -131,38 +132,39 @@
                             neighborValue.rank = nodeValue.rank + 1;                            
                         }
                         
-                        var edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
-                        
-                        //traversal the neighborhood to find sammler or equal rank enemy who could be dangerous (excluding loop strand)
+                        //traversal the neighborhood to find smaller or equal rank enemy who could be dangerous (excluding loop strand)
                         if(neighborValue.rank <= nodeValue.rank && currentNodeId !== neighborId){
+                            
+                            var edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
                             for(var k = 1; k <= edgesCount; k++){
+                                var friendStrand;
+                                if(EnemyViewPoint) friendStrand = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) !== color);
+                                else friendStrand = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) === color);
                                 
-                                var bool;
-                                if(isEnemyViewPoint) bool = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) !== color);
-                                else bool = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) === color);
-                                
-                                if(bool) smallerRankFriendCount++;
+                                if(friendStrand) smallerRankFriendCount++;
                                 else currentWeakness.push({
-                                    rank:neighborValue.rank, 
-                                    strand:[neighborId, currentNodeId]
+                                    move : [neighborId, currentNodeId],
+                                    id : ++killerId
                                 });
                             }
                         }
                     }
                     if(smallerRankFriendCount === 0){
                         nodeValue.weakness = nodeValue.weakness.concat(currentWeakness);
-                        // propagate already existing weakness to edges from an higher rank;
-                        for( i = 1; i <= neighborhoodSize; i++){
-                            neighborId = ratedGraph.getNeighbor(currentNodeId, i);
-                            neighborValue= ratedGraph.getNodeValue(neighborId);
-                            if(neighborValue.rank > nodeValue.rank){
-                                
-                                neighborValue.weakness = new Array();
-                                neighborValue.weakness = neighborValue.weakness.concat(nodeValue.weakness);
-                            }
+                    }
+                    // propagate already existing weakness to edges from an higher rank;
+                    for( i = 1; i <= neighborhoodSize; i++){
+                        neighborId = ratedGraph.getNeighbor(currentNodeId, i);
+                        neighborValue = ratedGraph.getNodeValue(neighborId);
+                        if(neighborValue.rank >= nodeValue.rank){
+                            if(!neighborValue.weakness)neighborValue.weakness = new Array();
+                            var copy = new Array();
+                            copy = nodeValue.weakness.slice(0, nodeValue.weakness.length);
+                            neighborValue.weakness = neighborValue.weakness.concat(copy);
                         }
                     }
                 }
+                
                 while(stack.length > 0){
                     
                     currentNodeId = stack.shift();
@@ -177,26 +179,73 @@
                         else neighborValue.strength += nodeValue.strength;
                         
                         edgesCount = ratedGraph.getEdgeCount(currentNodeId, neighborId);
-                        for(k = 1; k <= edgesCount; k++){
-                            if(isEnemyViewPoint) bool = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) !== color);
-                            else bool = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) === color);
+                        if(neighborValue.rank <= nodeValue.rank){
+                            for(k = 1; k <= edgesCount; k++){
+                                if(EnemyViewPoint) friendStrand = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) !== color);
+                                else friendStrand = (ratedGraph.getColorAsInteger(currentNodeId, neighborId, k) === color);
                                 
-                            if(bool) neighborValue.strength--;
-                            else neighborValue.strength++;
+                                if(friendStrand) neighborValue.strength--;
+                                else neighborValue.strength++;
+                            }
                         }
                     }
                 }
                 return ratedGraph; 
             }      
             /**
-             *  find the relevent move in the ratedGraph and return it 
-             **/
+         *  find the relevent move in the ratedGraph and return it 
+         **/
             function findReleventMove(enemyRatedGraph, friendRatedGraph){
-                var move = null;
                 
-               
+                function findWeakStrands(ratedGraph){
+                    var weakStrands = new Array();
+                    var queue = new Array();
+                    var visited = new Array();
+                    var groundedNodesCount = ratedGraph.getGroundedNodesCount();
+                    for(var i = 1; i <= groundedNodesCount; i++){
+                        var currentNodeId = ratedGraph.getGroundedNode(i);
+                        queue.push(currentNodeId);
+                        visited["#"+currentNodeId] = true;
+                    }
+                    while(queue.length > 0){
+                        currentNodeId = queue.shift();
+                        if(ratedGraph.getNodeValue(currentNodeId).weakness.length > 0)weakStrands.push(currentNodeId);
+                        var neighborhoodSize = ratedGraph.getNeighborhoodSize(currentNodeId);
+                        for(i = 1; i <= neighborhoodSize; i++){
+                            var neighborId = ratedGraph.getNeighbor(currentNodeId, i);
+                            if(!visited["#"+neighborId]){
+                                queue.push(neighborId);
+                                visited["#"+neighborId] = true;
+                            }
+                        }
+                    }
+                    return weakStrands;
+                }
                 
-                return move;
+                function filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes){
+                    var ratedMoves = new Array();//hash
+                    var moves = new Array();//hash
+                    var mostProfitableMoves = new Array();//array
+                    
+                    for(var i = 0; i < relevantNodes.length; i++) {
+                        var nodeId = relevantNodes[i];
+                        var nodeWeakness = enemyRatedGraph.getNodeValue(nodeId).weakness;
+                        
+                        for(var j = 0; j < nodeWeakness.length; j++){
+                            var move = nodeWeakness[j].move;
+                            var moveId = nodeWeakness[j].id;
+                            if(!moves["#"+moveId])moves["#"+moveId] = move;
+                            
+                                                        
+                        }
+                    }
+                    return mostProfitableMoves;
+                }
+                
+                var relevantNodes = findWeakStrands(enemyRatedGraph);
+                var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes);
+                
+                return null;
             }
             
             var enemyRatedGraph = rateTheGraph(hbg, true);
@@ -205,13 +254,13 @@
         }
     
         /** 
-             * Returns the next edge to remove in hgb, a graph modeling a Red-Blue Hackenbush game
-             *
-             * @param hbg : the graph representing the game
-             * @param color : the color of the current player (type: integer, no particular constraint on value)
-             * @param lastMove : the last edge removed in hgb, as an array of integers [sourceid, destid]
-             * @return the next edge to remove in hgb (undefined if impossible), as an array of integers [sourceid, destid]
-             */			
+     * Returns the next edge to remove in hgb, a graph modeling a Red-Blue Hackenbush game
+     *
+     * @param hbg : the graph representing the game
+     * @param color : the color of the current player (type: integer, no particular constraint on value)
+     * @param lastMove : the last edge removed in hgb, as an array of integers [sourceid, destid]
+     * @return the next edge to remove in hgb (undefined if impossible), as an array of integers [sourceid, destid]
+     */			
         this.play = function(hbg, color, lastMove) {
             
             this.start = new Date();

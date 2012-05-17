@@ -549,7 +549,8 @@
     hackenbush.controller.unbindDrawingArea = function(){
         canvas.unbind("mousedouwn");
         canvas.unbind("mousemove");
-        canvas.unbind("mouseup");
+        $("body").unbind("mouseup");
+        canvas.unbind("click");
         hackenbush.controller.canvasUnbinded = true;
     }
     

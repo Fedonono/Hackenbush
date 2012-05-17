@@ -95,7 +95,7 @@ var MultiGraph = function(directed){
 	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist
 	 * @throws InvalidIndexException if the nodes exist but indexEdge is outside the allowed range	
 	 */		
-    this.edgeExists = function(sourceId, destId, indexEdge){
+    /*this.edgeExists = function(sourceId, destId, indexEdge){
         
         if (!this.nodeExists(sourceId))
             throw new UnexistingNodeException(sourceId);
@@ -110,7 +110,7 @@ var MultiGraph = function(directed){
                 return true;
         }
         return false;
-    }
+    }*/
 
     /** 
 	 * Tells if an edge exists between nodes identified by sourceId and destId 
