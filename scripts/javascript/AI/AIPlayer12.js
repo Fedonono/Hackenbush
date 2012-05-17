@@ -249,11 +249,36 @@
                         for(var j = 0; j < nodeWeakness.length; j++){
                             var move = nodeWeakness[j].move;
                             var moveId = nodeWeakness[j].id;
-                            var strandValue = enemyRatedGraph.getNodeValue(move[0]);
+                            
                             
                             if(!moves["#"+moveId]){
                                 moves["#"+moveId] = move;
                                 ratedMoves["#"+moveId] = friendRatedGraph.getNodeValue(move[1]).strength;
+                                
+                                var rootMoveValue = enemyRatedGraph.getNodeValue(move[0]);
+                                
+                                for(var k = 0; k < nodeWeakness.legnth; k++){
+                                    var rival = nodeWeakness[k].move;
+                                    var rivalId = nodeWeakness[k].id;
+                                    var rootRivalValue = enemyRatedGraph.getNodeValue(rival[0]);
+                                    
+                                    var found = false;
+                                    var index = 0;
+                                    
+                                    while(index < rootMoveValue.weakness.length && !found){
+                                        found = rootMoveValue.weakness[index].id === rivalId;
+                                        index ++;
+                                    }
+                                    index = 0;
+                                    while(index < rootRivalValue.weakness.length && !found) {
+                                        found = rootRivalValue.weakness[index].id === moveId;
+                                    }
+                                    
+                                    if(!found){
+                                        ratedMoves["#"+moveId]--;
+                                        ratedMoves["#"+rivalId]--;
+                                    }
+                                }
                                 
                             }
                         }
@@ -265,6 +290,7 @@
                         if(ratedMoves[moveKey] > bestRate){
                             mostProfitableMoves = new Array();
                             mostProfitableMoves.push(moves[moveKey]);
+                            bestRate = ratedMoves[moveKey];
                         } 
                         else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
                     }
