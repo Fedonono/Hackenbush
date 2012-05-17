@@ -237,6 +237,36 @@
                 }
                 
                 function filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes){
+                    
+                    function isSuicidalMove(move) {
+                        var groundedFriendStrandCount = 0;
+                                
+                        var nodeId = move[0];
+                        var nodeValue = enemyRatedGraph.getNodeValue(nodeId);
+                                
+                        if(nodeValue.rank === 0){
+                            var groundedNodesCount = enemyRatedGraph.getGroundedNodesCount();
+                                    
+                            for(var i = 1; i <= groundedNodesCount; i++){
+                                var groundedNodeId = enemyRatedGraph.getGroundedNode(i);
+                                var neighborhoodSize = enemyRatedGraph.getNeighborhoodSize(groundedNodeId);
+       
+                                for(var j = 1; j <= neighborhoodSize; j++){
+                                    var neighborId = enemyRatedGraph.getNeighbor(groundedNodeId, j);
+                                    var edgesCount = enemyRatedGraph.getEdgeCount(groundedNodeId, neighborId);
+                                            
+                                    for(var k = 1; k <= edgesCount; k++) {
+                                        if(enemyRatedGraph.getColorAsInteger(groundedNodeId, neighborId, k) === color)groundedFriendStrandCount++;
+                                    }
+                                }
+                            }
+                            console.log(groundedFriendStrandCount);
+                            if(groundedFriendStrandCount > 1) return false;
+                            else return true;
+                        }
+                        return false;                                
+                    }
+                    
                     var ratedMoves = new Array();//hash
                     var moves = new Array();//hash
                     var mostProfitableMoves = new Array();//array
@@ -249,42 +279,44 @@
                         for(var j = 0; j < nodeWeakness.length; j++){
                             var move = nodeWeakness[j].move;
                             var moveId = nodeWeakness[j].id;
-                            
+                            var moveStrength = friendRatedGraph.getNodeValue(move[1]).strength;
+                            ;
                             
                             if(!moves["#"+moveId]){
                                 moves["#"+moveId] = move;
-                                ratedMoves["#"+moveId] = friendRatedGraph.getNodeValue(move[1]).strength;
                                 
-                                var rootMoveValue = enemyRatedGraph.getNodeValue(move[0]);
+                                if(!isSuicidalMove(move) && moveStrength >= 1){
+                                    ratedMoves["#"+moveId] = moveStrength;
                                 
-                                for(var k = 0; k < nodeWeakness.legnth; k++){
-                                    var rival = nodeWeakness[k].move;
-                                    var rivalId = nodeWeakness[k].id;
-                                    var rootRivalValue = enemyRatedGraph.getNodeValue(rival[0]);
+                                    var rootMoveValue = enemyRatedGraph.getNodeValue(move[0]);
+                                
+                                    for(var k = 0; k < nodeWeakness.legnth; k++){
+                                        var rival = nodeWeakness[k].move;
+                                        var rivalId = nodeWeakness[k].id;
+                                        var rootRivalValue = enemyRatedGraph.getNodeValue(rival[0]);
                                     
-                                    var found = false;
-                                    var index = 0;
+                                        var found = false;
+                                        var index = 0;
                                     
-                                    while(index < rootMoveValue.weakness.length && !found){
-                                        found = rootMoveValue.weakness[index].id === rivalId;
-                                        index ++;
-                                    }
-                                    index = 0;
-                                    while(index < rootRivalValue.weakness.length && !found) {
-                                        found = rootRivalValue.weakness[index].id === moveId;
-                                    }
+                                        while(index < rootMoveValue.weakness.length && !found){
+                                            found = rootMoveValue.weakness[index].id === rivalId;
+                                            index ++;
+                                        }
+                                        index = 0;
+                                        while(index < rootRivalValue.weakness.length && !found) {
+                                            found = rootRivalValue.weakness[index].id === moveId;
+                                        }
                                     
-                                    if(!found){
-                                        ratedMoves["#"+moveId]--;
-                                        ratedMoves["#"+rivalId]--;
+                                        if(!found){
+                                            ratedMoves["#"+moveId]--;
+                                            ratedMoves["#"+rivalId]--;
+                                        }
                                     }
                                 }
-                                
                             }
                         }
                     }
-                    console.log(ratedMoves);
-                    console.log(moves);
+                    console.log(ratedMoves, moves);
                     var bestRate = - 10000;
                     for(var moveKey in ratedMoves){
                         if(ratedMoves[moveKey] > bestRate){
