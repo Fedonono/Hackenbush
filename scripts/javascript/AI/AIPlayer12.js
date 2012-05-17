@@ -228,15 +228,20 @@
                     var mostProfitableMoves = new Array();//array
                     
                     for(var i = 0; i < relevantNodes.length; i++) {
+                        
                         var nodeId = relevantNodes[i];
                         var nodeWeakness = enemyRatedGraph.getNodeValue(nodeId).weakness;
+                        var currentMovesId = new Array();
                         
                         for(var j = 0; j < nodeWeakness.length; j++){
                             var move = nodeWeakness[j].move;
                             var moveId = nodeWeakness[j].id;
-                            if(!moves["#"+moveId])moves["#"+moveId] = move;
-                            
-                                                        
+                            if(!moves["#"+moveId]){
+                                moves["#"+moveId] = move;
+                                currentMovesId.push(moveId);
+                                ratedMoves["#"+moveId] = friendRatedGraph.getNodeValue(move[1]).strength;
+                                
+                            }
                         }
                     }
                     return mostProfitableMoves;
@@ -245,7 +250,7 @@
                 var relevantNodes = findWeakStrands(enemyRatedGraph);
                 var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes);
                 
-                return null;
+                return mostProfitableMoves[0];
             }
             
             var enemyRatedGraph = rateTheGraph(hbg, true);
