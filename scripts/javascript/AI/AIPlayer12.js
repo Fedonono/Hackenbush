@@ -259,6 +259,7 @@
                     //FUNCTION
                     function isSuicidalMove(move, enemyViewPoint) {
                         var groundedFriendStrandCount = 0;
+                        var groundedEnemyFriendCount = 0;
                                 
                         var nodeId = move[0];
                         var nodeValue = enemyRatedGraph.getNodeValue(nodeId);
@@ -280,10 +281,11 @@
                                         if(enemyViewPoint) friendStrand = (enemyRatedGraph.getColorAsInteger(groundedNodeId, neighborId, k) !== color);
                                         else friendStrand = (enemyRatedGraph.getColorAsInteger(groundedNodeId, neighborId, k) === color);
                                         if(friendStrand)groundedFriendStrandCount++;
+                                        else groundedEnemyFriendCount++; 
                                     }
                                 }
                             }
-                            if(groundedFriendStrandCount > 1) return false;
+                            if(groundedFriendStrandCount > groundedEnemyFriendCount) return false;
                             else return true;
                         }
                         return false;                                
@@ -353,8 +355,22 @@
                             ratedMoves["#"+combo[j+1]] = max;
                         }
                     }
-                    var bestRate = - 10000;
+                    
+                    var highestRank = 0;
+                    var highestMoves = new Array();
                     for(var moveKey in ratedMoves){
+                        move = moves[moveKey];
+                        var moveRank = enemyRatedGraph.getNodeValue(move[0]).rank;
+                        if(moveRank > highestRank) {
+                            highestRank = moveRank;
+                            highestMoves = new Array();
+                            highestMoves[moveKey] = true;
+                        }
+                        else if(moveRank === highestRank)highestMoves[moveKey] = true;
+                    }
+                    
+                    var bestRate = - 10000;
+                    for( moveKey in highestMoves){
                         if(ratedMoves[moveKey] > bestRate){
                             mostProfitableMoves = new Array();
                             mostProfitableMoves.push(moves[moveKey]);
@@ -364,21 +380,6 @@
                     }
                     
                     return mostProfitableMoves;
-                }
-                
-                function filterByRank(enemyRatedGraph, mostProfitableMoves) {
-                    var highestRankedMoves = mostProfitableMoves.slice(0, mostProfitableMoves.length);
-                    var highestRank = 0;
-                    for(var i = 0; i < mostProfitableMoves.length; i++) {
-                        var rank = enemyRatedGraph.getNodeValue(mostProfitableMoves[i][0]).rank;
-                        if(rank > highestRank){
-                            highestRank = rank;
-                            highestRankedMoves = new Array();
-                            highestRankedMoves.push(mostProfitableMoves[i]);
-                        }
-                        else if(rank === highestRank) highestRankedMoves.push(mostProfitableMoves[i]);
-                    }
-                    return highestRankedMoves;
                 }
                 
                 function findWeakestStrand(friendRatedGraph, rootId){
@@ -424,17 +425,12 @@
                 var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes, false);
                 if(!mostProfitableMoves) return null;
                 
-                mostProfitableMoves = filterByRank(enemyRatedGraph, mostProfitableMoves);
-                if(!mostProfitableMoves) return null;
                 
                 if(!mostProfitableMoves[0]){
                     var enemyRelevantNodes = findWeakStrands(friendRatedGraph);
                     if(!enemyRelevantNodes) return null;
                     
                     var enemyMostProfitableMoves = filterMostProfitableMoves(enemyRatedGraph, friendRatedGraph, enemyRelevantNodes, true);
-                    if(!enemyMostProfitableMoves) return null;
-                    
-                    enemyMostProfitableMoves = filterByRank(friendRatedGraph, enemyMostProfitableMoves);
                     if(!enemyMostProfitableMoves) return null;
                     
                     if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1])mostProfitableMoves = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
