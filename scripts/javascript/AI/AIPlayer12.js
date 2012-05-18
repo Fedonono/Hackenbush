@@ -359,24 +359,28 @@
                     var highestRank = 0;
                     var highestMoves = new Array();
                     for(var moveKey in ratedMoves){
-                        move = moves[moveKey];
-                        var moveRank = enemyRatedGraph.getNodeValue(move[0]).rank;
-                        if(moveRank > highestRank) {
-                            highestRank = moveRank;
-                            highestMoves = new Array();
-                            highestMoves[moveKey] = true;
+                        if(ratedMoves.hasOwnProperty(moveKey)){
+                            move = moves[moveKey];
+                            var moveRank = enemyRatedGraph.getNodeValue(move[0]).rank;
+                            if(moveRank > highestRank) {
+                                highestRank = moveRank;
+                                highestMoves = new Array();
+                                highestMoves[moveKey] = true;
+                            }
+                            else if(moveRank === highestRank)highestMoves[moveKey] = true;
                         }
-                        else if(moveRank === highestRank)highestMoves[moveKey] = true;
                     }
                     
                     var bestRate = - 10000;
                     for( moveKey in highestMoves){
-                        if(ratedMoves[moveKey] > bestRate){
-                            mostProfitableMoves = new Array();
-                            mostProfitableMoves.push(moves[moveKey]);
-                            bestRate = ratedMoves[moveKey];
-                        } 
-                        else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
+                        if(highestMoves.hasOwnProperty(moveKey)){
+                            if(ratedMoves[moveKey] > bestRate){
+                                mostProfitableMoves = new Array();
+                                mostProfitableMoves.push(moves[moveKey]);
+                                bestRate = ratedMoves[moveKey];
+                            } 
+                            else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
+                        }
                     }
                     
                     return mostProfitableMoves;
