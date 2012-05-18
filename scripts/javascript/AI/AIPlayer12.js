@@ -445,11 +445,11 @@
             
             //ALGORITHM
             var enemyRatedGraph = rateTheGraph(hbg, true);
-            if(!enemyRatedGraph)return null;
-            if(this.timeIsOut())return null;
+            if(!enemyRatedGraph || this.timeIsOut())return null;
+            
             var friendRatedGraph = rateTheGraph(hbg, false);
-            if(!friendRatedGraph) return null;
-            if(this.timeIsOut())return null;
+            if(!friendRatedGraph || this.timeIsOut()) return null;
+            
             return findReleventMove(enemyRatedGraph,friendRatedGraph);
         }
     
