@@ -149,7 +149,7 @@
                             }
                         }
                     }
-                    if(smallerRankFriendCount === 0){
+                    if(smallerRankFriendCount === 0 || nodeValue.weakness.length > 0){
                         nodeValue.weakness = nodeValue.weakness.concat(currentWeakness);
                     }
                     // propagate already existing weakness to edges from an higher rank;
@@ -260,7 +260,6 @@
                                     }
                                 }
                             }
-                            console.log(groundedFriendStrandCount);
                             if(groundedFriendStrandCount > 1) return false;
                             else return true;
                         }
@@ -275,22 +274,22 @@
                         
                         var nodeId = relevantNodes[i];
                         var nodeWeakness = enemyRatedGraph.getNodeValue(nodeId).weakness;
+                        var combo = new Array();
                         
                         for(var j = 0; j < nodeWeakness.length; j++){
                             var move = nodeWeakness[j].move;
                             var moveId = nodeWeakness[j].id;
+                            //console.log(moveId, move);
                             var moveStrength = friendRatedGraph.getNodeValue(move[1]).strength;
-                            ;
                             
                             if(!moves["#"+moveId]){
                                 moves["#"+moveId] = move;
                                 
                                 if(!isSuicidalMove(move) && moveStrength >= 1){
                                     ratedMoves["#"+moveId] = moveStrength;
-                                
                                     var rootMoveValue = enemyRatedGraph.getNodeValue(move[0]);
                                 
-                                    for(var k = 0; k < nodeWeakness.legnth; k++){
+                                    for(var k = 0; k < nodeWeakness.length; k++){
                                         var rival = nodeWeakness[k].move;
                                         var rivalId = nodeWeakness[k].id;
                                         var rootRivalValue = enemyRatedGraph.getNodeValue(rival[0]);
@@ -299,24 +298,35 @@
                                         var index = 0;
                                     
                                         while(index < rootMoveValue.weakness.length && !found){
-                                            found = rootMoveValue.weakness[index].id === rivalId;
-                                            index ++;
+                                            found = (rootMoveValue.weakness[index].id === rivalId);
+                                            index++;
                                         }
                                         index = 0;
                                         while(index < rootRivalValue.weakness.length && !found) {
-                                            found = rootRivalValue.weakness[index].id === moveId;
+                                            found = (rootRivalValue.weakness[index].id === moveId);
+                                            index++;
                                         }
                                     
                                         if(!found){
-                                            ratedMoves["#"+moveId]--;
-                                            ratedMoves["#"+rivalId]--;
+                                            if(combo.indexOf(moveId)===-1){
+                                                ratedMoves["#"+moveId]--;
+                                                combo.push(moveId);
+                                            }
+                                            if(combo.indexOf(rivalId)===-1){
+                                                ratedMoves["#"+rivalId]--;
+                                                combo.push(rivalId);
+                                            }
                                         }
-                                    }
+                                    }                                    
                                 }
                             }
                         }
+                        for(j = 0; j< combo.length - 1; j++){
+                            var max = Math.max(ratedMoves["#"+combo[j]], ratedMoves["#"+combo[j+1]]);
+                            ratedMoves["#"+combo[j]] = max;
+                            ratedMoves["#"+combo[j+1]] = max;
+                        }
                     }
-                    console.log(ratedMoves, moves);
                     var bestRate = - 10000;
                     for(var moveKey in ratedMoves){
                         if(ratedMoves[moveKey] > bestRate){
@@ -330,9 +340,24 @@
                     return mostProfitableMoves;
                 }
                 
+                function filterByRank(enemyRatedGraph, mostProfitableMoves) {
+                    var highestRankedMoves = mostProfitableMoves.slice(0, mostProfitableMoves.length);
+                    var highestRank = 0;
+                    for(var i = 0; i < mostProfitableMoves.length; i++) {
+                        var rank = enemyRatedGraph.getNodeValue(mostProfitableMoves[i][0]).rank;
+                        if(rank > highestRank){
+                            highestRank = rank;
+                            highestRankedMoves = new Array();
+                            highestRankedMoves.push(mostProfitableMoves[i]);
+                        }
+                        else if(rank === highestRank) highestRankedMoves.push(mostProfitableMoves[i]);;
+                    }
+                    return highestRankedMoves;
+                }
                 
                 var relevantNodes = findWeakStrands(enemyRatedGraph);
                 var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes);
+                mostProfitableMoves = filterByRank(enemyRatedGraph, mostProfitableMoves);
                 return mostProfitableMoves[0];
             }
             
