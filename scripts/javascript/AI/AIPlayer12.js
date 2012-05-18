@@ -80,6 +80,8 @@
          **/
         this.releventMove = function(hbg, color){
             
+            //FUNCTIONS
+            
             /**
              * adds the concept of rank, weakness and strength to the edges
              **/
@@ -209,6 +211,9 @@
          **/
             function findReleventMove(enemyRatedGraph, friendRatedGraph){
                 
+                
+                //FUNCTIONS
+                
                 function findWeakStrands(ratedGraph){
                     var weakStrands = new Array();
                     var queue = new Array();
@@ -236,9 +241,10 @@
                     return weakStrands;
                 }
                 
-                function filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes){
+                function filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes, enemyViewPoint){
                     
-                    function isSuicidalMove(move) {
+                    //FUNCTION
+                    function isSuicidalMove(move, enemyViewPoint) {
                         var groundedFriendStrandCount = 0;
                                 
                         var nodeId = move[0];
@@ -256,7 +262,10 @@
                                     var edgesCount = enemyRatedGraph.getEdgeCount(groundedNodeId, neighborId);
                                             
                                     for(var k = 1; k <= edgesCount; k++) {
-                                        if(enemyRatedGraph.getColorAsInteger(groundedNodeId, neighborId, k) === color)groundedFriendStrandCount++;
+                                        var friendStrand;
+                                        if(enemyViewPoint) friendStrand = (enemyRatedGraph.getColorAsInteger(groundedNodeId, neighborId, k) !== color);
+                                        else friendStrand = (enemyRatedGraph.getColorAsInteger(groundedNodeId, neighborId, k) === color);
+                                        if(friendStrand)groundedFriendStrandCount++;
                                     }
                                 }
                             }
@@ -266,6 +275,7 @@
                         return false;                                
                     }
                     
+                    //ALGORITHM
                     var ratedMoves = new Array();//hash
                     var moves = new Array();//hash
                     var mostProfitableMoves = new Array();//array
@@ -350,17 +360,60 @@
                             highestRankedMoves = new Array();
                             highestRankedMoves.push(mostProfitableMoves[i]);
                         }
-                        else if(rank === highestRank) highestRankedMoves.push(mostProfitableMoves[i]);;
+                        else if(rank === highestRank) highestRankedMoves.push(mostProfitableMoves[i]);
                     }
                     return highestRankedMoves;
                 }
                 
+                function findWeakestStrand(friendRatedGraph, rootId){
+                    var highestStrength = 0;
+                    var visited = new Array();
+                    var move;
+                    
+                    function depthTraversal(graph, rootId){
+                        visited["#"+rootId] = true;
+                        var neighborhoodSize = graph.getNeighborhoodSize(rootId);
+                        var rootStrength = graph.getNodeValue(rootId).strength;
+                        
+                        for(var i = 1; i <= neighborhoodSize; i++){
+                            var neighborId = graph.getNeighbor(rootId, i);
+                            var neighborStrength = graph.getNodeValue(neighborId).rank;
+                            
+                            if(neighborStrength >= rootStrength){
+                                if(neighborStrength >= highestStrength){
+                                    var edgesCount = graph.getEdgeCount(rootId, neighborId);
+                                
+                                    for(var index = 1; index <= edgesCount; index++){
+                                    
+                                        if(graph.getColorAsInteger(rootId, neighborId, index) === color){
+                                            highestStrength = neighborStrength;
+                                            move = [rootId, neighborId];
+                                        }
+                                    }
+                                }
+                            }
+                            if(!visited["#"+neighborId]) depthTraversal(graph, neighborId);
+                        }
+                    }
+                    depthTraversal(friendRatedGraph, rootId);
+                    return [move];
+                }
+                
+                //ALGORITHM
                 var relevantNodes = findWeakStrands(enemyRatedGraph);
-                var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes);
+                var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes, false);
                 mostProfitableMoves = filterByRank(enemyRatedGraph, mostProfitableMoves);
+                
+                if(!mostProfitableMoves[0]){
+                    var enemyRelevantNodes = findWeakStrands(friendRatedGraph);
+                    var enemyMostProfitableMoves = filterMostProfitableMoves(enemyRatedGraph, friendRatedGraph, enemyRelevantNodes, true);
+                    enemyMostProfitableMoves = filterByRank(friendRatedGraph, enemyMostProfitableMoves);
+                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1])mostProfitableMoves = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
+                }
                 return mostProfitableMoves[0];
             }
             
+            //ALGORITHM
             var enemyRatedGraph = rateTheGraph(hbg, true);
             var friendRatedGraph = rateTheGraph(hbg, false);
             return findReleventMove(enemyRatedGraph,friendRatedGraph);
@@ -389,7 +442,6 @@
             //relevant AI time log
             AItime = new Date().valueOf() - this.start.valueOf();
             console.log("relevent AI performed in " + AItime + " ms");
-            console.log(releventMove);
             //
             
             
