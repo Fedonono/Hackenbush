@@ -17,6 +17,16 @@
         
         
         /**
+         * check the time to respect the 1000ms restriction
+         * 
+         * @return : true if the time is out, false otherwise
+         **/
+        this.timeIsOut = function(){
+            if(new Date().valueOf() - this.start.valueOf() > this.timeout) return true;
+            else return false;
+        }
+        
+        /**
          * return the first edge removable by the current player (about 1ms to perform on a random graph returned by the Mr Soulignac's method and our graph type)
          *
          *@param hbg : the graph representing the game
@@ -42,6 +52,7 @@
             
             //dequeue the queueconsole.log(releventMove);
             while(queue.length > 0){
+
                 currentNodeId = queue.shift();
                 var neighborhoodSize = hbg.getNeighborhoodSize(currentNodeId);
                 
@@ -79,7 +90,7 @@
          *
          **/
         this.releventMove = function(hbg, color){
-            
+            var self = this;
             //FUNCTIONS
             
             /**
@@ -103,6 +114,7 @@
                 }
                 //dequeue the queue adding the concept of rank and weakness
                 while(queue.length > 0){
+                    if(self.timeIsOut())return null;
                     currentNodeId = queue.shift();
                     stack.push(currentNodeId);
                     
@@ -168,7 +180,7 @@
                 }
                 
                 while(stack.length > 0){
-                    
+                    if(self.timeIsOut())return null;
                     currentNodeId = stack.pop();
                     nodeValue = ratedGraph.getNodeValue(currentNodeId);
                     if(!nodeValue.strength)nodeValue.strength = 0;
@@ -226,6 +238,7 @@
                         visited["#"+currentNodeId] = true;
                     }
                     while(queue.length > 0){
+                        if(self.timeIsOut())return null;
                         
                         currentNodeId = queue.shift();
                         if(ratedGraph.getNodeValue(currentNodeId).weakness.length > 0)weakStrands.push(currentNodeId);
@@ -254,6 +267,7 @@
                             var groundedNodesCount = enemyRatedGraph.getGroundedNodesCount();
                                     
                             for(var i = 1; i <= groundedNodesCount; i++){
+                                
                                 var groundedNodeId = enemyRatedGraph.getGroundedNode(i);
                                 var neighborhoodSize = enemyRatedGraph.getNeighborhoodSize(groundedNodeId);
        
@@ -287,6 +301,8 @@
                         var combo = new Array();
                         
                         for(var j = 0; j < nodeWeakness.length; j++){
+                            if(self.timeIsOut()) return null;
+                            
                             var move = nodeWeakness[j].move;
                             var moveId = nodeWeakness[j].id;
                             //console.log(moveId, move);
@@ -371,6 +387,8 @@
                     var move;
                     
                     function depthTraversal(graph, rootId){
+                        if(self.timeIsOut())return;
+                        
                         visited["#"+rootId] = true;
                         var neighborhoodSize = graph.getNeighborhoodSize(rootId);
                         var rootStrength = graph.getNodeValue(rootId).strength;
@@ -401,21 +419,37 @@
                 
                 //ALGORITHM
                 var relevantNodes = findWeakStrands(enemyRatedGraph);
+                if(!relevantNodes) return null;
+                
                 var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes, false);
+                if(!mostProfitableMoves) return null;
+                
                 mostProfitableMoves = filterByRank(enemyRatedGraph, mostProfitableMoves);
+                if(!mostProfitableMoves) return null;
                 
                 if(!mostProfitableMoves[0]){
                     var enemyRelevantNodes = findWeakStrands(friendRatedGraph);
+                    if(!enemyRelevantNodes) return null;
+                    
                     var enemyMostProfitableMoves = filterMostProfitableMoves(enemyRatedGraph, friendRatedGraph, enemyRelevantNodes, true);
+                    if(!enemyMostProfitableMoves) return null;
+                    
                     enemyMostProfitableMoves = filterByRank(friendRatedGraph, enemyMostProfitableMoves);
+                    if(!enemyMostProfitableMoves) return null;
+                    
                     if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1])mostProfitableMoves = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
+                    if(!mostProfitableMoves) return null;
                 }
                 return mostProfitableMoves[0];
             }
             
             //ALGORITHM
             var enemyRatedGraph = rateTheGraph(hbg, true);
+            if(!enemyRatedGraph)return null;
+            if(this.timeIsOut())return null;
             var friendRatedGraph = rateTheGraph(hbg, false);
+            if(!friendRatedGraph) return null;
+            if(this.timeIsOut())return null;
             return findReleventMove(enemyRatedGraph,friendRatedGraph);
         }
     
@@ -432,25 +466,15 @@
             this.start = new Date();
             
             var noobMove = this.quickestMove(hbg, color);
-            //naive AI time log
-            var AItime = new Date().valueOf() - this.start.valueOf();
-            console.log("naive AI performed in " + AItime + " ms");
-            //console.log(noobMove);
-            //
             
-            var releventMove = this.releventMove(hbg, color);
-            //relevant AI time log
-            AItime = new Date().valueOf() - this.start.valueOf();
-            console.log("relevent AI performed in " + AItime + " ms");
-            //
+            var releventMove;
+            if( !this.timeIsOut()) releventMove = this.releventMove(hbg, color);
             
             
             if(releventMove){
-                console.log("relevant AI used");
                 return releventMove;
             }
             else {
-                console.log("naive AI used");
                 return noobMove;
             }
         } 
