@@ -293,6 +293,8 @@
                     
                     //ALGORITHM
                     var ratedMoves = new Array();//hash
+                    var ratedMoveKeys = new Array();//array
+                    
                     var moves = new Array();//hash
                     var mostProfitableMoves = new Array();//array
                     
@@ -314,7 +316,10 @@
                                 moves["#"+moveId] = move;
                                 
                                 if(!isSuicidalMove(move) && moveStrength >= 1){
+                                    
                                     ratedMoves["#"+moveId] = moveStrength;
+                                    ratedMoveKeys.push("#"+moveId);
+                                    
                                     var rootMoveValue = enemyRatedGraph.getNodeValue(move[0]);
                                 
                                     for(var k = 0; k < nodeWeakness.length; k++){
@@ -357,30 +362,35 @@
                     }
                     
                     var highestRank = 0;
-                    var highestMoves = new Array();
-                    for(var moveKey in ratedMoves){
-                        if(ratedMoves.hasOwnProperty(moveKey)){
-                            move = moves[moveKey];
-                            var moveRank = enemyRatedGraph.getNodeValue(move[0]).rank;
-                            if(moveRank > highestRank) {
-                                highestRank = moveRank;
-                                highestMoves = new Array();
-                                highestMoves[moveKey] = true;
-                            }
-                            else if(moveRank === highestRank)highestMoves[moveKey] = true;
+                    var highestMoves = new Array();//hash
+                    var highestMoveKeys = new Array();//array
+                    
+                    for(i = 0; i < ratedMoveKeys.length; i++){
+                        var moveKey = ratedMoveKeys[i];
+                        move = moves[moveKey];
+                        var moveRank = enemyRatedGraph.getNodeValue(move[0]).rank;
+                        if(moveRank > highestRank) {
+                            highestRank = moveRank;
+                            highestMoves = new Array();
+                            highestMoveKeys = new Array();
+                            highestMoves[moveKey] = true;
+                            highestMoveKeys.push(moveKey);
+                        }
+                        else if(moveRank === highestRank){
+                            highestMoves[moveKey] = true;
+                            highestMoveKeys.push(moveKey);
                         }
                     }
                     
                     var bestRate = - 10000;
-                    for( moveKey in highestMoves){
-                        if(highestMoves.hasOwnProperty(moveKey)){
-                            if(ratedMoves[moveKey] > bestRate){
-                                mostProfitableMoves = new Array();
-                                mostProfitableMoves.push(moves[moveKey]);
-                                bestRate = ratedMoves[moveKey];
-                            } 
-                            else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
-                        }
+                    for( i = 0; i < highestMoveKeys.length; i++){
+                        moveKey = highestMoveKeys[i];
+                        if(ratedMoves[moveKey] > bestRate){
+                            mostProfitableMoves = new Array();
+                            mostProfitableMoves.push(moves[moveKey]);
+                            bestRate = ratedMoves[moveKey];
+                        } 
+                        else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
                     }
                     
                     return mostProfitableMoves;
