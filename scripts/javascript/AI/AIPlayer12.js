@@ -322,34 +322,36 @@
                                     ratedMoves["#"+moveId] = moveStrength;
                                     ratedMoveKeys.push("#"+moveId);
                                     
-                                    var rootMoveValue = enemyRatedGraph.getNodeValue(move[0]);
-                                
-                                    for(var k = 0; k < nodeWeakness.length; k++){
-                                        var rival = nodeWeakness[k].move;
-                                        var rivalId = nodeWeakness[k].id;
-                                        var rootRivalValue = enemyRatedGraph.getNodeValue(rival[0]);
+                                    if(nodeWeakness.length > 1){
+                                        var rootMoveValue = enemyRatedGraph.getNodeValue(move[0]);
                                     
-                                        var found = false;
-                                        var index = 0;
+                                        for(var k = 0; k < nodeWeakness.length; k++){
+                                            var rival = nodeWeakness[k].move;
+                                            var rivalId = nodeWeakness[k].id;
+                                            var rootRivalValue = enemyRatedGraph.getNodeValue(rival[0]);
                                     
-                                        while(index < rootMoveValue.weakness.length && !found){
-                                            found = (rootMoveValue.weakness[index].id === rivalId);
-                                            index++;
-                                        }
-                                        index = 0;
-                                        while(index < rootRivalValue.weakness.length && !found) {
-                                            found = (rootRivalValue.weakness[index].id === moveId);
-                                            index++;
-                                        }
+                                            var found = false;
+                                            var index = 0;
                                     
-                                        if(!found){
-                                            if(combo.indexOf(moveId)===-1){
-                                                ratedMoves["#"+moveId]--;
-                                                combo.push(moveId);
+                                            while(index < rootMoveValue.weakness.length && !found){
+                                                found = (rootMoveValue.weakness[index].id === rivalId);
+                                                index++;
                                             }
-                                            if(combo.indexOf(rivalId)===-1){
-                                                ratedMoves["#"+rivalId]--;
-                                                combo.push(rivalId);
+                                            index = 0;
+                                            while(index < rootRivalValue.weakness.length && !found) {
+                                                found = (rootRivalValue.weakness[index].id === moveId);
+                                                index++;
+                                            }
+                                    
+                                            if(!found){
+                                                if(combo.indexOf(moveId)===-1){
+                                                    ratedMoves["#"+moveId]--;
+                                                    combo.push(moveId);
+                                                }
+                                                if(combo.indexOf(rivalId)===-1){
+                                                    ratedMoves["#"+rivalId]--;
+                                                    combo.push(rivalId);
+                                                }
                                             }
                                         }
                                     }                                    
