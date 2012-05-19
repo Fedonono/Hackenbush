@@ -35,7 +35,7 @@
          *@return the first edge removable by the current player
          *
          **/
-        this.quickestMove = function(hbg, color){
+        this.noobMove = function(hbg, color){
             
             var move = null;
             
@@ -343,11 +343,11 @@
                                         }
                                     
                                         if(!found){
-                                            if(combo.indexOf(moveId)===-1){
+                                            if(!~combo.indexOf(moveId)){
                                                 ratedMoves["#"+moveId]--;
                                                 combo.push(moveId);
                                             }
-                                            if(combo.indexOf(rivalId)===-1){
+                                            if(!~combo.indexOf(rivalId)){
                                                 ratedMoves["#"+rivalId]--;
                                                 combo.push(rivalId);
                                             }
@@ -389,10 +389,10 @@
                         moveKey = highestMoveKeys[i];
                         if(ratedMoves[moveKey] > bestRate){
                             mostProfitableMoves = new Array();
-                            mostProfitableMoves.push([moves[moveKey],ratedMoves[moveKey]]);
+                            mostProfitableMoves.push({move:moves[moveKey], rate:ratedMoves[moveKey]});
                             bestRate = ratedMoves[moveKey];
                         } 
-                        else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push([moves[moveKey],ratedMoves[moveKey]]);
+                        else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push({move:moves[moveKey], rate:ratedMoves[moveKey]});
                     }
                     
                     return mostProfitableMoves;
@@ -443,19 +443,19 @@
                 
                 //if your blows are not strong, try to defend yourself ;)
                 var leastPenalizingMove;
-                if(!mostProfitableMoves[0] || mostProfitableMoves[0][1] < 1){
+                if(!mostProfitableMoves[0] || mostProfitableMoves[0].rate < 1){
                     var enemyRelevantNodes = findWeakStrands(friendRatedGraph);
                     if(!enemyRelevantNodes) return null;
                     
                     var enemyMostProfitableMoves = filterMostProfitableMoves(enemyRatedGraph, friendRatedGraph, enemyRelevantNodes, true);
                     if(!enemyMostProfitableMoves) return null;
                     
-                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][0]&& enemyMostProfitableMoves[0][0][1])leastPenalizingMove = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][0][1]);
+                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0].move && enemyMostProfitableMoves[0].move[1])leastPenalizingMove = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0].move[1]);
                     if(!mostProfitableMoves) return null;
                 }
                 
                 if(leastPenalizingMove) return leastPenalizingMove;
-                else if (mostProfitableMoves[0] && mostProfitableMoves[0][0]) return mostProfitableMoves[0][0];
+                else if (mostProfitableMoves[0] && mostProfitableMoves[0].move) return mostProfitableMoves[0].move;
                 else return null;
             }
             
@@ -481,7 +481,7 @@
             
             this.start = new Date();
             
-            var noobMove = this.quickestMove(hbg, color);
+            var noobMove = this.noobMove(hbg, color);
             
             var releventMove;
             if( !this.timeIsOut()) releventMove = this.releventMove(hbg, color);
