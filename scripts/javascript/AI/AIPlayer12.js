@@ -396,7 +396,7 @@
                         } 
                         else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
                     }
-                    
+                    console.log(bestRate);
                     return mostProfitableMoves;
                 }
                 
