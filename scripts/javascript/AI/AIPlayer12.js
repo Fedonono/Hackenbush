@@ -41,13 +41,13 @@
             
             var groundedNodesCount = hbg.getGroundedNodesCount();
             var queue = new Array();
-            var visited = new Array();
+            var rank = new Array();
             
             //adding grounded nodes to the queue.
             for(var i = 1; i <= groundedNodesCount; i++){
                 var currentNodeId = hbg.getGroundedNode(i);
                 queue.push(currentNodeId);
-                visited["#"+currentNodeId] = true;
+                rank["#"+currentNodeId] = 1;
             }
             
             //dequeue the queueconsole.log(releventMove);
@@ -60,21 +60,23 @@
                    
                     var currentNeighborId = hbg.getNeighbor(currentNodeId, i);
                    
-                    if(!visited["#"+currentNeighborId]){
+                    if(!rank["#"+currentNeighborId]){
                         queue.push(currentNeighborId);
-                        visited["#"+currentNeighborId] = true;
+                        rank["#"+currentNeighborId] = rank["#"+currentNodeId] + 1;
                     }
-                        
-                    var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
-                    var j = 1;
-                    var edgeMatched = false;
-                    while(j <= edgeCount && !edgeMatched){
-                        if(color === hbg.getColorAsInteger(currentNodeId, currentNeighborId, j)){
-                            move = [currentNodeId, currentNeighborId];
-                            edgeMatched = true;
+                    
+                    if(rank["#"+currentNodeId] <= rank["#"+currentNeighborId]){
+                        var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
+                        var j = 1;
+                        var edgeMatched = false;
+                        while(j <= edgeCount && !edgeMatched){
+                            if(color === hbg.getColorAsInteger(currentNodeId, currentNeighborId, j)){
+                                move = [currentNodeId, currentNeighborId];
+                                edgeMatched = true;
+                            }
+                            j++;
                         }
-                        j++;
-                    } 
+                    }
                 }
             }
             return move;
@@ -482,9 +484,11 @@
             
             
             if(releventMove){
+                console.log("releventMove");
                 return releventMove;
             }
             else {
+                console.log("noobMove");
                 return noobMove;
             }
         } 
