@@ -418,7 +418,6 @@
                         } 
                         else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
                     }
-                    console.log(bestRate,highestMoves, ratedMoves);
                     mostProfitableMoves.rate = bestRate;
                     return mostProfitableMoves;
                 }
@@ -511,11 +510,9 @@
             
             
             if(releventMove){
-                console.log("releventMove");
                 return releventMove;
             }
             else {
-                console.log("noobMove");
                 return noobMove;
             }
         } 
