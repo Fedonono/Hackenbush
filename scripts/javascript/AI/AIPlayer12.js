@@ -433,7 +433,7 @@
                         }
                     }
                     depthTraversal(friendRatedGraph, rootId);
-                    return [move];
+                    return move;
                 }
                 
                 //ALGORITHM
@@ -443,7 +443,7 @@
                 var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes, false);
                 if(!mostProfitableMoves) return null;
                 
-                
+                var leastWorstMove;
                 if(!mostProfitableMoves[0]){
                     var enemyRelevantNodes = findWeakStrands(friendRatedGraph);
                     if(!enemyRelevantNodes) return null;
@@ -451,10 +451,10 @@
                     var enemyMostProfitableMoves = filterMostProfitableMoves(enemyRatedGraph, friendRatedGraph, enemyRelevantNodes, true);
                     if(!enemyMostProfitableMoves) return null;
                     
-                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1])mostProfitableMoves = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
-                    if(!mostProfitableMoves) return null;
+                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1])leastWorstMove = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
                 }
-                return mostProfitableMoves[0];
+                if(leastWorstMove)return leastWorstMove;
+                else return mostProfitableMoves[0];
             }
             
             //ALGORITHM
