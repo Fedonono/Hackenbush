@@ -322,12 +322,13 @@
                                     ratedMoves["#"+moveId] = moveStrength;
                                     ratedMoveKeys.push("#"+moveId);
                                     
-                                    if(nodeWeakness.length > 1){
-                                        var rootMoveValue = enemyRatedGraph.getNodeValue(move[0]);
                                     
-                                        for(var k = 0; k < nodeWeakness.length; k++){
-                                            var rival = nodeWeakness[k].move;
-                                            var rivalId = nodeWeakness[k].id;
+                                    var rootMoveValue = enemyRatedGraph.getNodeValue(move[0]);
+                                    
+                                    for(var k = 0; k < nodeWeakness.length; k++){
+                                        var rival = nodeWeakness[k].move;
+                                        var rivalId = nodeWeakness[k].id;
+                                        if(rivalId !== moveId){
                                             var rootRivalValue = enemyRatedGraph.getNodeValue(rival[0]);
                                     
                                             var found = false;
@@ -345,18 +346,21 @@
                                     
                                             if(!found){
                                                 if(combo.indexOf(moveId)===-1){
-                                                    ratedMoves["#"+moveId]--;
                                                     combo.push(moveId);
                                                 }
                                                 if(combo.indexOf(rivalId)===-1){
-                                                    ratedMoves["#"+rivalId]--;
                                                     combo.push(rivalId);
                                                 }
                                             }
-                                        }
-                                    }                                    
+                                        }    
+                                    }
                                 }
                             }
+                        }
+                        for(j = 0; j< combo.length ; j++){
+                            
+                            ratedMoves["#"+combo[j]] -= combo.length;
+                            
                         }
                         for(j = 0; j< combo.length - 1; j++){
                             var max = Math.max(ratedMoves["#"+combo[j]], ratedMoves["#"+combo[j+1]]);
@@ -396,7 +400,7 @@
                         } 
                         else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
                     }
-                    console.log(bestRate);
+                    if(bestRate > -10000)console.log(bestRate);
                     return mostProfitableMoves;
                 }
                 
