@@ -206,7 +206,6 @@
      * 
      **/
     hackenbush.views.drawingArea.addNode = function(x, y) {
-            
         if(hackenbush.views.drawingArea.isOnGrass(x,y)) y = height-hackenbush.views.drawingArea.grassHeight;
             
         var point;
@@ -498,22 +497,21 @@
         var Xtolerance = parseFloat(canvas.css("border-left-width"))+parseFloat(canvas.css("border-right-width")); // outerWidth isn't trustworthy
         var Ytolerance = parseFloat(canvas.css("border-top-width"))+parseFloat(canvas.css("border-bottom-width"));
 
-        canvas.mousedown( function(event) {
+        canvas.bind("mousedown",  function(event) {
             
             mousedown = true;
             var startCoords = getMouseCoords(event);  
             //taking care of the border width
             if(startCoords.x > canvas[0].width - Xtolerance || startCoords.x < Xtolerance || startCoords.y > canvas[0].height - Ytolerance || startCoords.y < Ytolerance) return
             
-            if(hackenbush.views.drawingArea.tool === "draw")
-				hackenbush.views.drawingArea.addNode(startCoords.x, startCoords.y);
+            if(hackenbush.views.drawingArea.tool === "draw") hackenbush.views.drawingArea.addNode(startCoords.x, startCoords.y);
             else if(hackenbush.views.drawingArea.tool === "erase") hackenbush.views.drawingArea.erase(startCoords.x, startCoords.y, hackenbush.controller.isPlaying);
             else if(hackenbush.views.drawingArea.tool === "edit") hackenbush.views.drawingArea.setSelectedItem(startCoords.x, startCoords.y);
             
             
         });
         
-        canvas.mousemove(function(event) {
+        canvas.bind("mousemove", function(event) {
             var canvasCoords =  getMouseCoords(event);  
             
             if(mousedown){
@@ -526,7 +524,7 @@
         });
         
         
-        $('body').mouseup(function(event){
+        $('body').bind("mouseup", function(event){
             mousedown = false;
             
             if(hackenbush.views.drawingArea.tool === "draw") hackenbush.views.drawingArea.addEdge();
@@ -535,7 +533,7 @@
         });
     }     
     hackenbush.controller.listenToDrawingArea = function(){
-        $("#canvasArea").mousedown(function(event){
+        canvas.bind("mousedown",function(event){
             if(hackenbush.controller.isPlaying){
                 if(hackenbush.controller.turnPlayed)hackenbush.controller.applyRules(); 
             }
@@ -547,7 +545,7 @@
      * Stop listening to the canvas
      **/
     hackenbush.controller.unbindDrawingArea = function(){
-        canvas.unbind("mousedouwn");
+        canvas.unbind("mousedown");
         canvas.unbind("mousemove");
         $("body").unbind("mouseup");
         canvas.unbind("click");
