@@ -47,10 +47,10 @@
      * @param edgeIndex : the index of the edge in the edges array between these two nodes
      **/
     hackenbush.controller.erase = function(startId, goalId, edgeIndex){
-        hackenbush.controller.turnPlayed = true;
         hackenbush.modele.graphGame.removeEdge(startId, goalId, edgeIndex);
         hackenbush.modele.graphGame.removeLonelyNodes();
         hackenbush.modele.graphGame.removeFlyingNodes();
+        hackenbush.controller.turnPlayed = true;
     }
     
     /**
@@ -124,8 +124,7 @@
     /**
      * gives voice to the next player
      **/
-    hackenbush.controller.switchPlayers= function(){
-        
+    hackenbush.controller.switchPlayers = function(){
         hackenbush.controller.currentPlayer = (hackenbush.controller.currentPlayer + 1)%2;
         hackenbush.controller.currentPlayerElem.html('P'+(hackenbush.controller.currentPlayer + 1));
         
@@ -134,10 +133,10 @@
             hackenbush.controller.applyComputerMove();
         }
         else if(hackenbush.controller.canvasUnbinded){
-            hackenbush.controller.listenToDrawingArea();
             for(var viewKey in hackenbush.views){
                 if(hackenbush.views[viewKey].listenToDrawingArea) hackenbush.views[viewKey].listenToDrawingArea();
             }
+            hackenbush.controller.listenToDrawingArea();
             hackenbush.controller.canvasUnbinded = false;
         }
     }
@@ -148,7 +147,6 @@
      * apply the AI move
      **/
     hackenbush.controller.applyComputerMove = function(){
-        
         var move = hackenbush.controller.AI.play(hackenbush.modele.graphGame, hackenbush.controller.currentPlayer);
         if(!move)hackenbush.controller.win((hackenbush.controller.currentPlayer + 1)%2);//Computer is weak ;)
         else{

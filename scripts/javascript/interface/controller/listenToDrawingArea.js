@@ -535,7 +535,9 @@
     hackenbush.controller.listenToDrawingArea = function(){
         canvas.bind("mousedown",function(event){
             if(hackenbush.controller.isPlaying){
-                if(hackenbush.controller.turnPlayed)hackenbush.controller.applyRules(); 
+                if(hackenbush.controller.turnPlayed){
+                    hackenbush.controller.applyRules();
+                }
             }
         });
     }
