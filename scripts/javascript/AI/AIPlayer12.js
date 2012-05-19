@@ -41,13 +41,13 @@
             
             var groundedNodesCount = hbg.getGroundedNodesCount();
             var queue = new Array();
-            var visited = new Array();
+            var rank = new Array();
             
             //adding grounded nodes to the queue.
             for(var i = 1; i <= groundedNodesCount; i++){
                 var currentNodeId = hbg.getGroundedNode(i);
                 queue.push(currentNodeId);
-                visited["#"+currentNodeId] = true;
+                rank["#"+currentNodeId] = 1;
             }
             
             //dequeue the queueconsole.log(releventMove);
@@ -60,21 +60,23 @@
                    
                     var currentNeighborId = hbg.getNeighbor(currentNodeId, i);
                    
-                    if(!visited["#"+currentNeighborId]){
+                    if(!rank["#"+currentNeighborId]){
                         queue.push(currentNeighborId);
-                        visited["#"+currentNeighborId] = true;
+                        rank["#"+currentNeighborId] = rank["#"+currentNodeId] + 1;
                     }
-                        
-                    var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
-                    var j = 1;
-                    var edgeMatched = false;
-                    while(j <= edgeCount && !edgeMatched){
-                        if(color === hbg.getColorAsInteger(currentNodeId, currentNeighborId, j)){
-                            move = [currentNodeId, currentNeighborId];
-                            edgeMatched = true;
-                        }
-                        j++;
-                    } 
+                    
+                    if(rank["#"+currentNodeId] <= rank["#"+currentNeighborId]){
+                        var edgeCount = hbg.getEdgeCount(currentNodeId, currentNeighborId);
+                        var j = 1;
+                        var edgeMatched = false;
+                        while(j <= edgeCount && !edgeMatched){
+                            if(color === hbg.getColorAsInteger(currentNodeId, currentNeighborId, j)){
+                                move = [currentNodeId, currentNeighborId];
+                                edgeMatched = true;
+                            }
+                            j++;
+                        } 
+                    }
                 }
             }
             return move;
@@ -387,10 +389,10 @@
                         moveKey = highestMoveKeys[i];
                         if(ratedMoves[moveKey] > bestRate){
                             mostProfitableMoves = new Array();
-                            mostProfitableMoves.push(moves[moveKey]);
+                            mostProfitableMoves.push([moves[moveKey],ratedMoves[moveKey]]);
                             bestRate = ratedMoves[moveKey];
                         } 
-                        else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
+                        else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push([moves[moveKey],ratedMoves[moveKey]]);
                     }
                     
                     return mostProfitableMoves;
@@ -429,7 +431,7 @@
                         }
                     }
                     depthTraversal(friendRatedGraph, rootId);
-                    return [move];
+                    return move;
                 }
                 
                 //ALGORITHM
@@ -439,18 +441,22 @@
                 var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes, false);
                 if(!mostProfitableMoves) return null;
                 
-                
-                if(!mostProfitableMoves[0]){
+                //if your blows are not strong, try to defend yourself ;)
+                var leastPenalizingMove;
+                if(!mostProfitableMoves[0] || mostProfitableMoves[0][1] < 1){
                     var enemyRelevantNodes = findWeakStrands(friendRatedGraph);
                     if(!enemyRelevantNodes) return null;
                     
                     var enemyMostProfitableMoves = filterMostProfitableMoves(enemyRatedGraph, friendRatedGraph, enemyRelevantNodes, true);
                     if(!enemyMostProfitableMoves) return null;
                     
-                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1])mostProfitableMoves = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
+                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][0]&& enemyMostProfitableMoves[0][0][1])leastPenalizingMove = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][0][1]);
                     if(!mostProfitableMoves) return null;
                 }
-                return mostProfitableMoves[0];
+                
+                if(leastPenalizingMove) return leastPenalizingMove;
+                else if (mostProfitableMoves[0] && mostProfitableMoves[0][0]) return mostProfitableMoves[0][0];
+                else return null;
             }
             
             //ALGORITHM
