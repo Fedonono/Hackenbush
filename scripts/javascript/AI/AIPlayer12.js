@@ -372,18 +372,39 @@
                     
                     for(i = 0; i < ratedMoveKeys.length; i++){
                         var moveKey = ratedMoveKeys[i];
-                        move = moves[moveKey];
-                        var moveRank = enemyRatedGraph.getNodeValue(move[0]).rank;
-                        if(moveRank > highestRank) {
-                            highestRank = moveRank;
-                            highestMoves = new Array();
-                            highestMoveKeys = new Array();
-                            highestMoves[moveKey] = true;
-                            highestMoveKeys.push(moveKey);
+                        if(ratedMoves[moveKey] >= 1){
+                            move = moves[moveKey];
+                            var moveRank = enemyRatedGraph.getNodeValue(move[0]).rank;
+                            if(moveRank > highestRank) {
+                                highestRank = moveRank;
+                                highestMoves = new Array();
+                                highestMoveKeys = new Array();
+                                highestMoves[moveKey] = true;
+                                highestMoveKeys.push(moveKey);
+                            }
+                            else if(moveRank === highestRank){
+                                highestMoves[moveKey] = true;
+                                highestMoveKeys.push(moveKey);
+                            }
                         }
-                        else if(moveRank === highestRank){
-                            highestMoves[moveKey] = true;
-                            highestMoveKeys.push(moveKey);
+                    }
+                    if(highestMoveKeys.length === 0){
+                        for(i = 0; i < ratedMoveKeys.length; i++){
+                            moveKey = ratedMoveKeys[i];
+                            move = moves[moveKey];
+                            moveRank = enemyRatedGraph.getNodeValue(move[0]).rank;
+                            if(moveRank > highestRank) {
+                                highestRank = moveRank;
+                                highestMoves = new Array();
+                                highestMoveKeys = new Array();
+                                highestMoves[moveKey] = true;
+                                highestMoveKeys.push(moveKey);
+                            }
+                            else if(moveRank === highestRank){
+                                highestMoves[moveKey] = true;
+                                highestMoveKeys.push(moveKey);
+                            }
+                        
                         }
                     }
                     
@@ -398,6 +419,7 @@
                         else if(ratedMoves[moveKey] === bestRate) mostProfitableMoves.push(moves[moveKey]);
                     }
                     console.log(bestRate,highestMoves, ratedMoves);
+                    mostProfitableMoves.rate = bestRate;
                     return mostProfitableMoves;
                 }
                 
@@ -435,7 +457,7 @@
                         }
                     }
                     depthTraversal(friendRatedGraph, rootId);
-                    return [move];
+                    return move;
                 }
                 
                 //ALGORITHM
@@ -445,17 +467,18 @@
                 var mostProfitableMoves = filterMostProfitableMoves(friendRatedGraph, enemyRatedGraph, relevantNodes, false);
                 if(!mostProfitableMoves) return null;
                 
-                
-                if(!mostProfitableMoves[0]){
+                var leastWorstMove;
+                if(!mostProfitableMoves[0] || !mostProfitableMoves.rate || mostProfitableMoves.rate < 1){
                     var enemyRelevantNodes = findWeakStrands(friendRatedGraph);
                     if(!enemyRelevantNodes) return null;
                     
                     var enemyMostProfitableMoves = filterMostProfitableMoves(enemyRatedGraph, friendRatedGraph, enemyRelevantNodes, true);
                     if(!enemyMostProfitableMoves) return null;
                     
-                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1])mostProfitableMoves = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
+                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1])leastWorstMove = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
                     if(!mostProfitableMoves) return null;
                 }
+                if(leastWorstMove) return leastWorstMove;
                 return mostProfitableMoves[0];
             }
             
