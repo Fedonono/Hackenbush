@@ -483,14 +483,16 @@
                 if(!mostProfitableMoves) return null;
                 
                 var leastWorstMove;
-                if(!mostProfitableMoves[0] || !mostProfitableMoves.rate || mostProfitableMoves.rate < 1){
+                if(!mostProfitableMoves[0] || mostProfitableMoves.rate < 1){
                     var enemyRelevantNodes = findWeakStrands(friendRatedGraph);
                     if(!enemyRelevantNodes) return null;
                     
                     var enemyMostProfitableMoves = filterMostProfitableMoves(enemyRatedGraph, friendRatedGraph, enemyRelevantNodes, true);
                     if(!enemyMostProfitableMoves) return null;
                     
-                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1])leastWorstMove = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
+                    if(enemyMostProfitableMoves[0] && enemyMostProfitableMoves[0][1] && enemyMostProfitableMoves.rate >= mostProfitableMoves.rate){
+                        leastWorstMove = findWeakestStrand(friendRatedGraph, enemyMostProfitableMoves[0][1]);
+                    }
                     if(!mostProfitableMoves) return null;
                 }
                 if(leastWorstMove) return leastWorstMove;
