@@ -302,7 +302,18 @@ var MultiGraph = function(directed){
 
         this.removeEdge(sourceId, destId, indexEdge);
     }
-	
+    /** 
+	 * Return the index of a specified edge between nodes identified by sourceId, destId and edgeId
+	 *
+	 * @param sourceId the identifier of the source node (strictly positive integer)
+	 * @param destId the identifier of the destination node (strictly positive integer)
+     * @param  edgeId the id of the expected edge
+	 * @throws InvalidIdException if one of the specified ids is not valid (wrong type, <= 0, ...)		 
+	 * @throws UnexistingNodeException if the ids are valid but one of the corresponding nodes does not exist	 
+	 * @throws UnexistingEdgeException if the ids are valid, the corresponding nodes exists, but the corresponding edge does not exist
+	 * @throws InvalidIndexException if the nodes exist but indexEdge is outside the allowed range
+	 * @return the index of the specified edge, an integer equal to -1 if the edgeId doesn't exists
+	 */		
     this.getEdgeIndexByIds = function(sourceId, destId, edgeId) {
         if (!this.nodeExists(sourceId))
             throw new UnexistingNodeException(sourceId);
