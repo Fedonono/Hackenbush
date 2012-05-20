@@ -261,37 +261,53 @@
                     
                     //FUNCTION
                     function isSuicidalMove(move, enemyViewPoint) {
-                        var groundedFriendStrandCount = 0;
-                        var groundedEnemyFriendCount = 0;
+                        
+                        function countSavedStrand(enemyViewPoint) {
+                            var visited = new Array();
+                            var queue = new Array();
+                            var savedStrandsCount = 0;
                                 
-                        var nodeId = move[0];
-                        var nodeValue = enemyRatedGraph.getNodeValue(nodeId);
-                                
-                        if(nodeValue.rank === 0){
-                            var groundedNodesCount = enemyRatedGraph.getGroundedNodesCount();
-                                    
+                            var groundedNodesCount = enemyRatedGraph.getGroundedNodesCount();     
                             for(var i = 1; i <= groundedNodesCount; i++){
+                                nodeId = enemyRatedGraph.getGroundedNode(i);   
+                                if(!visited["#"+nodeId])visited["#"+nodeId] = true;
+                                queue.push(nodeId);
+                            }
+                            
+                            while(queue.length > 0){
+                                if(self.timeIsOut()) return -1;
                                 
-                                var groundedNodeId = enemyRatedGraph.getGroundedNode(i);
-                                var neighborhoodSize = enemyRatedGraph.getNeighborhoodSize(groundedNodeId);
-       
+                                nodeId = queue.shift();
+                                if(!enemyViewPoint && nodeId === move[0]) isSafe = true;
+                                
+                                var neighborhoodSize = enemyRatedGraph.getNeighborhoodSize(nodeId);
+                                    
                                 for(var j = 1; j <= neighborhoodSize; j++){
-                                    var neighborId = enemyRatedGraph.getNeighbor(groundedNodeId, j);
-                                    var edgesCount = enemyRatedGraph.getEdgeCount(groundedNodeId, neighborId);
+                                    var neighborId = enemyRatedGraph.getNeighbor(nodeId,j);
+                                    var edgesCount = enemyRatedGraph.getEdgeCount(nodeId, neighborId);
+                                    for(k = 1; k <= edgesCount; k++){
                                             
-                                    for(var k = 1; k <= edgesCount; k++) {
                                         var friendStrand;
-                                        if(enemyViewPoint) friendStrand = (enemyRatedGraph.getColorAsInteger(groundedNodeId, neighborId, k) !== color);
-                                        else friendStrand = (enemyRatedGraph.getColorAsInteger(groundedNodeId, neighborId, k) === color);
-                                        if(friendStrand)groundedFriendStrandCount++;
-                                        else groundedEnemyFriendCount++; 
+                                        if(enemyViewPoint) friendStrand = (enemyRatedGraph.getColorAsInteger(nodeId, neighborId, k) !== color);
+                                        else friendStrand = (enemyRatedGraph.getColorAsInteger(nodeId, neighborId, k) === color);
+                                            
+                                        if(friendStrand){
+                                            if(!visited["#"+neighborId]){
+                                                visited["#"+neighborId] = true;
+                                                queue.push(neighborId);
+                                            }
+                                            savedStrandsCount++;
+                                        }
                                     }
+                                        
                                 }
                             }
-                            if(groundedFriendStrandCount > groundedEnemyFriendCount) return false;
-                            else return true;
+                            return savedStrandsCount;
                         }
-                        return false;                                
+                        var isSafe = false;
+                        var savedFriendStrandCount = countSavedStrand(false);
+                        var savedEnemyStrandCount = countSavedStrand(true);
+                        return (isSafe && savedFriendStrandCount <= savedEnemyStrandCount);
                     }
                     
                     //ALGORITHM
@@ -317,7 +333,7 @@
                             if(!moves["#"+moveId]){
                                 moves["#"+moveId] = move;
                                 
-                                if(!isSuicidalMove(move) && moveStrength >= 1){
+                                if(moveStrength >= 1 && !isSuicidalMove(move)){
                                     
                                     ratedMoves["#"+moveId] = moveStrength;
                                     ratedMoveKeys.push("#"+moveId);
@@ -505,9 +521,8 @@
             
             var noobMove = this.quickestMove(hbg, color);
             
-            var releventMove;
+            var releventMove = null;
             if( !this.timeIsOut()) releventMove = this.releventMove(hbg, color);
-            
             
             if(releventMove){
                 return releventMove;
