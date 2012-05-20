@@ -524,6 +524,7 @@
             var releventMove = null;
             if( !this.timeIsOut()) releventMove = this.releventMove(hbg, color);
             
+            console.log(new Date().valueOf() - this.start.valueOf(), "milliseconds");
             if(releventMove){
                 return releventMove;
             }

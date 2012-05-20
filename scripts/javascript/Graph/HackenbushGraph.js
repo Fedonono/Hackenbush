@@ -26,7 +26,7 @@ var HackenbushGraph = function(){
 	 */			
     this.getEdgeCount = function(sourceId, destId) {
         if (!this.edgeExists(sourceId, destId, 0))
-            throw new UnexistingEdgeException(sourceId, destId);
+            return 0;
 
         return this.getEdgesCount(sourceId, destId);
     }
