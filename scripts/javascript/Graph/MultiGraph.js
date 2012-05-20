@@ -245,7 +245,7 @@ var MultiGraph = function(directed){
 	 * @throws InvalidIndexException if the nodes exist but indexEdge is outside the allowed range
 	 */	
     this.removeEdge = function(sourceId, destId, indexEdge) {
-        this.removeEdgeWithoutCheck(sourceId, destId, indexEdge);
+        this.removeEdgeMulti(sourceId, destId, indexEdge);
     }
 
     /** 
@@ -255,7 +255,7 @@ var MultiGraph = function(directed){
 	 * @param destId the identifier of the destination node (strictly positive integer)
      * @param indexEdge the index of the expected edge
 	 */	
-	this.removeEdgeWithoutCheck = function(sourceId, destId, indexEdge) {
+	this.removeEdgeMulti = function(sourceId, destId, indexEdge) {
         if (!this.edgeExists(sourceId, destId, indexEdge))
             throw new UnexistingEdgeException(sourceId, destId);
 

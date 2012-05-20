@@ -293,7 +293,7 @@ var HackenbushGraph = function(){
 	 * @throws InvalidIndexException if the nodes exist but indexEdge is outside the allowed range
 	 */	 
     this.removeEdge = function(sourceId, destId, indexEdge) {
-        this.removeEdgeWithoutCheck(sourceId, destId, indexEdge);
+        this.removeEdgeMulti(sourceId, destId, indexEdge);
 
         this.setLinkedToGround();
     }
