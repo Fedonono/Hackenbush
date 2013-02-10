@@ -23,4 +23,4 @@ Demo
   [jQuery]: http://jquery.com
   [php]: http://php.net/
   [wikipedia]: http://en.wikipedia.org/wiki/Hackenbush
-  [Here]: http://babol.me/works/hackenbush
+  [Here]: http://hackenbush.babol.me
